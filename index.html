@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agosto 2026 · Mira Vest · Plano em uma tela</title>
+<style>
+  :root{
+    --wine:#7A2E38; --wine2:#A0454F;
+    --ink:#1D1D1F; --ink-soft:#6E6E73; --ink-faint:#86868B;
+    --paper:#FFFFFF; --tint:#F5F5F7;
+    --line:rgba(0,0,0,.09); --hair:rgba(0,0,0,.06);
+    --warn:#8F4F1C;
+    --fs-xl:24px; --fs-lg:17px; --fs-md:15px; --fs-sm:13px;
+    --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable Text","Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --r:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-md);
+       line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  h1,h2,h3{font-weight:600;letter-spacing:-.02em}
+
+  /* ---------- navegacao fina, estilo subnav ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);
+         backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+         border-bottom:1px solid var(--hair);padding:0 40px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+       min-height:52px;padding:8px 0}
+  .navleft{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .brand{font-size:var(--fs-md);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .navtitle{font-size:var(--fs-md);color:var(--ink-soft);white-space:nowrap}
+  .hrow{display:contents}
+  .sub{display:none}
+
+  .hactions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .toggle{display:flex;background:var(--tint);border-radius:999px;padding:3px;flex:none}
+  .toggle button{border:0;background:transparent;font:500 var(--fs-sm) var(--sans);color:var(--ink-soft);
+                 padding:7px 18px;border-radius:999px;cursor:pointer;transition:.18s}
+  .toggle button:hover{color:var(--ink)}
+  .toggle button.on{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+
+  .ghost{border:1px solid var(--line);background:transparent;border-radius:999px;
+         font:500 var(--fs-sm) var(--sans);color:var(--ink-soft);padding:8px 18px;cursor:pointer;transition:.15s}
+  .ghost:hover{background:var(--tint);color:var(--ink)}
+  .ghost[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
+  .ghost.primary{border-color:var(--wine);color:var(--wine);font-weight:600}
+  .ghost.primary:hover{background:var(--wine);color:#fff}
+
+  .legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0 0 10px}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid transparent;
+        border-radius:999px;padding:4px 12px 4px 10px;font:400 var(--fs-sm) var(--sans);
+        color:var(--ink-soft);cursor:pointer;transition:.15s}
+  .chip:hover{background:var(--tint)}
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip .n{color:var(--ink-faint)}
+  .chip.on{background:var(--tint);border-color:var(--line);color:var(--ink);font-weight:500}
+  .lg-note{font-size:var(--fs-sm);color:var(--ink-faint);margin-left:auto}
+
+  #editbar{margin:0 0 12px;background:var(--tint);border-radius:12px;padding:10px 14px;
+           font-size:var(--fs-sm);color:var(--ink-soft);line-height:1.5}
+  #editbar b{color:var(--ink)}
+  #editcount{color:var(--wine);font-weight:600}
+
+  body[data-f="topo"] [data-fun]:not([data-fun="topo"]),
+  body[data-f="meio"] [data-fun]:not([data-fun="meio"]),
+  body[data-f="fundo"] [data-fun]:not([data-fun="fundo"]),
+  body[data-f="ret"] [data-fun]:not([data-fun="ret"]),
+  body[data-f="bast"] [data-fun]:not([data-fun="bast"]){opacity:.18;pointer-events:none}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+  @media (max-height:820px){header{position:static}}
+
+  main{padding:0 40px 80px;max-width:1560px;margin:0 auto}
+  .view{display:none}.view.on{display:block}
+
+  /* ---------- hero ---------- */
+  .hero{text-align:center;padding:72px 16px 56px;max-width:980px;margin:0 auto}
+  .eyebrow{font-size:var(--fs-lg);font-weight:600;color:var(--wine);margin-bottom:10px;letter-spacing:-.01em}
+  .hero-t{font-size:clamp(44px,7vw,76px);line-height:1.04;letter-spacing:-.032em;font-weight:700;color:var(--ink)}
+  .hero-t .grad{background:linear-gradient(100deg,var(--wine) 10%,var(--wine2) 55%,#C08457 95%);
+                -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-s{font-size:clamp(17px,2.2vw,21px);line-height:1.5;color:var(--ink-soft);
+          max-width:640px;margin:18px auto 0;letter-spacing:-.01em}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+  .stat{background:var(--tint);border-radius:20px;padding:26px 18px 22px}
+  .sv{font-size:clamp(30px,3.6vw,44px);font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1.05}
+  .stat:nth-child(2) .sv{color:var(--wine)}
+  .sl{font-size:var(--fs-md);color:var(--ink);font-weight:500;margin-top:8px;line-height:1.4}
+  .sl span{display:block;color:var(--ink-faint);font-weight:400;font-size:var(--fs-sm);margin-top:2px}
+
+  /* revelacao suave no scroll */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+  /* ---------- antes do mes ---------- */
+  .pre{background:var(--tint);border-radius:var(--r);
+       padding:14px 16px;margin-bottom:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .pre .pt{font-size:var(--fs-sm);color:var(--ink-soft);flex:none;font-weight:600}
+  .pre .pitems{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+  .pre .pd{font-size:var(--fs-sm);color:var(--ink-faint);margin-bottom:2px}
+
+  /* ---------- calendario, padrao Apple Calendar ---------- */
+  .calwrap{overflow-x:auto;border-radius:var(--r)}
+  .cal{min-width:1060px}
+  .wdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+  .wdays div{text-align:right;padding:2px 12px 2px 0;text-transform:uppercase;
+             letter-spacing:.08em;font-weight:600;font-size:11px;color:var(--ink-faint)}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--hair);
+        border:1px solid var(--hair);border-radius:var(--r);overflow:hidden}
+  .pad{background:var(--paper)}
+  .day{background:var(--paper);min-height:112px;padding:8px 8px 10px;display:flex;flex-direction:column;gap:3px}
+  .dhead{display:flex;justify-content:flex-end}
+  .dnum{font-size:var(--fs-md);font-weight:500;color:var(--ink);line-height:1;padding:2px 4px}
+  .holi{font-size:11px;font-weight:600;color:var(--wine);text-align:right;margin:-2px 2px 2px 0}
+  /* barra continua de campanha, como evento de varios dias */
+  .cbar{height:20px;display:flex;align-items:center;margin:0 -8px 3px;padding:0 12px;
+        font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden}
+  .cbar span{overflow:hidden;text-overflow:ellipsis}
+  .cbar[data-grp]{cursor:pointer;transition:filter .12s}
+  .cbar[data-grp]:hover{filter:brightness(.95)}
+  .cbar[data-grp]:focus-visible{outline:2px solid var(--wine);outline-offset:1px}
+  .cbar.ini{margin-left:0;border-radius:6px 0 0 6px}
+  .cbar.fim{margin-right:0;border-radius:0 6px 6px 0}
+  .cbar.ini.fim{border-radius:6px}
+  /* a acao e uma pilula com o nome, e so */
+  .ev{display:block;width:100%;text-align:left;border:0;font-family:inherit;
+      background:var(--evb,#F0F0F2);color:var(--evc,#3A3A3C);
+      border-radius:6px;padding:4px 9px;font-size:12.5px;font-weight:500;line-height:1.3;
+      cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .12s}
+  .ev:hover{filter:brightness(.95)}
+  .ev:focus-visible{outline:2px solid var(--wine);outline-offset:1px}
+  .ev.bast{background:#F0F0F2;color:#6E6E73;font-weight:400}
+  .camps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .cpill{display:flex;align-items:center;gap:7px;border:1px solid var(--hair);background:var(--paper);
+         border-radius:999px;padding:5px 14px 5px 10px;font-size:var(--fs-sm);color:var(--ink-soft)}
+  .cpill b{color:var(--ink);font-weight:600}
+  .cpill i{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal}
+  .star{color:var(--wine)} .warn{color:var(--warn)}
+  .kv{color:var(--ink-faint);font-weight:600;letter-spacing:.04em;font-size:.82em}
+
+  /* ---------- briefing ---------- */
+  .group{margin-bottom:72px;scroll-margin:80px}
+  .ghead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .gdot{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
+  .ghead h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.025em;color:var(--ink)}
+  .gcount,.gper{font-size:var(--fs-sm);color:var(--ink-faint)}
+  .gmeta{margin-left:auto;font-size:var(--fs-sm);font-weight:600;border-radius:999px;padding:4px 14px}
+  .gdesc{font-size:var(--fs-lg);color:var(--ink-soft);margin-bottom:22px;max-width:760px;line-height:1.55;letter-spacing:-.01em}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+
+  .bc{background:var(--paper);border:1px solid var(--hair);border-radius:18px;padding:20px 22px 22px;
+      display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,background .3s;scroll-margin:110px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .bc:hover{box-shadow:0 10px 30px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .bc:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+  .bc.target{background:var(--tint)}
+  .bc.target .fromcal{display:inline-flex}
+  .fromcal{display:none;align-items:center;gap:5px;align-self:flex-start;margin-bottom:9px;
+           font-size:var(--fs-sm);font-weight:600;color:#0071E3;
+           background:none;border:1px solid transparent;border-radius:999px;
+           padding:3px 10px 3px 7px;margin-left:-6px;cursor:pointer;font-family:inherit;
+           transition:background .15s,border-color .15s}
+  .fromcal:hover{background:var(--paper);border-color:var(--line)}
+  .fromcal:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+  @keyframes diaflash{0%,100%{background:var(--paper)}25%,60%{background:var(--tint)}}
+  .day.flash{animation:diaflash 1.3s ease-in-out}
+
+  .bhead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .bdate{font-size:var(--fs-sm);color:var(--ink-faint)}
+  .bdate b{color:var(--ink);font-weight:600}
+  .bc h3{font-size:19px;line-height:1.3;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
+  .fpill{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;
+         font-size:var(--fs-sm);color:var(--ink-soft);white-space:nowrap}
+  .fpill i{width:8px;height:8px;border-radius:50%;flex:none;font-style:normal}
+
+  .props{display:grid;grid-template-columns:max-content 1fr;column-gap:16px;row-gap:8px;align-items:baseline}
+  .pl{font-size:var(--fs-md);color:var(--ink-faint);white-space:nowrap}
+  .pv{font-size:var(--fs-md);color:var(--ink)}
+  .art{margin-top:14px;background:var(--tint);border-radius:14px;padding:14px 16px}
+  .art .al{font-size:var(--fs-sm);color:var(--ink-faint);margin-bottom:8px;font-weight:600;
+           text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+  .art dl{display:grid;grid-template-columns:max-content 1fr;column-gap:14px;row-gap:7px;margin:0}
+  .art dt{font-size:var(--fs-sm);color:var(--ink-faint);white-space:nowrap}
+  .art dd{font-size:var(--fs-md);color:var(--ink);margin:0;line-height:1.4;white-space:pre-line}
+  .art dd.big{font-weight:600}
+  .art .cpy{margin-top:10px;border:0;background:transparent;padding:0;
+            font:500 var(--fs-sm) var(--sans);color:#0071E3;cursor:pointer;text-decoration:none}
+  .art .cpy:hover{text-decoration:underline}
+
+  .ugc{margin-top:14px;border:1px solid var(--hair);border-radius:14px;overflow:hidden}
+  .ugc .uh{background:#1D1D1F;color:#F5F5F7;padding:9px 14px;font-size:var(--fs-sm);font-weight:600}
+  .ugc .ub{padding:12px 14px}
+  .ugc dl{display:grid;grid-template-columns:max-content 1fr;column-gap:14px;row-gap:8px;margin:0}
+  .ugc dt{font-size:var(--fs-sm);color:var(--ink-faint);white-space:nowrap}
+  .ugc dd{font-size:var(--fs-md);color:var(--ink);margin:0;line-height:1.45}
+  .ugc dd.hook{font-weight:600}
+  .ugc .cpy{margin:10px 0 0;border:0;background:transparent;padding:0;
+            font:500 var(--fs-sm) var(--sans);color:#0071E3;cursor:pointer}
+  .ugc .cpy:hover{text-decoration:underline}
+
+  .why{margin-top:14px;padding-top:13px;border-top:1px solid var(--hair);font-size:var(--fs-md);color:var(--ink-soft);line-height:1.55}
+  .wbox{margin-top:12px;background:#FFF7E0;border-radius:12px;padding:12px 14px;
+        font-size:var(--fs-md);color:#6B4A12;line-height:1.5}
+  .wbox b{color:#B25000;font-weight:600}
+
+  body.editando [data-e]{outline:1px dashed var(--line);outline-offset:3px;border-radius:3px;cursor:text;min-width:24px;display:inline-block}
+  body.editando [data-e]:hover{outline-color:var(--ink-soft);background:var(--tint)}
+  body.editando [data-e]:focus{outline:2px solid var(--wine);background:var(--paper)}
+  body.editando [data-vazio]{display:block!important;opacity:.55}
+  [data-vazio]{display:none}
+  [data-e].mudou{background:#FBF4E9;outline-color:var(--warn)}
+  .regra{margin-top:6px;font-size:var(--fs-sm);color:var(--warn);font-weight:500}
+
+  footer{padding:40px;font-size:var(--fs-sm);color:var(--ink-faint);max-width:1560px;margin:0 auto;
+         border-top:1px solid var(--hair);line-height:1.7;text-align:center}
+
+  @media (max-width:820px){
+    header,main{padding-left:18px;padding-right:18px}
+    footer{padding:32px 18px}
+    .hero{padding:44px 4px 36px}
+    .stats{grid-template-columns:1fr;gap:10px}
+    .cards{grid-template-columns:1fr}
+    .lg-note{margin-left:0;flex-basis:100%}
+    .navtitle{display:none}
+  }
+
+  /* ---------- acao de aniversario, vitrine bento ---------- */
+  .bento{max-width:1120px;margin:0 auto;padding:8px 4px 72px}
+  .b-eyebrow{text-align:center;font-size:var(--fs-lg);font-weight:600;color:#0071E3;margin-bottom:8px}
+  .b-title{text-align:center;font-size:clamp(34px,5.4vw,56px);line-height:1.06;letter-spacing:-.03em;font-weight:700;color:var(--ink)}
+  .b-sub{text-align:center;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);max-width:640px;margin:10px auto 36px;letter-spacing:-.01em}
+  .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .bcard{background:var(--tint);border-radius:24px;padding:30px 26px 26px;display:flex;flex-direction:column}
+  .bcard.dark{background:#1D1D1F;color:#F5F5F7}
+  .bcard .bk{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-faint);margin-bottom:16px}
+  .bcard.dark .bk{color:#86868B}
+  .bfree{font-size:clamp(26px,3vw,34px);font-weight:700;letter-spacing:-.025em;line-height:1.12}
+  .bfree span{display:block;background:linear-gradient(90deg,#2997FF,#5E5CE6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bnote{font-size:var(--fs-md);line-height:1.5;color:var(--ink-soft);margin-top:auto;padding-top:14px}
+  .bcard.dark .bnote{color:#A1A1A6}
+  .ladder{display:flex;gap:8px;align-items:stretch}
+  .ladder>div{flex:1;background:var(--paper);border-radius:14px;padding:15px 4px 12px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .lv{display:block;font-size:clamp(20px,2.4vw,28px);font-weight:700;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+  .lv.g2{background:linear-gradient(90deg,#0071E3,#2997FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lv.g3{background:linear-gradient(90deg,#5E5CE6,#BF5AF2);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ll{display:block;font-size:var(--fs-sm);color:var(--ink-faint);margin-top:4px}
+  .bchan{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .chcard{background:var(--paper);border:1px solid var(--hair);border-radius:20px;padding:22px 24px}
+  .chcard h4{font-size:var(--fs-lg);letter-spacing:-.015em;color:var(--ink);margin-bottom:3px}
+  .chcard .chw{font-size:var(--fs-sm);color:var(--ink-faint);margin-bottom:13px}
+  .chcard ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin:0;padding:0}
+  .chcard li{font-size:var(--fs-md);color:var(--ink);display:flex;gap:9px;align-items:baseline}
+  .chcard li::before{content:'\2713';font-weight:700;color:#34C759;flex:none}
+  .chcard li.off{color:var(--ink-faint)}
+  .chcard li.off::before{content:'\2014';color:var(--ink-faint);font-weight:400}
+  @media(max-width:820px){.bento{padding-bottom:48px}.bgrid,.bchan{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="navleft">
+      <span class="brand">Mira Vest</span>
+      <span class="navtitle">Plano de agosto</span>
+    </div>
+    <div class="hactions">
+      <div class="toggle">
+        <button id="btn-cal" class="on" type="button" aria-pressed="true">Calendário</button>
+        <button id="btn-brief" type="button" aria-pressed="false">Briefing</button>
+      </div>
+      <button id="btn-edit" class="ghost" type="button" aria-pressed="false">Editar</button>
+      <button id="btn-save" class="ghost primary" type="button" hidden>Baixar atualizado</button>
+    </div>
+  </div>
+  <div id="editbar" hidden>
+    <b>Modo edição.</b> Clique em qualquer texto para mudar. Ao terminar, clique em
+    <b>Baixar atualizado</b> e suba o arquivo no GitHub, senão as mudanças ficam só na sua tela.
+    <span id="editcount"></span>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <p class="eyebrow">Agosto 2026 · encerrado</p>
+  <h1 class="hero-t">Lançamento antecipado<span class="grad"> da Primavera/Verão.</span></h1>
+  <p class="hero-s">Três pulsos na base, a coleção nova aberta pro grupo antes do site, e preço cheio da metade do mês em diante.</p>
+  <div class="stats">
+    <div class="stat"><div class="sv">R$ 79,6 mil</div><div class="sl">faturado real<span>meta era R$ 80 mil · 99%</span></div></div>
+    <div class="stat"><div class="sv">R$ 440</div><div class="sl">ticket real<span>meta era R$ 390</span></div></div>
+    <div class="stat"><div class="sv">53</div><div class="sl">clientes novas<span>virou a meta de setembro: 86</span></div></div>
+  </div>
+</section>
+
+  <section id="view-cal" class="view on">
+    <div class="pre" id="pre"></div>
+    <div class="camps" id="camps"></div>
+    <div class="calwrap">
+      <div class="cal">
+        <div class="wdays"><div>Sáb</div><div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div></div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </div>
+  </section>
+  <section id="view-brief" class="view"><div id="groups"></div></section>
+</main>
+
+<footer>
+Clique em qualquer ação do calendário para abrir o briefing dela, já marcado.
+  <br>Mira Vest · Agosto de 2026. Desconto em peça cabe todo até o dia 16. Do dia 17 em diante a coleção nova é preço cheio, e o único benefício que segue é o Sedex 50% OFF.
+  <br>Números de venda pela Convertr, site pelo Google Analytics, estoque pelo relatório de grade.
+</footer>
+
+<script>
+const FUN = {
+  topo:  {label:'Topo · descoberta',    short:'Topo',     c:'#FF9F0A', bg:'#FFF3E0'},
+  meio:  {label:'Meio · consideração',  short:'Meio',     c:'#30D158', bg:'#E7F8EC'},
+  fundo: {label:'Fundo · conversão',    short:'Fundo',    c:'#0A84FF', bg:'#E6F1FF'},
+  ret:   {label:'Retenção · base',      short:'Retenção', c:'#BF5AF2', bg:'#F6EBFD'},
+  bast:  {label:'Antes de ir pro ar', short:'Preparação', c:'#8E8E93', bg:'#F0F0F2'}
+};
+
+const CAMPS = {
+  pulso1:    {ini:'2026-08-01', fim:'2026-08-02', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Pulso 1 · Evento de Dia dos Pais', per:'01 e 02/08 · 48h', meta:'Sáb no grupo, dom no site',
+    desc:'2 peças 20%, 3 peças 30%, 4 ou mais 40%. Sábado só no grupo, domingo abre no site.'},
+  pulso2:    {ini:'2026-08-05', fim:'2026-08-08', c:'#FF453A', bg:'#FFE5E3', ct:'#C2261C', name:'Pulso 2 · Cupom LOOK no inverno antigo', per:'05 a 08/08', meta:'Cupom LOOK, grupo e e-mail',
+    desc:'Cupom LOOK, 50% em qualquer peça da categoria de inverno antigo, de quarta a sexta, no grupo e por e-mail, mais um sábado pra quem não conseguiu.'},
+  pulso3:    {ini:'2026-08-10', fim:'2026-08-11', c:'#FFD60A', bg:'#FFF4C2', ct:'#8A6D00', name:'Pulso 3 · Outlet, preço único', per:'10 e 11/08 · 48h', meta:'Preço único, 48h no grupo',
+    desc:'Preço fixo por peça em 599 modelos, R$ 799 mil de etiqueta parados.'},
+  preview:   {ini:'2026-08-12', fim:'2026-08-15', c:'#64D2FF', bg:'#DFF3FF', ct:'#006C9E', name:'Teaser e coleção antecipada', per:'12 a 15/08', meta:'Preço cheio, o grupo vê antes',
+    desc:'Teaser no dia 12 e a coleção nova aberta pro grupo de 13 a 15, a preço cheio, com Sedex 50% OFF.'},
+  lancamento:{ini:'2026-08-17', fim:'2026-08-24', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'Lançamento da VR27', per:'17 a 24/08', meta:'Preço cheio + Sedex 50% OFF',
+    desc:'A coleção nova vai ao ar em todos os canais, com vídeo de criadora. Sem desconto na peça, só no frete, pelo cupom SEDEXMIRA.'},
+  base:      {ini:'2026-08-25', fim:'2026-08-31', c:'#0A84FF', bg:'#E3F0FF', ct:'#0057C2', name:'Fidelização + base para Black Friday', per:'25 a 31/08', meta:'Preço cheio',
+    desc:'A coleção segue vendendo e começa a captação pra novembro: quem compra e não está nos grupos, mais anúncio em 3 regiões pra encher um grupo novo.'},
+  cadencia:  {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Cadência VIP · Seg, Qua e Sex', per:'Mês todo', meta:'Teto de 3 por semana, por grupo',
+    desc:'Look na segunda, caimento na quarta, ação na sexta. Teto de 3 disparos por semana, por grupo. As semanas 2 e 3 rodam acima disso.'},
+  reativa:   {c:'#A2845E', bg:'#F2EBE3', ct:'#7A5C36', name:'Reserva no nome', per:'Antes de cada abertura', meta:'15 nomes por onda',
+    desc:'Mensagem à mão pra quem mais compra, separando até 3 peças no nome dela por 48 horas.'},
+  midia:     {c:'#5E5CE6', bg:'#E9E9FC', ct:'#4644B8', name:'Mídia contínua', per:'Mês todo · verba a definir', meta:'Verba e KPI fechados em reunião',
+    desc:'Estrutura fechada. Verba e meta saem em reunião.'},
+  bastidor:  {c:'#8E8E93', bg:'#F0F0F2', ct:'#6E6E73', name:'Antes de ir pro ar', per:'O que trava o go-live', meta:'',
+    desc:'Cadastro, cupom, página, preço, foto e UTM, prontos antes do dia da ação.'}
+};
+
+/*DADOS_INICIO*/
+const A = [
+{id:1, d:'2026-07-31', t:'', ch:'WhatsApp VIP', fmt:'Enquete com 4 cards de categoria', title:'Enquete: qual categoria abre amanhã', cta:'Vote na categoria', fun:'ret', camp:'pulso1', kv:true,
+ obj:'Fazer o grupo votar na véspera e já entender que no sábado o desconto sobe a cada peça que ela levar.', prod:'Requisitar os 4 cards de categoria com a designer até quarta, 29/07 (artes 6 a 9). Termos de pesquisa para referência: "card enquete moda whatsapp" e "grid de categorias moda feminina".',
+ copy:{logo:'Mira Vest',headline:'VOCÊ ESCOLHE O QUE ABRE AMANHÃ',subhead:'Casaco, casaqueto, tricô ou conjunto: a categoria mais votada abre sábado às 9h.',beneficio:'AMANHÃ, LEVAR MAIS DE UMA PEÇA VALE MAIS A PENA',body:'Vote no card da categoria que você quer ver primeiro. A mais votada abre amanhã às 9h aqui no grupo, antes do site. Já vá pensando no que falta no seu armário, porque a condição de amanhã melhora conforme você soma peças.',cta:'VOTE NA ENQUETE'},
+ jus:'Ninguém decide levar 4 peças às 9h por impulso. Se a véspera não preparar a quantidade, sábado vira compra de uma peça só e o progressivo não mexe no ticket.'},
+
+{id:2, d:'2026-08-01', t:'9h', ch:'WhatsApp VIP', fmt:'Card + fotos + link', title:'Pulso 1 começa: progressivo do Dia dos Pais', cta:'Ver os modelos', fun:'fundo', camp:'pulso1', kv:true,
+ obj:'Abrir o mês na data que mais vendeu no ano passado, com a peça chegando a tempo do almoço do dia 09.', prod:'Requisitar o card com a designer até quarta, 29/07 (arte 11). Os 41 conjuntos e a regra do progressivo entram no site até quinta, 30/07. Termos de pesquisa para referência: "kv desconto progressivo moda" e "card whatsapp oferta moda feminina".',
+ copy:{logo:'Mira Vest',headline:'CONJUNTO GANHOU A ENQUETE E ABRE HOJE',subhead:'É o que vocês votaram aqui no grupo. Pro almoço de domingo, dia 09.',oferta:'2 PEÇAS 20% · 3 PEÇAS 30% · 4 OU MAIS 40%',beneficio:'QUANTO MAIS VOCÊ LEVA, MENOS PAGA EM CADA PEÇA',body:'São 84 conjuntos, nas numerações que restaram. Conjunto sai pronto de casa e resolve o domingo sem você pensar em combinação. O desconto entra sozinho no carrinho, sem cupom, e o site inteiro está com o sedex pela metade do preço, sábado e domingo. A condição do progressivo vale sábado e domingo inteiros, e hoje ela é só aqui no grupo. Escolhendo agora, a peça chega antes do dia 09.',cta:'VER OS CONJUNTOS'},
+ jus:'R$ 499 de ticket na semana de 01 a 07/08 em 2025, o maior do ano. Não é data de presente: ela compra pra ela usar no almoço. Progressivo paga por peça a mais, não por peça mais barata, e o ticket está quebrado.', star:true},
+
+{id:63, d:'2026-08-01', t:'', ch:'Meta', fmt:'Vídeo comercial com imagens de peça, sem criadora', title:'Esquenta de Primavera/Verão no Meta', cta:'Entrar no Grupo VIP', fun:'topo', camp:'preview', kv:true,
+ obj:'Mostrar a Primavera/Verão pra quem ainda não conhece a loja, 16 dias antes do lançamento, e trazer essa gente pro grupo.', prod:'Requisitar a arte com a designer até quinta, 30/07. O vídeo sobe sexta, 31/07, montado com peça da 2026 que já tem foto. Termos de pesquisa para referência: "video comercial moda feminina 15s" e "teaser colecao nova moda".',
+ copy:{logo:'Mira Vest, grafite',headline:'A COLEÇÃO NOVA JÁ ESTÁ A CAMINHO',subhead:'Agosto ainda pede casaco, e o que vem entra junto com ele.',beneficio:'VOCÊ VÊ AS PRIMEIRAS PEÇAS ANTES DO SITE.',body:'São peças de tecido mais leve, de usar por baixo do casaco agora e sozinhas quando o dia abrir. Quem está no grupo acompanha a chegada desde as primeiras fotos. No site, elas aparecem depois.',cta:'ENTRAR NO GRUPO VIP'},
+ jus:'Público aquecido desde o dia 1º converte no dia 17. Se o criativo de lançamento só sobe no dia do lançamento, a campanha começa a aprendizagem do zero bem na hora que ela precisa estar madura.'},
+
+{id:4, d:'2026-08-02', t:'', ch:'Site', fmt:'Banner do site, desktop e mobile', title:'Dia dos Pais no site, com o progressivo', cta:'Ver a seleção', fun:'meio', camp:'pulso1', kv:true,
+ obj:'Fazer o domingo vender pra quem não está no grupo, com a mesma condição que o grupo teve no sábado.', prod:'Requisitar o banner com a designer até quarta, 29/07 (arte 4). Termos de pesquisa para referência: "hero banner ecommerce moda feminina" e "banner desconto progressivo loja".',
+ copy:{logo:'Mira Vest, grafite',headline:'CONJUNTOS PARA O ALMOÇO DE DOMINGO',subhead:'A seleção de Dia dos Pais, para o almoço do dia 09.',oferta:'2 PEÇAS 20% · 3 PEÇAS 30% · 4 OU MAIS 40%',beneficio:'CADA PEÇA A MAIS DEIXA O PEDIDO INTEIRO MAIS BARATO',body:'São 84 conjuntos. Conjunto sai pronto de casa e resolve o domingo sem precisar de mais nada. A condição vale só hoje. O sedex sai pela metade do preço no site inteiro, sábado e domingo. Cada peça está nas numerações restantes, informadas na página do produto.',cta:'VER A SELEÇÃO'},
+ jus:'O grupo abriu no sábado às 9h e o site abre no domingo com a mesma condição. O grupo continua ganhando por chegar antes, e o domingo pega quem não está em grupo nenhum.'},
+
+{id:5, d:'2026-08-02', t:'', ch:'Meta', fmt:'Estático 1080x1350 + story', title:'Dia dos Pais no Meta, pra público frio', cta:'Ver os modelos', fun:'topo', camp:'pulso1', kv:true,
+ obj:'Levar quem ainda não conhece a loja pra categoria de Dia dos Pais, que é a que abre o mês.', prod:'Requisitar a arte do anúncio e o story com a designer até quarta, 29/07 (arte 5). Termos de pesquisa para referência: "anuncio estatico moda feminina instagram" e "story moda feminina elegante".',
+ copy:{logo:'Mira Vest, monograma dourado',headline:'O CONJUNTO QUE RESOLVE O DOMINGO',subhead:'Do almoço em família ao café da tarde, sem trocar de roupa no meio do dia.',beneficio:'SAI PRONTO DE CASA, SEM PENSAR EM COMBINAÇÃO.',body:'Conjuntos para os domingos de agosto, com as duas peças pensadas juntas. Sedex pela metade do preço no site inteiro neste fim de semana. Cada modelo está disponível apenas nas numerações restantes, informadas na página da peça.',cta:'VER OS MODELOS'},
+ jus:'10,61 de retorno na plataforma foi o campeão de julho, e era estático de peça em uso, não vídeo. O criativo repete o formato que ganhou.'},
+
+{id:45, d:'2026-08-03', t:'', ch:'Meta', fmt:'Vídeo UGC já existente, só para anúncio no Meta', title:'Vídeo UGC no Meta, falando de produto', cta:'Ver o modelo', fun:'meio', camp:'pulso1', kv:true,
+ obj:'Vender uma peça da abertura no Meta, com a criadora falando a ficha dela.', prod:'Selecionar o vídeo, criar a copy e o CTA até domingo, 02/08.',
+ ugc:{produto:'A escolher, dentro dos agasalhos que abrem o mês',tipo:'Vídeo UGC que já existe, com a criadora falando do produto e mostrando o detalhe da peça'},
+ jus:'A semana de maior ticket do ano leva vídeo de produto, não conteúdo de estilo. De 100 que veem uma peça, só 5,7 põem no carrinho, e ela desiste na ficha do produto.'},
+
+{id:9, d:'2026-08-05', t:'11h', ch:'WhatsApp VIP', fmt:'Card + link', title:'Pulso 2 começa: cupom LOOK no inverno antigo', cta:'Ver a categoria', fun:'fundo', camp:'pulso2', kv:true,
+ obj:'Girar o que sobrou do inverno antigo com 50% em qualquer peça da categoria.', prod:'Requisitar o card com a designer até segunda, 03/08. O cupom LOOK e a categoria entram no site até terça, 04/08. Termos de pesquisa para referência: "kv cupom de desconto moda" e "card whatsapp cupom loja roupa".',
+ copy:{logo:'Mira Vest',headline:'A TERCEIRA PEÇA QUE FALTA NO SEU INVERNO',subhead:'Casacos, casaquetos e tricôs do inverno passado, nas numerações que ainda existem.',oferta:'CUPOM LOOK: 50% EM QUALQUER PEÇA',beneficio:'A PEÇA QUE VOCÊ PÕE POR CIMA DO QUE JÁ TEM',body:'Escolha as peças, digite LOOK no campo do cupom e o desconto entra antes de você fechar o carrinho. Vale de hoje até as 22h de sexta. Aqui no Sul agosto ainda pede casaco, e é isso que está nessa categoria.',cta:'VER A CATEGORIA AQUI'},
+ jus:'O objetivo aqui é girar estoque parado, não subir ticket. Por isso 50% direto em qualquer peça, sem regra de quantidade: regra a mais só atrasa a saída. O nome LOOK vem da seleção, que é de casaco e terceira peça, o que ela põe por cima do que já tem no armário.', star:true},
+
+{id:67, d:'2026-08-05', t:'', ch:'Site', fmt:'Banner do site, desktop e mobile', title:'Categoria de inverno antigo no site, onde o cupom entra', cta:'Ver as peças de inverno', fun:'meio', camp:'pulso2', kv:true,
+ obj:'Ter a categoria pronta no site antes do pulso abrir. É nela que o cupom LOOK é digitado, venha a cliente do grupo, do e-mail ou do anúncio.', prod:'Requisitar o banner com a designer até segunda, 03/08. A categoria de inverno antigo entra no site até terça, 04/08. Termos de pesquisa para referência: "banner categoria inverno ecommerce" e "hero site moda inverno feminino".',
+ copy:{logo:'Mira Vest, grafite',headline:'AGOSTO NO SUL AINDA PEDE CASACO',subhead:'A categoria de inverno segue no ar, nas numerações que ainda existem.',beneficio:'PEÇAS QUE COMBINAM ENTRE SI.',body:'Casacos, tricôs, calças e conjuntos que fecham o look sem precisar de mais nada. Cada modelo está disponível apenas nas numerações restantes, informadas na página do produto.',cta:'VER AS PEÇAS DE INVERNO'},
+ jus:'É a página única do pulso 2. O disparo do grupo, o e-mail e o anúncio caem todos aqui, e ela aplica o cupom no carrinho.'},
+
+{id:10, d:'2026-08-05', t:'11h', ch:'E-mail (RD)', fmt:'E-mail 1 · base completa', title:'Pulso 2 por e-mail, com o mesmo cupom LOOK', cta:'Ver as peças de inverno', fun:'meio', camp:'pulso2', kv:true,
+ obj:'Levar o cupom LOOK pra base inteira de e-mail, com a mesma condição que o grupo recebeu.', prod:'Programar o envio até terça, 04/08, com o cupom já cadastrado (b5). Termos de pesquisa para referência: "email marketing moda feminina layout" e "newsletter loja de roupa cupom".',
+ copy:{logo:'Mira Vest, grafite',headline:'AGOSTO NO SUL AINDA PEDE CASACO',subhead:'A categoria de inverno segue no ar, nas numerações que ainda existem.',oferta:'CUPOM LOOK: 50% EM QUALQUER PEÇA',beneficio:'A PEÇA QUE VOCÊ PÕE POR CIMA DO QUE JÁ TEM',body:'São casacos, casaquetos e tricôs de inverno, cada modelo com as numerações restantes informadas na página. Escolha as peças, digite LOOK no campo do cupom e o desconto entra antes de você fechar o carrinho. Vale até as 22h de sexta.',cta:'VER AS PEÇAS DE INVERNO'},
+ jus:'Único envio do mês para a base completa. A condição é a mesma do grupo, então quem não está no WhatsApp também compra na janela.'},
+
+{id:46, d:'2026-08-06', t:'', ch:'Meta', fmt:'Vídeo UGC já existente, só para anúncio no Meta', title:'Vídeo UGC no Meta, peça do inverno antigo', cta:'Ver o modelo', fun:'fundo', camp:'pulso2', kv:true,
+ obj:'Tirar a dúvida de caimento de quem vê o anúncio no Meta, mostrando a peça no corpo da criadora.', prod:'Selecionar o vídeo, criar a copy e o CTA até terça, 04/08.',
+ ugc:{produto:'A escolher, dentro da categoria de inverno antigo',tipo:'Vídeo UGC que já existe, com a criadora falando do produto e mostrando o detalhe da peça'},
+ jus:'De 100 que veem uma peça, 5,7 põem no carrinho, e ela trava no caimento. Na semana do cupom LOOK vale mais o vídeo que mostra a peça por cima de outra, porque a categoria é de casaco e terceira peça.'},
+
+{id:12, d:'2026-08-07', t:'', ch:'Meta + WhatsApp VIP', fmt:'Montagem de look, várias imagens', title:'Fotos de look montado, vão no disparo de sexta', cta:'Ver a seleção', fun:'meio', camp:'pulso2', kv:true,
+ obj:'Mostrar o look montado inteiro no Meta e no grupo, no último dia do cupom LOOK.', prod:'Requisitar a montagem com a designer até quarta, 05/08. Termos de pesquisa para referência: "look montado kv" e "flat lay look inverno feminino".',
+ jus:'A categoria é de casaco e terceira peça, então a imagem tem que mostrar a peça por cima de outra, não avulsa em fundo branco. O cupom é 50% em qualquer peça e ela decide se leva mais de uma, por isso a montagem mostra como fica.'},
+
+{id:13, d:'2026-08-07', t:'10h30', ch:'WhatsApp VIP', fmt:'Foto de look + link', title:'Pulso 2 último dia: cupom LOOK até 22h', cta:'Ver o look completo', fun:'fundo', camp:'pulso2', kv:true,
+ obj:'Fazer quem já levou uma peça na semana voltar na sexta, antes das 22h, quando o cupom LOOK sai do ar.', prod:'Requisitar a foto de look com a designer até quinta, 06/08. O disparo leva junto a montagem do id 12. Termos de pesquisa para referência: "foto look completo moda feminina" e "look do dia mulher 40 anos".',
+ copy:{logo:'Mira Vest',headline:'FALTA UMA PEÇA PRO SEU LOOK FECHAR',subhead:'Casaco, tricô e calça: esse look saiu inteiro da categoria de inverno.',oferta:'CUPOM LOOK: 50% EM QUALQUER PEÇA · ATÉ AS 22H DE HOJE',beneficio:'O MESMO DESCONTO, LEVANDO UMA OU LEVANDO TRÊS',body:'Se você levou uma peça na quarta, hoje o conjunto fecha: digite LOOK no campo do cupom antes de finalizar o carrinho. O cupom sai do ar às 22h de hoje.',cta:'VER O LOOK COMPLETO'},
+ jus:'R$ 3.797 por dia na sexta, o maior da semana. Quem comprou na quarta já provou que gosta da categoria, então na sexta o argumento é a peça que falta, não o desconto de novo.'},
+
+{id:15, d:'2026-08-08', t:'9h', ch:'WhatsApp VIP', fmt:'Card + link', title:'Cupom LOOK reabre, um sábado só', cta:'Escolher as peças', fun:'fundo', camp:'pulso2',
+ obj:'Dar mais um sábado pra quem não conseguiu escolher na semana, com o cupom LOOK valendo só nesse dia.', prod:'A designer reaproveita o card de quarta e troca a faixa de horário.',
+ copy:{logo:'Mira Vest',headline:'MAIS UM SÁBADO PRA ESCOLHER COM CALMA',subhead:'O cupom LOOK voltou, na mesma categoria de inverno da semana.',oferta:'CUPOM LOOK: 50% EM QUALQUER PEÇA · SÓ HOJE, ATÉ AS 22H',beneficio:'DÁ TEMPO DE FECHAR O LOOK QUE VOCÊ DEIXOU PENSANDO',body:'É o mesmo de quarta: digite LOOK no campo do cupom antes de fechar o carrinho. Às 22h ele sai do ar e a categoria continua no site pelo preço de sempre.',cta:'ESCOLHER AS PEÇAS AQUI'},
+ jus:'A janela curta só funciona se o prazo for real e cumprido. Um sábado contra os três dias da semana encurta de verdade, e ainda limpa a categoria antes do outlet abrir na segunda.'},
+
+{id:60, d:'2026-08-09', t:'', ch:'Google', fmt:'Search e Shopping', title:'Google começa a aquecer busca de primavera', cta:'', fun:'topo', camp:'preview',
+ obj:'Fazer a loja aparecer pra quem já procura roupa de primavera no Google, 8 dias antes do lançamento público.', prod:'Os termos de busca e os grupos de anúncio ficam prontos até sábado, 08/08.',
+ jus:'Search converte 1,73% contra 0,25% do Meta. Se a busca começar antes do lançamento, no dia 17 a campanha já está madura em vez de começar do zero.'},
+
+{id:17, d:'2026-08-10', t:'10h30', ch:'WhatsApp VIP', fmt:'Card + link do outlet', title:'Pulso 3 começa: outlet com preço único', cta:'Abrir o outlet', fun:'fundo', camp:'pulso3', kv:true,
+ obj:'Vender pro grupo, em 48 horas, os 599 modelos que só têm poucos tamanhos.', prod:'Requisitar o card com a designer até quinta, 06/08. O preço único entra no site até domingo, 09/08. Termos de pesquisa para referência: "kv preco unico moda" e "card outlet preco fixo loja".',
+ copy:{logo:'Mira Vest',headline:'O OUTLET ABRE HOJE, SÓ NO GRUPO',subhead:'599 modelos nas últimas numerações, hoje e amanhã.',oferta:'PREÇO ÚNICO DE R$ [confirmar] POR PEÇA',beneficio:'O MESMO VALOR EM QUALQUER PEÇA, DA MALHA AO CASACO',body:'Abre agora e fecha amanhã à noite, só aqui no grupo. Tem tricô pra usar com jeans, casaqueto que resolve o compromisso da tarde e conjunto que já sai pronto de casa. O link mostra o que ainda existe no seu número.',cta:'ABRIR O OUTLET AQUI'},
+ jus:'599 modelos, R$ 799 mil de etiqueta parados. Preço fixo é mais rápido de cadastrar que régua por peça, e com o outlet público a peça tem onde ficar, sem depender de um evento fechado toda vez.', star:true},
+
+{id:61, d:'2026-08-10', t:'', ch:'Meta', fmt:'Estático, catálogo por categoria', title:'Outlet no Meta: entraram peças novas', cta:'Ver o outlet', fun:'topo', camp:'pulso3', kv:true,
+ obj:'Levar quem vê o anúncio no Meta pro outlet, mostrando que entraram peças novas.', prod:'Requisitar a arte do catálogo com a designer até sexta, 07/08. Termos de pesquisa para referência: "anuncio catalogo moda meta ads" e "grid de produtos outlet moda".',
+ copy:{logo:'Mira Vest, grafite',headline:'ENTRARAM PEÇAS NOVAS NO OUTLET',subhead:'Tricôs, casaquetos, conjuntos e casacos que saíram de coleção e continuam vestindo bem.',beneficio:'PEÇA DE COLEÇÃO, PREÇO DE OUTLET',body:'As peças estão separadas por categoria e por numeração, com o preço de cada uma na própria página. Cada modelo sai nas numerações que restaram, e o filtro por numeração mostra só o que serve em você.',cta:'VER O OUTLET'},
+ jus:'Outlet em catálogo estruturado fez ROAS 9,6 na conta, outlet com porcentagem gritada fez 1,70. Por isso o ângulo é peça nova entrando.'},
+
+{id:68, d:'2026-08-11', t:'10h30', ch:'WhatsApp VIP', fmt:'Card + link', title:'Pulso 3 último dia: preço único até 22h', cta:'Ver as peças', fun:'fundo', camp:'pulso3',
+ obj:'Fazer quem deixou peça na lista na segunda voltar e fechar a compra antes das 22h, quando as 48 horas acabam.', prod:'A designer reaproveita o card de segunda e troca a faixa de horário.',
+ copy:{logo:'Mira Vest',headline:'A LISTA DE ONTEM FECHA HOJE',subhead:'Último dia do preço único nos 599 modelos do outlet.',oferta:'PREÇO ÚNICO DE R$ [confirmar] POR PEÇA, SÓ HOJE',beneficio:'VOCÊ ESCOLHE PELO MODELO, NÃO PELO PREÇO',body:'Se ficou peça na sua lista de ontem, é hoje que ela sai por esse valor. As numerações são as que restaram de cada modelo, dá pra ver o seu número direto no link. Depois de hoje o outlet continua no ar, com o preço normal dele.',cta:'VER AS PEÇAS AQUI'},
+ jus:'Preço único tira a comparação de preço, ela só escolhe a peça e decide mais rápido. No segundo dia fecha quem hesitou na segunda.'},
+
+{id:31, d:'2026-08-11', t:'', ch:'Meta', fmt:'Vídeo UGC já existente, só para anúncio no Meta', title:'Vídeo UGC no Meta, peça do outlet', cta:'Ver o modelo', fun:'meio', camp:'pulso3', kv:true,
+ obj:'Vender uma peça do outlet pra quem vê anúncio no Meta, com a criadora falando a ficha dela.', prod:'Selecionar o vídeo, criar a copy e o CTA até domingo, 09/08.',
+ ugc:{produto:'A escolher, dentro dos 599 modelos do outlet',tipo:'Vídeo UGC que já existe, com a criadora falando do produto e mostrando o detalhe da peça'},
+ jus:'Vídeo de criadora aqui vende produto. Não é conteúdo de estilo, a fala tem que passar a ficha da peça.'},
+
+{id:62, d:'2026-08-12', t:'11h', ch:'WhatsApp VIP', fmt:'Texto + fotos de bastidor', title:'Teaser da coleção nova, só no grupo', cta:'Nada de link, o aviso é o próprio grupo', fun:'ret', camp:'preview', kv:true,
+ obj:'Avisar o grupo que amanhã ele vê a coleção nova antes do site, sem mostrar as peças hoje.', prod:'As fotos de bastidor saem na loja, na véspera, e vão junto com o texto. Termos de pesquisa para referência: "bastidor loja de roupa instagram" e "teaser colecao arara loja".',
+ copy:{headline:'AMANHÃ VOCÊ VÊ ANTES DO SITE',subhead:'Um pedaço do bastidor da Primavera/Verão, sem estragar a surpresa.',beneficio:'O GRUPO ESCOLHE PRIMEIRO, COM A GRADE INTEIRA.',body:'Hoje eu só mostro o bastidor: a caixa chegando, a cor separada em cima da mesa, a arara sendo montada. Amanhã, às 10h30, a coleção nova abre aqui no grupo com link fechado, antes do site. Deixa o celular por perto, o aviso vem por aqui.',cta:'AMANHÃ ÀS 10H30, AQUI'},
+ jus:'O teaser marca hora e faz a abertura de quinta chegar esperada. É a vantagem visível de estar no grupo.'},
+
+{id:48, d:'2026-08-12', t:'noite', ch:'WhatsApp 1:1', fmt:'Mensagem pessoal, 15 nomes', title:'Reserva no nome: 15 mensagens à mão', cta:'Me diz o seu número', fun:'ret', camp:'reativa',
+ obj:'Fazer 15 clientes que pararam de comprar voltarem, com o tamanho delas guardado no nome antes de a peça acabar.', prod:'A lista sai da API terça, 11/08, ordenada por quanto cada cliente já comprou. As 15 mensagens vão à mão, uma por nome.',
+ copy:{headline:'EU SEPARO O SEU NÚMERO ANTES',subhead:'Oi, [nome]! Amanhã a coleção nova abre aqui no grupo, antes do site.',beneficio:'ATÉ 3 PEÇAS SEPARADAS NO SEU NOME',body:'Me diz o seu número e o que você procura. Eu separo antes de abrir e seguro por 48 horas, sem compromisso de fechar na hora.'},
+ jus:'Quem gastou acima de R$ 3.000 e parou, parou porque abre o link e o tamanho já foi. Reserva resolve isso sem ceder margem.'},
+
+{id:23, d:'2026-08-13', t:'10h30', ch:'WhatsApp VIP', fmt:'Card + fotos + link fechado', title:'Coleção antecipada abre, só no grupo (13 a 15)', cta:'Ver a coleção', fun:'fundo', camp:'preview', kv:true,
+ obj:'Deixar o grupo comprar a coleção nova de 13 a 15, quatro dias antes do site e a preço cheio.', prod:'As fotos da coleção ficam prontas até segunda, 10/08. Requisitar o card com a designer, e link fechado e cupom de sedex entram até quarta, 12/08. Termos de pesquisa para referência: "kv lancamento colecao moda" e "card whatsapp acesso antecipado".',
+ copy:{logo:'Mira Vest',headline:'A COLEÇÃO NOVA ABRE AQUI ANTES DO SITE',subhead:'Hoje, sexta e sábado, a Primavera/Verão só pro grupo.',oferta:'SEDEX PELA METADE',beneficio:'ESCOLHER PRIMEIRO, COM A GRADE INTEIRA NA SUA FRENTE',body:'Não tem desconto na peça, e isso é de propósito: coleção nova entra a preço cheio, aqui e no site. O que muda pra você é o tempo: você escolhe agora, com a grade completa, e o Sedex sai com 50% OFF. O link é fechado e fica só no grupo. Na segunda a coleção abre pro site.',cta:'VER A COLEÇÃO NOVA'},
+ jus:'O benefício do grupo aqui é acesso e frete, sem desconto na peça. Assim a coleção nova entra valendo o preço dela e o grupo continua valendo a pena depois que os pulsos acabam.', star:true},
+
+{id:69, d:'2026-08-13', t:'', ch:'Site', fmt:'Faixa de frete na página da coleção', title:'Sedex 50% OFF entra na página da coleção nova', cta:'Ver as peças', fun:'fundo', camp:'preview', kv:true,
+ obj:'Fazer quem está fechando a compra ver o Sedex 50% OFF na página da coleção, com a peça a preço cheio.', prod:'Requisitar a faixa de frete com a designer até quarta, 12/08. O cupom de sedex entra na mesma data (b10). Termos de pesquisa para referência: "faixa de frete ecommerce" e "banner frete promocional loja".',
+ copy:{headline:'O FRETE DA COLEÇÃO NOVA',subhead:'Vale nas peças de Primavera/Verão, escolhendo Sedex no fechamento do pedido.',oferta:'SEDEX 50% OFF',beneficio:'VOCÊ RECEBE RÁPIDO SEM PAGAR O SEDEX INTEIRO',body:'Escolha o Sedex na hora de fechar o pedido e o frete sai pela metade. O desconto é no frete, a peça segue a preço cheio. O prazo aparece com o seu CEP antes de você confirmar.',cta:'VER AS PEÇAS'},
+ jus:'O frete é a última coisa que ela pesa, e o benefício do grupo tem que aparecer aí, já que na peça não tem desconto nenhum pra mostrar.'},
+
+{id:47, d:'2026-08-01', t:'', ch:'Meta', fmt:'Catálogo, público de compradoras', title:'Remarketing no Meta: anúncio pra quem já comprou', cta:'Ver a peça', fun:'ret', camp:'midia', kv:true,
+ obj:'Mostrar anúncio do catálogo todos os 31 dias de agosto pra quem já comprou na loja, gastando pouco por dia.', prod:'Requisitar a arte com a designer até quinta, 30/07. O anúncio sobe sábado, 01/08, junto com a otimização de preço. Termos de pesquisa para referência: "anuncio catalogo dinamico moda" e "meta advantage catalogo loja de roupa".',
+ copy:{logo:'Mira Vest, grafite',headline:'VOCÊ JÁ CONHECE O CAIMENTO',subhead:'Coleção 2026 no ar, com uma nova peça em destaque toda semana.',beneficio:'ESCOLHER A PRÓXIMA FICA MAIS FÁCIL',body:'Alfaiataria, tricôs e vestidos com as medidas de cada modelo na página. Você compara com a peça que já tem e define sua numeração com mais segurança.',cta:'VER A PEÇA'},
+ jus:'Compradoras dos últimos 24 meses com mais de R$ 1.000 acumulados, tirando quem comprou nos últimos 15 dias. Catálogo converte quem já conhece a marca.'},
+
+{id:27, d:'2026-08-17', t:'10h30', ch:'Grupo VIP + site + Meta + Google + e-mail + bio', fmt:'Vídeo de criadora apresentando a coleção', title:'Lançamento geral da VR27', cta:'Ver a coleção', fun:'fundo', camp:'lancamento', kv:true,
+ obj:'Colocar a coleção de Primavera/Verão no ar em todos os canais no dia 17, a preço cheio, com o Sedex 50% OFF como único benefício.', prod:'Fechar a escolha das peças do vídeo. Requisitar banner e artes com a designer até quinta, 13/08. A coleção sobe no site até domingo, 16/08. Termos de pesquisa para referência: "kv lancamento primavera verao moda" e "campanha colecao nova banner site".',
+ copy:{logo:'Mira Vest, grafite',headline:'A PRIMAVERA/VERÃO ENTRA HOJE NO SITE',subhead:'Na semana de estreia, o Sedex sai com 50% OFF.',beneficio:'A GRADE INTEIRA NO AR E O FRETE PESANDO MENOS',body:'O Grupo VIP viu essas peças na quinta. Hoje elas entram no site com a grade inteira, e o vídeo mostra como cada uma se mexe: sentando, levantando e andando. São vestidos, alfaiataria leve e tricô de meia estação, de usar por baixo do casaco agora e sozinhos quando o dia abrir. A peça entra a preço cheio, o desconto é no frete: escolhendo Sedex no fechamento do pedido, ele sai com 50% OFF. As numerações de cada modelo estão na página do produto.',cta:'VER A PRIMAVERA/VERÃO'},
+ jus:'Quatro dias depois do grupo. Quem estava na abertura antecipada já viu, e a mensagem do dia reconhece isso em vez de fingir que é novidade pra todo mundo.', star:true},
+
+{id:74, d:'2026-08-18', t:'10h30', ch:'WhatsApp VIP', fmt:'Mensagem de texto, sem arte', title:'Reforço do lançamento no grupo, só texto', cta:'Ver a coleção', fun:'fundo', camp:'lancamento',
+ obj:'Pegar no dia seguinte quem não abriu o vídeo de ontem, com uma mensagem que não parece anúncio.', prod:'Não tem arte, só texto escrito na hora.',
+ copy:{headline:'ONTEM A PRIMAVERA/VERÃO ABRIU NO SITE',subhead:'Aqui no grupo vocês já estavam com ela desde quinta. 💛',oferta:'SEDEX COM 50% OFF',beneficio:'A GRADE INTEIRA, COM TODAS AS NUMERAÇÕES NO AR',body:'Se você ainda não escolheu a sua, hoje é um bom dia pra olhar com calma: a grade está inteira, com todas as numerações no ar.\n\nA combinação que eu mais gosto dessa coleção é o vestido de manga curta com o casaqueto por cima. De manhã aqui no Sul ainda está frio, e à tarde você tira o casaqueto e o vestido resolve sozinho, do trabalho ao jantar.\n\nA peça é preço cheio, aqui e no site. O que muda pra você é o frete: *escolhendo Sedex no fechamento do pedido, ele sai com 50% OFF*.\n\nSe quiser conferir numeração, me chama aqui que eu vejo pra você.\n\n👉 [link da coleção]',cta:'ABRIR O LINK DA COLEÇÃO'},
+ jus:'O disparo de ontem foi vídeo. Quem não parou pra assistir abre um texto curto, e no dia seguinte a coleção ainda é assunto novo.'},
+
+{id:29, d:'2026-08-19', t:'11h', ch:'WhatsApp VIP', fmt:'Vídeo tradicional editado ou de criadora', title:'Prova de caimento no grupo: peça da VR27', cta:'Ver no site', fun:'meio', camp:'cadencia', kv:true,
+ obj:'Mostrar no grupo como veste a peça que acabou de chegar, pra tirar a dúvida de caimento antes da compra.', prod:'Fechar a escolha da peça e do formato. O vídeo é gravado em lote até segunda, 17/08.',
+ copy:{logo:'Mira Vest',headline:'ESSA PEÇA PARADA NA FOTO NÃO CONTA TUDO',subhead:'Um vídeo curto com ela em movimento, do jeito que veste de verdade.',oferta:'SEDEX COM 50% OFF',beneficio:'MENOS DÚVIDA NA HORA DE ESCOLHER A SUA NUMERAÇÃO',body:'Separamos essa pra hoje. Repara no vídeo: o tecido quando ela senta e levanta, a manga quando ela ergue o braço e o comprimento quando ela anda. É isso que a foto parada não conta. Serve pro compromisso da tarde e segue pro jantar, trocando só o sapato. A peça é preço cheio, e o 50% OFF é no Sedex, não na roupa. Se ficar dúvida de numeração, me chama aqui que eu confiro com você.',cta:'VER ESSA PEÇA NO SITE'},
+ jus:'De 100 que veem uma peça, 5,7 põem no carrinho, e caimento é o que trava. Peça nova sem prova de caimento vende menos ainda, porque ninguém tem referência dela.'},
+
+{id:75, d:'2026-08-20', t:'', ch:'E-mail (RD)', fmt:'E-mail 2 · base completa', title:'E-mail da VR27 pra base, com o SEDEXMIRA', cta:'Ver a coleção', fun:'meio', camp:'lancamento', kv:true,
+ obj:'Levar a coleção nova pra base inteira de e-mail e dar o cupom de frete pra tirar a última objeção.', prod:'Programar o envio até quarta, 19/08, com os cupons já criados (b13). Termos de pesquisa para referência: "email lancamento colecao moda" e "newsletter colecao nova layout".',
+ copy:{logo:'Mira Vest, grafite',headline:'A PRIMAVERA/VERÃO JÁ ESTÁ NO SITE',subhead:'Vestidos, alfaiataria leve e tricô de meia estação, com a grade no ar desde segunda.',oferta:'SEDEX 50% OFF · CUPOM SEDEXMIRA',beneficio:'A ENTREGA RÁPIDA PESA MENOS NA SUA CONTA',body:'São peças de tecido mais leve, que combinam com o casaco que você ainda está usando agora em agosto. A coleção nova entra a preço cheio. O que muda é o frete: digite SEDEXMIRA no campo do cupom e escolha Sedex no fechamento do pedido, que ele sai com 50% OFF. O desconto é no frete, a peça segue pelo preço dela. As numerações de cada modelo estão na página do produto.',cta:'VER A COLEÇÃO NOVA'},
+ jus:'A base de e-mail não recebe o disparo do grupo e chega no lançamento três dias depois. O frete é o argumento que sobra, porque a peça é preço cheio.'},
+
+{id:76, d:'2026-08-20', t:'noite', ch:'WhatsApp 1:1', fmt:'Mensagem pessoal, melhores clientes do RFM', title:'Condição especial 1:1 pras melhores do RFM', cta:'Me diz qual você prefere', fun:'ret', camp:'lancamento',
+ obj:'Tratar as melhores clientes por nome e deixar ela escolher entre frete grátis e meio Sedex.', prod:'Puxar o recorte de RFM até quarta, 19/08, e mandar uma por uma.',
+ copy:{headline:'VOCÊ ESCOLHE COMO QUER RECEBER',subhead:'Oi, [nome]! A coleção de Primavera/Verão está no ar e eu separei duas condições de frete pra você.',oferta:'FRETE GRÁTIS OU SEDEX COM 50% OFF',beneficio:'VOCÊ ESCOLHE ENTRE NÃO PAGAR FRETE OU RECEBER ANTES',body:'São duas e você usa uma, não dá pra somar as duas no mesmo pedido. FRETEGRATIS zera o frete no envio comum, que resolve bem se você não tem pressa. SEDEXMIRA deixa o Sedex com 50% OFF, e é o que chega mais rápido. Nos dois casos o desconto é no frete, a peça segue pelo preço dela, porque coleção nova é preço cheio. Me diz qual das duas você prefere que eu mando o link com o cupom já escrito. Se quiser, eu confiro a sua numeração antes de você fechar.',cta:'ME DIZ QUAL DAS DUAS VOCÊ PREFERE'},
+ jus:'Quem mais compra precisa de tratamento, mais do que de desconto na peça. Deixar ela escolher a condição faz a mensagem virar conversa.'},
+
+{id:64, d:'2026-08-21', t:'10h30', ch:'WhatsApp VIP', fmt:'Fotos de produto com preço + link', title:'Curadoria de peça e preço da VR27, no grupo', cta:'Ver o look completo', fun:'meio', camp:'lancamento', kv:true,
+ obj:'Fazer o grupo levar mais de uma peça por pedido na primeira semana da coleção nova.', prod:'Requisitar as fotos com preço à designer até quinta, 20/08. Termos de pesquisa para referência: "card de produto com preco whatsapp" e "catalogo moda preco na foto".',
+ copy:{logo:'Mira Vest',headline:'PEÇA E PREÇO NA SUA FRENTE',subhead:'Escolhi da Primavera/Verão o que combina entre si, cada uma com o preço na foto.',oferta:'SEDEX 50% OFF · CUPOM SEDEXMIRA',beneficio:'DUAS PEÇAS QUE COMBINAM RESOLVEM A SEMANA INTEIRA',body:'Mandei foto por foto com o preço embaixo, pra você ver sem precisar abrir nada.\n\nA calça de alfaiataria leve fecha com a blusa e vira look de trabalho. Trocando a blusa pelo tricô, a mesma calça sai pro fim de semana. O vestido resolve o dia sozinho, é só mudar o sapato e o brinco.\n\n👉 O link de cada peça vai logo abaixo da foto dela. No fechamento do pedido, digite *SEDEXMIRA* e o Sedex sai com 50% OFF. O desconto é no frete, a peça segue pelo preço que está na foto.\n\nDúvida de numeração, me chama aqui que eu confiro pra você.',cta:'VER A PEÇA DA FOTO'},
+ jus:'59% dos pedidos levam 2 ou mais peças. O grupo pede peça com preço na frente, e na semana de lançamento só o frete puxa venda, porque desconto na peça não tem.'},
+
+{id:77, d:'2026-08-23', t:'', ch:'Site', fmt:'Popup com cronômetro', title:'Popup do Sedex entra no site, sai dia 24', cta:'Ver a coleção', fun:'fundo', camp:'lancamento', kv:true,
+ obj:'Empurrar a decisão de quem está olhando a coleção no domingo, que é quando ela navega e não fecha.', prod:'Requisitar o popup com a designer até sábado, 22/08. O cronômetro entra no site na mesma data (b14). Termos de pesquisa para referência: "popup contador regressivo ecommerce" e "popup de frete site loja".',
+ copy:{logo:'Mira Vest, grafite',headline:'ANTES DE VOCÊ FECHAR A PÁGINA',subhead:'O pedido que fecha hoje sai pra postagem amanhã de manhã.',oferta:'SEDEX 50% OFF · CUPOM SEDEXMIRA',beneficio:'DECIDIR HOJE ADIANTA A SUA ENTREGA',body:'Digite SEDEXMIRA no campo do cupom e escolha Sedex no fechamento do pedido: o frete sai com 50% OFF. O desconto é no frete, a peça da coleção nova segue pelo preço dela. O contador aqui em cima marca o tempo até a postagem de amanhã de manhã, então o que você fechar agora já entra nela. O prazo com o seu CEP aparece antes de você confirmar.',cta:'USAR O SEDEXMIRA'},
+ jus:'Domingo tem gente olhando e pouca gente fechando. O popup pega essa navegação com o benefício que já existe, sem inventar oferta nova.'},
+
+{id:52, d:'2026-08-24', t:'', ch:'Meta', fmt:'Vídeo UGC já existente, só para anúncio no Meta', title:'Vídeo UGC no Meta, ficha de peça da VR27', cta:'Ver a peça', fun:'meio', camp:'lancamento', kv:true,
+ obj:'Vender uma peça da VR27 no Meta com a criadora falando a ficha dela.', prod:'Selecionar o vídeo, criar a copy e o CTA até domingo, 23/08.',
+ ugc:{produto:'A escolher, dentro da VR27',tipo:'Vídeo UGC que já existe, com a criadora falando do produto e mostrando o detalhe da peça'},
+ jus:'Na semana de lançamento não existe desconto pra puxar a venda. O que sobra é prova de caimento.'},
+
+{id:34, d:'2026-08-24', t:'10h30', ch:'WhatsApp VIP', fmt:'Vídeo de criadora adaptado pro WhatsApp', title:'O mesmo vídeo do Meta, adaptado pro grupo', cta:'Ver a peça do vídeo', fun:'meio', camp:'lancamento', kv:true,
+ obj:'Levar pro grupo a prova de caimento da peça que sobe no Meta hoje, com o benefício de frete junto.', prod:'É o mesmo vídeo do Meta de hoje, adaptado para o WhatsApp antes do disparo.',
+ copy:{logo:'Mira Vest',headline:'CAIMENTO SÓ SE VÊ EM MOVIMENTO',subhead:'A peça do vídeo de hoje, no corpo e não no cabide.',oferta:'SEDEX 50% OFF · CUPOM SEDEXMIRA',beneficio:'VOCÊ VÊ COMO A PEÇA CAI ANTES DE ESCOLHER O SEU NÚMERO',body:'Você viu essa coleção aqui antes do site, então o vídeo de hoje começa pelo grupo. Repara em como o tecido se comporta quando ela se mexe: é isso que a foto parada não conta. A peça segue a preço cheio, como toda a Primavera/Verão. O desconto é no frete: digite SEDEXMIRA no fechamento e o Sedex sai com 50% OFF.\n\nSe ficar dúvida de numeração, me chama aqui que eu confiro com você.\n\n👉 [link da peça]',cta:'VER A PEÇA DO VÍDEO'},
+ jus:'É o mesmo vídeo que sobe no Meta hoje, adaptado. Quem está no grupo recebe primeiro e recebe tratamento de casa. Isso segura a base depois que a novidade passa.'},
+
+{id:78, d:'2026-08-25', t:'', ch:'Meta', fmt:'Estático de captação, segmentado por região', title:'Aquecimento de Black Friday: captação regional', cta:'Entrar no Grupo VIP', fun:'topo', camp:'base', kv:true,
+ obj:'Encher um grupo VIP novo antes de novembro, com anúncio rodando em São Paulo, Paraná e Minas.', prod:'Fechar a escolha da peça e requisitar a arte com a designer até segunda, 24/08: coleção anterior, meia estação. O grupo novo tem que existir antes (b15). Termos de pesquisa para referência: "anuncio captacao grupo whatsapp" e "criativo entrar no grupo vip loja".',
+ copy:{logo:'Mira Vest, grafite',headline:'A BLACK FRIDAY DA MIRA VEST COMEÇA NO GRUPO',subhead:'As condições de novembro são avisadas primeiro no WhatsApp de quem está no Grupo VIP.',beneficio:'QUEM ESTÁ NO GRUPO FICA SABENDO ANTES',body:'A entrada é pelo botão abaixo. Enquanto novembro não chega, o grupo acompanha as peças de meia estação que já estão no ar: casaquetos, tricôs e blusas que servem no fim do frio e no começo do calor.',cta:'ENTRAR NO GRUPO VIP'},
+ jus:'Se a Black Friday começar só em novembro, a captação vai às cegas. Anúncio de entrada em grupo custou R$ 1,56 por lead em julho, o jeito mais barato de crescer base.'},
+
+{id:37, d:'2026-08-26', t:'11h', ch:'WhatsApp VIP', fmt:'Vídeo de criadora ou vídeo tradicional', title:'Prova de caimento no grupo: segunda peça', cta:'Ver no site', fun:'meio', camp:'cadencia', kv:true,
+ obj:'Repetir no grupo o vídeo de caimento, agora com a peça que mais vende da coleção nova.', prod:'Fechar a escolha da peça e do formato. O vídeo vem do lote 2.',
+ jus:'Uma peça por semana com prova de caimento sustenta a taxa de carrinho. Grava o reel em lote em casa, custo zero.'},
+
+{id:30, d:'2026-08-26', t:'11h', ch:'E-mail (RD)', fmt:'E-mail 3 · hibernando e perdidas', title:'E-mail de reativação: 990 clientes paradas', cta:'Ver a coleção', fun:'ret', camp:'base', kv:true,
+ obj:'Chamar de volta as 990 clientes que estão paradas, antes de montar a lista de novembro.', prod:'Requisitar o layout com a designer e deixar o recorte pronto no RD até segunda, 24/08. Termos de pesquisa para referência: "email reativacao de cliente moda" e "newsletter volta pra loja roupa".',
+ jus:'990 clientes paradas na base, e tocar nelas custa zero. Quem reagir a este e-mail entra na lista de Black Friday já aquecida, quem não reagir entra em outro recorte.'},
+
+{id:38, d:'2026-08-27', t:'', ch:'Meta', fmt:'Vídeo UGC já existente ou Fashion Reels, só no Meta', title:'Vídeo de produto no Meta, peça da VR27', cta:'Ver o modelo', fun:'meio', camp:'base', kv:true,
+ obj:'Vender uma peça da VR27 no Meta, em vídeo de criadora ou em Fashion Reels.', prod:'Selecionar o vídeo, criar a copy e o CTA até quarta, 26/08.',
+ ugc:{produto:'A escolher, dentro da VR27',tipo:'Vídeo UGC que já existe ou Fashion Reels, com a peça em uso'},
+ jus:'A meia estação é problema real de agosto: de manhã faz frio, à tarde não. Peça que resolve os dois vende na virada.'},
+
+{id:39, d:'2026-08-28', t:'10h30', ch:'WhatsApp VIP', fmt:'Curadoria de looks + link', title:'Curadoria de looks no grupo, com o SEDEXMIRA', cta:'Me chama que eu separo', fun:'fundo', camp:'base', kv:true,
+ obj:'Fazer a sexta vender no grupo com peça nova e atendimento no WhatsApp, sem abrir desconto.', prod:'Requisitar a montagem da curadoria com a designer até quinta, 27/08. As fotos saem do catálogo, sem ensaio novo. Termos de pesquisa para referência: "curadoria de looks whatsapp" e "carrossel de looks moda feminina".',
+ copy:{logo:'Mira Vest',headline:'OS LOOKS QUE EU MONTEI PRA ESTA SEXTA',subhead:'Peças da Primavera/Verão combinadas entre si, com a numeração de cada uma no link.',oferta:'SEDEX 50% OFF · CUPOM SEDEXMIRA',beneficio:'VOCÊ ESCOLHE O LOOK PRONTO E EU CONFIRO O SEU NÚMERO',body:'Cada foto é um look fechado: vestido com casaqueto pra sexta à noite, alfaiataria leve pro trabalho e tricô com jeans pro fim de semana. Se você ficar entre dois, me chama no privado que eu olho o seu número e separo pra você. No frete: digite *SEDEXMIRA* no fechamento e o Sedex sai com 50% OFF. A peça continua a preço cheio, o desconto é no frete.',cta:'ME CHAMA QUE EU SEPARO'},
+ jus:'Sexta é o melhor dia da loja, índice 135. Sem oferta para dar, a sexta vai com peça nova e atendimento pessoal, mecânica que o grupo já conhece.'},
+
+{id:66, d:'2026-08-25', t:'', ch:'Base (CRM + grupos)', fmt:'Cruzamento de lista, sem arte', title:'Levantamento de base para Black Friday', cta:'', fun:'ret', camp:'base',
+ obj:'Descobrir, antes de novembro, quem compra na loja e não está no grupo e quem está no grupo mas nunca comprou.', prod:'Exportar o CRM e as listas dos 5 grupos e cruzar numa planilha.',
+ jus:'São 1.790 clientes na base e cerca de 1.700 pessoas nos grupos, e ninguém sabe quanta gente está nos dois. Esse número é o que separa captar com alvo de captar às cegas na Black Friday.'},
+
+{id:42, d:'2026-08-31', t:'10h30', ch:'WhatsApp VIP', fmt:'Texto + post', title:'Fecha o mês no grupo: recap de quem viu antes', cta:'Me diz o que falta', fun:'ret', camp:'base', kv:true,
+ obj:'Fechar agosto mostrando pro grupo tudo que ele viu antes do site, como foi combinado no começo do mês.', prod:'Requisitar o post com a designer até sexta, 28/08. O texto leva o resumo do mês. Termos de pesquisa para referência: "post fechamento de mes loja" e "card agradecimento cliente moda".',
+ copy:{logo:'Mira Vest',headline:'FECHANDO AGOSTO COM QUEM VIU PRIMEIRO',subhead:'A Primavera/Verão abriu aqui no dia 13. No site, só no dia 17.',beneficio:'NO GRUPO, VOCÊ ESCOLHE COM A GRADE INTEIRA NA SUA FRENTE',body:'Agosto fecha hoje e eu queria deixar registrado o que aconteceu: a coleção nova abriu neste grupo quatro dias antes do site, com a grade completa e todas as numerações no ar. Em setembro segue do mesmo jeito, o grupo vê antes. A coleção continua no ar a preço cheio, no link aqui embaixo. 💛 Me diz o que ficou faltando no seu armário que eu vejo o que ainda tem no seu número.',cta:'ME DIZ O QUE FALTA'},
+ jus:'O grupo viu a coleção três dias antes do site. Fechar o mês lembrando disso segura a pessoa no grupo em setembro.', star:true}
+];
+
+const B = [
+{id:'b1', d:'2026-07-30', title:'Cadastro dos 41 conjuntos, categoria no ar e regra do progressivo', eff:'Abre o sábado 01/08.', star:true},
+{id:'b2', d:'2026-07-31', title:'Otimização de preço da coleção 2026: 213 vão pro outlet, 4 perdem o desconto', eff:'Tira a cara de rebaixada da vitrine de 2026 e o ticket dos R$ 343.', star:true},
+{id:'b3', d:'2026-08-01', title:'Outlet volta a ser público e /progressivo/c sai do ar', eff:'Dá destino pro pulso 3.'},
+{id:'b4', d:'2026-08-01', title:'UTM padrão em todos os links de disparo', eff:'Fecha agosto sabendo o que o WhatsApp vendeu.'},
+{id:'b5', d:'2026-08-04', title:'Cupom LOOK criado e categoria de inverno antigo montada', eff:'Abre o pulso 2 na quarta 05.', star:true},
+{id:'b6', d:'2026-08-07', title:'Avaliações reais de clientes cadastradas nas 20 mais vendidas', eff:'Ataca as 94 de cada 100 que olham a peça e não levam.'},
+{id:'b7', d:'2026-08-09', title:'Preço único do outlet cadastrado nos 599 modelos', eff:'Abre o pulso 3 na segunda 10.', star:true},
+{id:'b8', d:'2026-08-10', title:'Fotos da coleção Primavera/Verão prontas', eff:'A foto pronta até 10/08 é o que faz a quinta 13 existir.', star:true},
+{id:'b9', d:'2026-08-12', title:'Banner do site, card do grupo e arte de anúncio da coleção nova', eff:'É o material com que a coleção antecipada abre.'},
+{id:'b10', d:'2026-08-12', title:'Link fechado da coleção antecipada e cupom de Sedex 50% OFF', eff:'Os dois juntos abrem a quinta 13.'},
+{id:'b11', d:'2026-08-16', title:'Coleção Primavera/Verão publicada no site, com banner novo', eff:'Faz o lançamento de segunda 17 acontecer.', star:true},
+{id:'b12', d:'2026-08-25', title:'Export do CRM e das listas dos 5 grupos para o cruzamento', eff:'A Black Friday começa sabendo quem já é da casa.'},
+{id:'b13', d:'2026-08-19', title:'Cupons SEDEXMIRA e FRETEGRATIS criados no site', eff:'São o que o e-mail e o 1:1 do dia 20 entregam.', star:true},
+{id:'b14', d:'2026-08-22', title:'Popup com cronômetro do Sedex no site', eff:'É a ação do dia 23.', star:true},
+{id:'b15', d:'2026-08-24', title:'Um grupo VIP novo criado, separado dos 5 de hoje', eff:'É pra onde o anúncio de captação do dia 25 manda o lead.', star:true}
+];
+
+const M = [
+{id:'m1', title:'Meta · Esquenta Primavera/Verão', verba:'A definir', jan:'01 a 16/08', pub:'Lookalike de valor das compradoras + interesse', kpi:'A definir na reunião', fun:'topo',
+ jus:'Sobe no dia 1º, dezesseis dias antes do lançamento. Aquece o público o mês inteiro e no dia 17 a campanha já converte, em vez de começar a aprender.'},
+{id:'m2', title:'Meta · Ficha de produto com vídeo de criadora', verba:'A definir', jan:'03, 06 e 11/08', pub:'Retargeting de 30 dias + compradoras', kpi:'A definir na reunião', fun:'fundo',
+ jus:'De 100 que veem uma peça, 5,7 põem no carrinho. O vazamento é na página de produto, não no tráfego. Vídeo de criadora falando a ficha ataca isso direto.'},
+{id:'m3', title:'Meta · Outlet, peça nova entrando', verba:'A definir', jan:'01 a 11/08, pico 10 e 11', pub:'Interesse em oferta + retargeting', kpi:'A definir na reunião', fun:'topo',
+ jus:'Outlet Advantage em catálogo estruturado fez ROAS 9,6 na conta. Outlet com porcentagem gritada fez 1,70. Por isso o ângulo pedido é peça nova entrando no outlet.'},
+{id:'m4', title:'Meta · Lançamento da VR27', verba:'A definir', jan:'17 a 31/08', pub:'Lookalike de valor + retargeting do esquenta', kpi:'A definir na reunião', fun:'fundo',
+ jus:'O criativo de abertura é vídeo de criadora apresentando a coleção. Nos reforços dos dias 24 e 27 entram mais vídeos de produto.'},
+{id:'m5', title:'Meta · Remarketing 30 dias', verba:'A definir', jan:'Mês todo', pub:'Visitou produto ou carrinho em 30 dias, exclui quem comprou em 15', kpi:'A definir na reunião', fun:'fundo',
+ jus:'Retorno 10,0 no trimestre, a única linha de Meta com número limpo. Fala com quem já conhece a marca, enquanto o social frio converte 0,25%.'},
+{id:'m6', title:'Meta · Captação VIP', verba:'A definir', jan:'Mês todo', pub:'Aberto, com Lookalike de valor como conjunto secundário', kpi:'Custo por lead e, pela primeira vez, receita do grupo por UTM', fun:'topo',
+ jus:'R$ 1,56 por lead em julho. Enche o grupo, que é onde os pulsos e o preview abrem. O custo está bom, não mexer no meio do mês.'},
+{id:'m7', title:'Google · Search, Shopping e PMAX, rotina', verba:'A definir', jan:'01 a 08/08', pub:'Busca ativa: marca, vestido midi, casaco feminino, alfaiataria', kpi:'Conversão acima de 1,5% no Search', fun:'fundo',
+ jus:'1,73% de conversão, o melhor canal pago da casa, contra 0,25% do Meta.'},
+{id:'m8', title:'Google · Preview Primavera/Verão', verba:'A definir', jan:'09/08 em diante', pub:'Termos de estação e categoria, ainda sem produto publicado', kpi:'A definir na reunião', fun:'topo',
+ jus:'Aquecer busca 8 dias antes do lançamento faz a campanha chegar madura no dia 17, em vez de começar do zero.'},
+{id:'m9', title:'Meta · Captação para Black Friday, 3 conjuntos e 1 grupo', verba:'A definir', jan:'25/08 em diante', pub:'Aberto, em 3 conjuntos: São Paulo, Paraná e Minas Gerais', kpi:'Custo por entrada no grupo, comparado entre as 3 regiões', fun:'topo',
+ jus:'Entra em 25/08 pra encher o grupo novo antes de novembro. A peça da imagem é de coleção anterior, de meia estação. O anúncio é segmentado por região e o grupo é um só: o dado de região vem do Meta Ads. Assim dá pra saber qual região entra mais barato sem triplicar o trabalho de disparo.'}
+];
+/*DADOS_FIM*/
+
+const JSTART = {'2026-08-01':'começam os pulsos','2026-08-12':'acaba o desconto em peça',
+                '2026-08-17':'começa o lançamento','2026-08-25':'começa a captação para novembro'};
+const SPECIAL = {
+ '2026-08-09':{tag:'Dia dos Pais · silêncio', note:'Não falamos nada. Nenhum disparo, nenhum post, nenhum e-mail. A venda da data foi feita nos dias 01 e 02, com prazo pra peça chegar hoje. A mídia paga continua rodando sozinha.'},
+ '2026-08-11':{tag:'Vira a chave', note:'O preço único do outlet fecha hoje, e com ele acaba o desconto em peça do mês. Do dia 12 até o dia 31 é preço cheio em canal nenhum, com o Sedex 50% OFF como único benefício a partir do dia 13.'},
+ '2026-08-13':{tag:'Coleção antecipada abre', note:'O grupo vê e compra a coleção nova 4 dias antes do site, a preço cheio, com Sedex 50% OFF. Depende de foto pronta em 10/08 e arte em 12/08.'},
+ '2026-08-14':{tag:'Janela aberta', note:'A coleção antecipada segue no ar pro grupo, sem disparo novo. Quem entrou pelo link de quinta continua comprando a preço cheio com o Sedex pela metade.'},
+ '2026-08-15':{tag:'Último dia no grupo', note:'A coleção antecipada fecha hoje pro grupo. Na segunda 17 ela abre pro público do site, e o Sedex 50% OFF continua valendo.'},
+ '2026-08-31':{tag:'Fecha o mês', note:'O grupo viu a coleção 3 dias antes do site. Fechar nomeando isso é o que segura a base em setembro.'}
+};
+
+const WD = ['dom','seg','ter','qua','qui','sex','sáb'];
+const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const badges = it => (it.kv?'<span class="kv" role="img" aria-label="Arte pra pedir pra designer" title="Arte pra pedir pra designer">KV</span> ':'') + (it.star?'<span class="star" role="img" aria-label="Momento-chave do mês" title="Momento-chave do mês">✦</span>':'');
+const fmtDate = d => { const p=d.split('-').map(Number); return WD[new Date(p[0],p[1]-1,p[2]).getDay()]+' '+String(p[2]).padStart(2,'0')+'/'+String(p[1]).padStart(2,'0'); };
+
+/* card compacto do calendário */
+/* ação vem primeiro, o que trava o go-live desce pro pé do dia com divisória */
+function diaHtml(itens){
+  const acoes=itens.filter(i=>!i.bast), travas=itens.filter(i=>i.bast);
+  return acoes.map(miniCard).join('')+travas.map(miniCard).join('');
+}
+
+function miniCard(it){
+  /* padrao Apple Calendar: a pilula leva SO o nome; o resto mora no briefing */
+  const isB = !!it.bast, k = isB ? 'bast' : it.fun;
+  const target = isB ? 'b-'+it.id : 'a-'+it.id;
+  const cp = !isB && it.camp && CAMPS[it.camp] ? CAMPS[it.camp] : null;
+  const st = cp ? ' style="--evb:'+cp.bg+';--evc:'+(cp.ct||cp.c)+'"' : '';
+  return '<button class="ev'+(isB?' bast':'')+'" data-fun="'+k+'" data-go="'+target+'"'+st+
+         ' type="button" title="'+esc(it.title)+'">'+esc(it.title)+'</button>';
+}
+
+function legend(){
+  const cnt={topo:0,meio:0,fundo:0,ret:0};
+  A.forEach(a=>{ if(cnt[a.fun]!==undefined) cnt[a.fun]++; });
+  let h='';
+  ['topo','meio','fundo','ret'].forEach(k=>{
+    h+='<button class="chip" type="button" aria-pressed="false" data-k="'+k+'"><span class="dot" style="background:'+FUN[k].c+'"></span>'+FUN[k].label+' <span class="n">'+cnt[k]+'</span></button>';
+  });
+  h+='<button class="chip" type="button" aria-pressed="false" data-k="bast"><span class="dot" style="background:'+FUN.bast.c+'"></span>'+FUN.bast.label+' <span class="n">'+B.length+'</span></button>';
+  h+='<span class="lg-note">hora, canal, KV e pendências ficam no briefing de cada ação</span>';
+  document.getElementById('legend').innerHTML=h;
+}
+
+/* itens anteriores a 01/08 saem da grade e viram faixa compacta, sem semana vazia */
+function preStrip(){
+  const items = A.filter(a=>a.d<'2026-08-01').concat(B.filter(b=>b.d<'2026-08-01').map(b=>Object.assign({bast:true},b)))
+                 .sort((x,y)=>x.d.localeCompare(y.d));
+  document.getElementById('pre').innerHTML =
+    '<div class="pt">Antes do mês</div><div class="pitems">'+
+    items.map(it=>'<div style="min-width:250px;flex:1">'+
+      '<div class="pd">'+fmtDate(it.d)+'</div>'+miniCard(it)+'</div>').join('')+'</div>';
+}
+
+function campDoDia(key){
+  for(const k in CAMPS){ const c=CAMPS[k]; if(c.ini && key>=c.ini && key<=c.fim) return k; }
+  return null;
+}
+function campsStrip(){
+  document.getElementById('camps').innerHTML =
+    ['pulso1','pulso2','pulso3','preview','lancamento','base'].map(k=>{
+      const c=CAMPS[k];
+      return '<span class="cpill"><i style="background:'+c.c+'"></i><b>'+
+             esc(c.name.split(' · ')[0])+'</b> '+esc(c.per)+'</span>';
+    }).join('');
+}
+
+/* A semana começa no SÁBADO de propósito: 01/08/2026 cai num sábado, então o mês
+   encaixa sem nenhuma célula vazia no começo e cada linha da grade é uma semana
+   fechada de sábado a sexta, que é como o teto de disparo do WhatsApp é contado. */
+function calendar(){
+  const DAYS=31, byDate={}, IN=d=>d>='2026-08-01'&&d<='2026-08-31';
+  /* acao dentro da janela da propria campanha NAO vira pilula: a barra ja conta */
+  A.filter(a=>IN(a.d)&&campDoDia(a.d)!==a.camp).forEach(a=>{(byDate[a.d]=byDate[a.d]||[]).push(a)});
+  B.filter(b=>IN(b.d)).forEach(b=>{(byDate[b.d]=byDate[b.d]||[]).push(Object.assign({bast:true},b))});
+
+  let h='';
+  for(let da=1;da<=DAYS;da++){
+    const key='2026-08-'+String(da).padStart(2,'0'), sp=SPECIAL[key];
+    const ck=campDoDia(key), cp=ck?CAMPS[ck]:null;
+    h+='<div class="day'+(sp?' special':'')+'" id="dia-'+key+'">'+
+       '<div class="dhead"><span class="dnum">'+da+'</span></div>'+
+       (cp?'<div class="cbar'+(key===cp.ini?' ini':'')+(key===cp.fim?' fim':'')+
+           '" data-grp="'+ck+'" role="button" tabindex="0" title="'+esc(cp.name)+'"'+
+           ' style="background:'+cp.bg+';color:'+(cp.ct||cp.c)+'">'+
+           (key===cp.ini?'<span>'+esc(cp.name.split(' · ')[0])+'</span>':'')+'</div>':'')+
+       (sp?'<div class="holi">'+esc(sp.tag)+'</div>':'')+
+       diaHtml(byDate[key]||[])+'</div>';
+  }
+  for(let i=(7-(DAYS%7))%7;i>0;i--) h+='<div class="pad"></div>';
+  document.getElementById('grid').innerHTML=h;
+}
+
+/* ed() carimba o endereco do campo no elemento, pra edicao saber o que gravar */
+const ed=(end,campo)=> end?' data-e="'+end+'|'+campo+'"':'';
+const row=(l,v,end,campo)=> v?'<div class="pl">'+l+'</div><div class="pv"'+ed(end,campo)+'>'+v+'</div>':'';
+const fpill=k=>'<span class="fpill"><i style="background:'+FUN[k].c+'"></i>'+FUN[k].short+'</span>';
+
+/* briefing de arte na hierarquia de copy da casa: logo, headline, subhead,
+   benefício, body e CTA. Slot vazio simplesmente não aparece. */
+/* Oferta tem slot próprio: a oferta sempre vai no KV, e separada do
+   headline pra ninguém ler o número como se fosse desconto na peça errada. */
+const SLOTS=[['logo','Logo'],['headline','Headline'],['subhead','Sub-headline'],
+             ['oferta','Oferta'],['beneficio','Benefício'],['body','Body copy'],['cta','CTA']];
+
+function artBox(c,fmt,end){
+  if(!c) return '';
+  const semArte=/texto|mensagem|e-mail/i.test(fmt||'');
+  if(typeof c==='string') c={headline:c};
+  const linhas=SLOTS.filter(s=>c[s[0]]&&c[s[0]].trim())
+    .map(s=>'<dt>'+s[1]+'</dt><dd'+(s[0]==='headline'||s[0]==='beneficio'||s[0]==='oferta'?' class="big"':'')+ed(end,'copy.'+s[0])+'>'+esc(c[s[0]])+'</dd>').join('');
+  const plano=SLOTS.filter(s=>c[s[0]]&&c[s[0]].trim()).map(s=>s[1]+': '+c[s[0]]).join('\n');
+  return '<div class="art"><div class="al">'+(semArte?'Texto da mensagem':'Briefing da arte')+'</div>'+
+         '<dl>'+linhas+'</dl>'+
+         '<button class="cpy" type="button" data-cpy="'+esc(plano)+'">Copiar para a designer</button></div>';
+}
+
+/* critério de seleção do vídeo: quem escolhe a peça e o que procurar no vídeo.
+   Não é briefing de gravação, o vídeo já existe. */
+const UGCF=[['tipo','O que procurar']];
+function ugcBox(u){
+  if(!u) return '';
+  const linhas=UGCF.filter(f=>u[f[0]]).map(f=>
+    '<dt>'+f[1]+'</dt><dd'+ed(u.__e,'ugc.'+f[0])+'>'+esc(u[f[0]])+'</dd>').join('');
+  const plano=('Peça: '+(u.produto||'')+'\n')+UGCF.filter(f=>u[f[0]]).map(f=>f[1]+': '+u[f[0]]).join('\n');
+  return '<div class="ugc"><div class="uh">Vídeo a selecionar · '+esc(u.produto||'')+'</div>'+
+         '<div class="ub"><dl>'+linhas+'</dl>'+
+         '<button class="cpy" type="button" data-cpy="'+esc(plano)+'">Copiar critério</button></div></div>';
+}
+
+function briefCard(id,fun,dateLine,title,rowsHtml,jus,warn,copy,fmt,ugc,end,dia){
+  return '<article class="bc" id="bc-'+id+'" data-fun="'+fun+'">'+
+    (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
+    '<div class="bhead"><span class="bdate">'+dateLine+'</span>'+fpill(fun)+'</div>'+
+    '<h3'+ed(end,'title')+'>'+esc(title)+'</h3>'+
+    '<div class="props">'+rowsHtml+'</div>'+
+    ugcBox(ugc)+artBox(copy,fmt,end)+
+    '<div class="why"'+ed(end,'jus')+(jus?'':' data-vazio="1"')+'>'+esc(jus||'')+'</div>'+
+    '</article>';
+}
+
+function brief(){
+  const order=['bastidor','pulso1','pulso2','pulso3','preview','lancamento','base','cadencia','reativa','midia'];
+  let h='';
+  order.forEach(ck=>{
+    const g=CAMPS[ck]; let items='', count=0;
+    if(ck==='midia'){
+      const acoes=A.filter(a=>a.camp==='midia');
+      count=M.length+acoes.length;
+      items=M.map(m=>{const e='M:'+m.id; return briefCard(m.id,m.fun,'<b>'+esc(m.jan)+'</b>',m.title,
+        row('Verba',esc(m.verba),e,'verba')+row('Público',esc(m.pub),e,'pub')+
+        row('Meta',esc(m.kpi),e,'kpi'),
+        m.jus, m.warn, null, '', null, e)}).join('')
+        + acoes.map(a=>{const e='A:'+a.id; if(a.ugc)a.ugc.__e=e; return briefCard('a-'+a.id,a.fun,
+        '<b>'+fmtDate(a.d)+'</b>'+(a.t?' · '+esc(a.t):'')+(a.kv?' · <span class="kv">KV</span>':''), a.title,
+        row('Produção',esc(a.prod),e,'prod')+row('Objetivo',esc(a.obj),e,'obj')+row('Formato',esc(a.fmt),e,'fmt')+
+        row('Canal',esc(a.ch),e,'ch'),
+        a.jus, a.warn, a.copy, a.fmt, a.ugc, e, a.d)}).join('');
+    } else if(ck==='bastidor'){
+      count=B.length;
+      items=B.slice().sort((x,y)=>x.d.localeCompare(y.d)).map(b=>{const e='B:'+b.id; return briefCard('b-'+b.id,'bast','prazo <b>'+fmtDate(b.d)+'</b>'+(b.star?' · <span class="star">✦</span>':''),b.title,
+        row('Efeito',esc(b.eff),e,'eff'),
+        '', b.warn, null, '', null, e, b.d)}).join('');
+    } else {
+      const list=A.filter(a=>a.camp===ck).sort((x,y)=>x.d.localeCompare(y.d)||((parseInt(x.t)||0)-(parseInt(y.t)||0))); count=list.length;
+      items=list.map(a=>{const e='A:'+a.id; if(a.ugc)a.ugc.__e=e; return briefCard('a-'+a.id,a.fun,
+        '<b>'+fmtDate(a.d)+'</b>'+(a.t?' · '+esc(a.t):'')+(a.kv?' · <span class="kv">KV</span>':''),
+        a.title,
+        row('Produção',esc(a.prod),e,'prod')+row('Objetivo',esc(a.obj),e,'obj')+row('Formato',esc(a.fmt),e,'fmt')+
+        row('Canal',esc(a.ch),e,'ch'),
+        a.jus, a.warn, a.copy, a.fmt, a.ugc, e, a.d)}).join('');
+    }
+    h+='<section class="group" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+g.name+'</h2><span class="gcount">'+count+(ck==='bastidor'?(count==1?' tarefa':' tarefas'):(count==1?' ação':' ações'))+'</span>'+
+       '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
+       '<p class="gdesc">'+g.desc+'</p><div class="cards">'+items+'</div></section>';
+  });
+  document.getElementById('groups').innerHTML=h;
+}
+
+function showView(v){
+  const cal=v==='cal', bc=document.getElementById('btn-cal'), bb=document.getElementById('btn-brief');
+  document.getElementById('view-cal').classList.toggle('on',cal);
+  document.getElementById('view-brief').classList.toggle('on',!cal);
+  bc.classList.toggle('on',cal); bb.classList.toggle('on',!cal);
+  bc.setAttribute('aria-pressed',String(cal)); bb.setAttribute('aria-pressed',String(!cal));
+  if(cal) document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
+}
+/* volta pro calendário e pisca o dia de onde o card veio */
+function voltarCal(dia){
+  showView('cal');
+  const el=document.getElementById('dia-'+dia);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+  setTimeout(()=>el.classList.remove('flash'),1400);
+}
+function goGroup(ck){
+  showView('brief');
+  const el=document.getElementById('grp-'+ck);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function goBrief(id){
+  showView('brief');
+  const el=document.getElementById('bc-'+id);
+  if(!el) return;
+  document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
+  el.classList.add('target');
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.setAttribute('tabindex','-1'); el.focus({preventScroll:true});
+}
+
+preStrip(); campsStrip(); calendar(); brief();
+
+document.getElementById('btn-cal').addEventListener('click',()=>showView('cal'));
+document.getElementById('btn-brief').addEventListener('click',()=>showView('brief'));
+document.addEventListener('click',e=>{
+  const volta=e.target.closest('.fromcal');
+  if(volta){ voltarCal(volta.dataset.back); return; }
+  const b=e.target.closest('.cpy');
+  if(b){
+    navigator.clipboard.writeText(b.dataset.cpy).then(()=>{
+      b.textContent='Copiado'; setTimeout(()=>b.textContent='Copiar para a designer',1600);
+    }).catch(()=>{ b.textContent='Selecione e copie manualmente'; });
+    return;
+  }
+  const g=e.target.closest('.cbar[data-grp]');
+  if(g){ goGroup(g.dataset.grp); return; }
+  const c=e.target.closest('[data-go]'); if(c) goBrief(c.dataset.go);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'&&e.key!==' ') return;
+  if(document.body.classList.contains('editando')&&e.target.hasAttribute('data-e')) return;
+  const g=e.target.closest('.cbar[data-grp]');
+  if(g){ e.preventDefault(); goGroup(g.dataset.grp); return; }
+  const c=e.target.closest('[data-go]'); if(c){ e.preventDefault(); goBrief(c.dataset.go); }
+});
+
+/* ================= modo edição ================= */
+/* Os dados vivem nos arrays A, B e M. Cada texto na tela carrega data-e="A:12|title",
+   entao editar na tela grava direto no objeto. O download reescreve o bloco de dados
+   entre os marcadores e devolve o arquivo inteiro, pronto pra subir no GitHub. */
+
+const ARRAYS={A:A,B:B,M:M};
+let mudancas=0;
+
+/* avisa sem travar: as regras da casa que mais doem se passarem batido.
+   OUTLET nao entra na lista de palavras proibidas: a pagina e
+   publica, e a palavra pode aparecer em criativo publico. */
+/* teto por canal: VIP e 1:1 podem escrever %, o resto e canal publico e nao pode */
+const CANAL_FECHADO=/whatsapp vip|whatsapp 1:1/i;
+function checarRegra(campo,txt,ch){
+  const t=(txt||'').toLowerCase(), avisos=[];
+  const arte=/^copy\./.test(campo);
+  const fechado=CANAL_FECHADO.test(ch||'');
+  if(arte&&!fechado&&/\d+\s*%|\boff\b/.test(t)) avisos.push('porcentagem em arte de canal público: só outlet pode, e em preço fixo, nunca %');
+  if(/liquida|feirão|feirao|\bqueima\b|última chance|ultima chance|\bsale\b/.test(t))
+    avisos.push('palavra proibida em canal público');
+  if(/aproveite|\bcorra\b|\bgaranta\b|imperdível|imperdivel|não fique de fora|antes que acabe/.test(t))
+    avisos.push('palavra de urgência proibida');
+  if(/mais procurad|clientes amaram|tá saindo|ta saindo|todo mundo|já garantiram|ja garantiram/.test(t))
+    avisos.push('prova social: a regra da casa proíbe afirmar o que outras clientes fizeram');
+  if(/alonga a silhueta|afina|disfarça|disfarca a barriga/.test(t))
+    avisos.push('promessa de efeito no corpo');
+  if(/grade quebrada|\bsku\b|curva a/.test(t)) avisos.push('jargão de loja, a cliente não fala assim');
+  if(/atemporal|transcende|sofistica|exclusividade|requinte|curadoria|essência|essencia|impecáve|impecave|versátil|versatil/.test(t))
+    avisos.push('vocabulário de catálogo genérico, é o texto que a marca combate');
+  if(txt&&txt.indexOf(String.fromCharCode(8212))>=0) avisos.push('travessão');
+  return avisos;
+}
+
+function gravar(el){
+  const [end,campo]=el.dataset.e.split('|');
+  const [arr,id]=end.split(':');
+  const alvo=ARRAYS[arr].find(x=>String(x.id)===id);
+  if(!alvo) return;
+  const txt=el.textContent.trim();
+  const p=campo.split('.');
+  if(p.length===1) alvo[p[0]]=txt;
+  else { alvo[p[0]]=alvo[p[0]]||{}; alvo[p[0]][p[1]]=txt; }
+
+  if(!el.classList.contains('mudou')){ el.classList.add('mudou'); mudancas++; }
+  const c=document.getElementById('editcount');
+  c.textContent=mudancas?' · '+mudancas+(mudancas>1?' campos alterados':' campo alterado'):'';
+
+  const velho=el.parentNode.querySelector('.regra');
+  if(velho) velho.remove();
+  const av=checarRegra(campo,txt,alvo.ch);
+  if(av.length){
+    const d=document.createElement('div');
+    d.className='regra'; d.textContent='⚠ '+av.join(' · ');
+    el.parentNode.appendChild(d);
+  }
+}
+
+function modoEdicao(on){
+  document.body.classList.toggle('editando',on);
+  document.getElementById('editbar').hidden=!on;
+  document.getElementById('btn-save').hidden=!on;
+  document.getElementById('btn-edit').setAttribute('aria-pressed',String(on));
+  document.getElementById('btn-edit').textContent=on?'Sair da edição':'Editar';
+  document.querySelectorAll('[data-e]').forEach(el=>{
+    if(on){ el.contentEditable='true'; el.spellcheck=false; }
+    else el.removeAttribute('contenteditable');
+  });
+}
+
+/* remonta o bloco de dados em JS valido, a partir dos arrays ja editados */
+function serializar(){
+  const q=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ')+"'";
+  const val=v=>{
+    if(typeof v==='boolean') return String(v);
+    if(typeof v==='number') return String(v);
+    if(v&&typeof v==='object') return '{'+Object.keys(v).filter(k=>k!=='__e'&&v[k])
+      .map(k=>k+':'+q(v[k])).join(',')+'}';
+    return q(v);
+  };
+  const obj=o=>'{'+Object.keys(o).filter(k=>k!=='__e'&&o[k]!==undefined&&o[k]!=='')
+    .map(k=>k+':'+val(o[k])).join(', ')+'}';
+  const arr=(nome,a)=>'const '+nome+' = [\n'+a.map(obj).join(',\n')+'\n];';
+  return '/*DADOS_INICIO*/\n'+arr('A',A)+'\n\n'+arr('B',B)+'\n\n'+arr('M',M)+'\n/*DADOS_FIM*/';
+}
+
+function baixar(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editando');
+  ['grid','groups','legend','pre'].forEach(id=>{
+    const n=clone.querySelector('#'+id); if(n) n.innerHTML='';
+  });
+  clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  const eb=clone.querySelector('#editbar'); if(eb) eb.hidden=true;
+  const bs=clone.querySelector('#btn-save'); if(bs) bs.hidden=true;
+  const be=clone.querySelector('#btn-edit');
+  if(be){ be.setAttribute('aria-pressed','false'); be.textContent='Editar'; }
+
+  const sc=[...clone.querySelectorAll('script')].pop();
+  sc.textContent=sc.textContent.replace(/\/\*DADOS_INICIO\*\/[\s\S]*?\/\*DADOS_FIM\*\//,serializar());
+
+  const html='<!DOCTYPE html>\n'+clone.outerHTML;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
+  a.download='index.html'; a.click(); URL.revokeObjectURL(a.href);
+
+  const b=document.getElementById('btn-save');
+  b.textContent='Baixado. Suba no GitHub'; setTimeout(()=>b.textContent='Baixar atualizado',2600);
+}
+
+document.getElementById('btn-edit').addEventListener('click',()=>
+  modoEdicao(!document.body.classList.contains('editando')));
+document.getElementById('btn-save').addEventListener('click',baixar);
+document.addEventListener('focusout',e=>{
+  if(document.body.classList.contains('editando')&&e.target.hasAttribute&&e.target.hasAttribute('data-e'))
+    gravar(e.target);
+});
+window.addEventListener('beforeunload',e=>{ if(mudancas){ e.preventDefault(); e.returnValue=''; }});
+
+/* ================= revelacao no scroll ================= */
+(function(){
+  const alvos=[...document.querySelectorAll('.hero .eyebrow,.hero-t,.hero-s,.stat,.group')];
+  if(!('IntersectionObserver' in window)){ return; }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }),{threshold:.12});
+  alvos.forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(Math.min(i,4)*60)+'ms'; io.observe(el); });
+})();
+</script>
+</body>
+</html>

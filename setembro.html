@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Setembro 2026 · Mira Vest · Plano em uma tela</title>
+<style>
+  :root{
+    --wine:#7A2E38; --wine2:#A0454F;
+    --ink:#1D1D1F; --ink-soft:#6E6E73; --ink-faint:#86868B;
+    --paper:#FFFFFF; --tint:#F5F5F7;
+    --line:rgba(0,0,0,.09); --hair:rgba(0,0,0,.06);
+    --warn:#8F4F1C;
+    --fs-xl:24px; --fs-lg:17px; --fs-md:15px; --fs-sm:13px;
+    --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable Text","Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --r:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:var(--fs-md);
+       line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  h1,h2,h3{font-weight:600;letter-spacing:-.02em}
+
+  /* ---------- navegacao fina, estilo subnav ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);
+         backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+         border-bottom:1px solid var(--hair);padding:0 40px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+       min-height:52px;padding:8px 0}
+  .navleft{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .brand{font-size:var(--fs-md);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .navtitle{font-size:var(--fs-md);color:var(--ink-soft);white-space:nowrap}
+  .hrow{display:contents}
+  .sub{display:none}
+
+  .hactions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .toggle{display:flex;background:var(--tint);border-radius:999px;padding:3px;flex:none}
+  .toggle button{border:0;background:transparent;font:500 var(--fs-sm) var(--sans);color:var(--ink-soft);
+                 padding:7px 18px;border-radius:999px;cursor:pointer;transition:.18s}
+  .toggle button:hover{color:var(--ink)}
+  .toggle button.on{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+
+  .ghost{border:1px solid var(--line);background:transparent;border-radius:999px;
+         font:500 var(--fs-sm) var(--sans);color:var(--ink-soft);padding:8px 18px;cursor:pointer;transition:.15s}
+  .ghost:hover{background:var(--tint);color:var(--ink)}
+  .ghost[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
+  .ghost.primary{border-color:var(--wine);color:var(--wine);font-weight:600}
+  .ghost.primary:hover{background:var(--wine);color:#fff}
+
+  .legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0 0 10px}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid transparent;
+        border-radius:999px;padding:4px 12px 4px 10px;font:400 var(--fs-sm) var(--sans);
+        color:var(--ink-soft);cursor:pointer;transition:.15s}
+  .chip:hover{background:var(--tint)}
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip .n{color:var(--ink-faint)}
+  .chip.on{background:var(--tint);border-color:var(--line);color:var(--ink);font-weight:500}
+  .lg-note{font-size:var(--fs-sm);color:var(--ink-faint);margin-left:auto}
+
+  #editbar{margin:0 0 12px;background:var(--tint);border-radius:12px;padding:10px 14px;
+           font-size:var(--fs-sm);color:var(--ink-soft);line-height:1.5}
+  #editbar b{color:var(--ink)}
+  #editcount{color:var(--wine);font-weight:600}
+  #fsinfo{margin-top:6px;font-size:var(--fs-sm);color:var(--ink-soft)}
+  #fsinfo:empty{display:none}
+  #fsinfo .trocar{border:0;background:transparent;padding:0;font:inherit;
+                  color:var(--wine);text-decoration:underline;cursor:pointer}
+
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+  @media (max-height:820px){header{position:static}}
+
+  main{padding:0 40px 80px;max-width:1560px;margin:0 auto}
+  .view{display:none}.view.on{display:block}
+
+  /* ---------- hero ---------- */
+  .hero{text-align:center;padding:72px 16px 56px;max-width:980px;margin:0 auto}
+  .eyebrow{font-size:var(--fs-lg);font-weight:600;color:var(--wine);margin-bottom:10px;letter-spacing:-.01em}
+  .hero-t{font-size:clamp(44px,7vw,76px);line-height:1.04;letter-spacing:-.032em;font-weight:700;color:var(--ink)}
+  .hero-t .grad{background:linear-gradient(100deg,var(--wine) 10%,var(--wine2) 55%,#C08457 95%);
+                -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-s{font-size:clamp(17px,2.2vw,21px);line-height:1.5;color:var(--ink-soft);
+          max-width:640px;margin:18px auto 0;letter-spacing:-.01em}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+  .stat{background:var(--tint);border-radius:20px;padding:26px 18px 22px}
+  .sv{font-size:clamp(30px,3.6vw,44px);font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1.05}
+  .stat:nth-child(2) .sv{color:var(--wine)}
+  .sl{font-size:var(--fs-md);color:var(--ink);font-weight:500;margin-top:8px;line-height:1.4}
+  .sl span{display:block;color:var(--ink-faint);font-weight:400;font-size:var(--fs-sm);margin-top:2px}
+
+  /* revelacao suave no scroll */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+  /* ---------- antes do mes ---------- */
+  .pre{background:var(--tint);border-radius:var(--r);
+       padding:14px 16px;margin-bottom:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .pre .pt{font-size:var(--fs-sm);color:var(--ink-soft);flex:none;font-weight:600}
+  .pre .pitems{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+  .pre .pd{font-size:var(--fs-sm);color:var(--ink-faint);margin-bottom:2px}
+
+  /* ---------- calendario, padrao Apple Calendar ---------- */
+  .calwrap{overflow-x:auto;border-radius:var(--r)}
+  .cal{min-width:1060px}
+  .wdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));margin-bottom:6px}
+  .wdays div{text-align:right;padding:3px 12px 3px 0;text-transform:uppercase;
+             letter-spacing:.08em;font-weight:600;font-size:13px;color:var(--ink-faint)}
+  .grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--hair);
+        border:1px solid var(--hair);border-radius:var(--r);overflow:hidden}
+  .day{background:var(--paper);min-height:126px;min-width:0;padding:8px 8px 10px;display:flex;flex-direction:column;gap:3px}
+  .dhead{display:flex;justify-content:flex-end}
+  .dnum{font-size:var(--fs-lg);font-weight:500;color:var(--ink);line-height:1;padding:2px 4px}
+  .holi{font-size:12px;font-weight:600;color:var(--wine);text-align:right;margin:-2px 2px 2px 0}
+  /* barra continua de campanha, como evento de varios dias */
+  .cbar{height:22px;display:flex;align-items:center;margin:0 -8px 3px;padding:0 12px;
+        font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden}
+  .cbar span{overflow:hidden;text-overflow:ellipsis}
+  .cbar[data-grp]{cursor:pointer;transition:filter .12s}
+  .cbar[data-grp]:hover{filter:brightness(.95)}
+  .cbar[data-grp]:focus-visible{outline:2px solid var(--wine);outline-offset:1px}
+  .cbar.ini{margin-left:0;border-radius:6px 0 0 6px}
+  .cbar.fim{margin-right:0;border-radius:0 6px 6px 0}
+  .cbar.ini.fim{border-radius:6px}
+  /* a acao do dia e uma tarefinha: ponto da cor da campanha e o texto.
+     Peso leve de proposito, pra barra da campanha continuar sendo o titulo. */
+  .ev{display:flex;align-items:center;gap:7px;width:100%;min-width:0;text-align:left;border:0;
+      background:transparent;color:var(--ink);font-family:inherit;
+      border-radius:5px;padding:2px 4px;font-size:13px;font-weight:500;line-height:1.35;
+      cursor:pointer;white-space:nowrap;overflow:hidden;transition:background .12s}
+  .ev i{width:6px;height:6px;border-radius:50%;background:var(--evc,#8E8E93);flex:none}
+  .ev span{overflow:hidden;text-overflow:ellipsis}
+  .ev:hover{background:var(--tint)}
+  .ev:focus-visible{outline:2px solid var(--wine);outline-offset:1px}
+  /* dia de fora do mes: fica, mas apagado, so pra fechar a semana */
+  .day.out{background:var(--tint)}
+  .day.out .dnum{color:var(--ink-faint);opacity:.55;font-weight:400}
+  .camps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .cpill{display:flex;align-items:center;gap:7px;border:1px solid var(--hair);background:var(--paper);
+         border-radius:999px;padding:5px 14px 5px 10px;font-size:var(--fs-sm);color:var(--ink-soft)}
+  .cpill b{color:var(--ink);font-weight:600}
+  .cpill i{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal}
+  .star{color:var(--wine)} .warn{color:var(--warn)}
+
+  /* ---------- briefing ---------- */
+  .group{margin-bottom:72px;scroll-margin:80px}
+  .ghead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .gdot{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
+  .ghead h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.025em;color:var(--ink)}
+  .gcount,.gper{font-size:var(--fs-sm);color:var(--ink-faint)}
+  .gmeta{margin-left:auto;font-size:var(--fs-sm);font-weight:600;border-radius:999px;padding:4px 14px}
+  .gdesc{font-size:var(--fs-lg);color:var(--ink-soft);margin-bottom:22px;max-width:760px;line-height:1.55;letter-spacing:-.01em}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+
+  .bc{background:var(--paper);border:1px solid var(--hair);border-radius:18px;padding:20px 22px 22px;
+      display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,background .3s;scroll-margin:110px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .bc:hover{box-shadow:0 10px 30px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .bc:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+  .bc.target{background:var(--tint)}
+  .bc.target .fromcal{display:inline-flex}
+  .fromcal{display:none;align-items:center;gap:5px;align-self:flex-start;margin-bottom:9px;
+           font-size:var(--fs-sm);font-weight:600;color:#0071E3;
+           background:none;border:1px solid transparent;border-radius:999px;
+           padding:3px 10px 3px 7px;margin-left:-6px;cursor:pointer;font-family:inherit;
+           transition:background .15s,border-color .15s}
+  .fromcal:hover{background:var(--paper);border-color:var(--line)}
+  .fromcal:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+  @keyframes diaflash{0%,100%{background:var(--paper)}25%,60%{background:var(--tint)}}
+  .day.flash{animation:diaflash 1.3s ease-in-out}
+
+  .bhead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .bdate{font-size:var(--fs-sm);color:var(--ink-faint)}
+  .bdate b{color:var(--ink);font-weight:600}
+  .bc h3{font-size:19px;line-height:1.3;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
+  .fpill{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;
+         font-size:var(--fs-sm);color:var(--ink-soft);white-space:nowrap}
+  .fpill i{width:8px;height:8px;border-radius:50%;flex:none;font-style:normal}
+
+  .props{display:grid;grid-template-columns:max-content 1fr;column-gap:16px;row-gap:8px;align-items:baseline}
+  .pl{font-size:var(--fs-md);color:var(--ink-faint);white-space:nowrap}
+  .pv{font-size:var(--fs-md);color:var(--ink);line-height:1.5;white-space:pre-line}
+  /* gatilho: por que essa acao converte, alem da oferta em si */
+  .cpbox{margin-top:14px;background:var(--tint);border-radius:12px;padding:11px 13px}
+  .cpl{font-size:var(--fs-sm);color:var(--ink-faint);letter-spacing:.02em;margin-bottom:3px}
+  .cpt{font-size:var(--fs-md);color:var(--ink);line-height:1.5;min-height:1.4em;white-space:pre-wrap}
+  /* marca de arte: a designer bate o olho e sabe o que e dela */
+  .arte{display:inline-flex;align-items:center;flex:none;border-radius:999px;padding:3px 9px;
+        font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px}
+  .arte.nova{background:var(--wine);color:#fff}
+  .arte.adapta{border:1px solid var(--wine);color:var(--wine)}
+  .arte.vazio{border:1px dashed var(--ink-faint);color:var(--ink-faint);text-transform:none;font-weight:500}
+  .arte.so-edicao{display:none}
+  body.editando .arte.so-edicao{display:inline-flex;cursor:pointer}
+  .ev span{min-width:0;flex:1}
+  .ev .am{margin-left:auto;flex:none;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.06em;
+          text-transform:uppercase;border-radius:999px;padding:1px 6px}
+  .ev .am.nova{background:var(--wine);color:#fff}
+  .ev .am.adapta{border:1px solid var(--wine);color:var(--wine)}
+  /* modo designer: so o que precisa de arte */
+  body.so-arte .bc:not(.tem-arte){display:none}
+  body.so-arte .ev:not(.tem-arte){display:none}
+  .gats{margin-top:15px;padding-top:14px;border-top:1px solid var(--hair);
+        display:flex;flex-direction:column;gap:10px}
+  .gl{font-size:var(--fs-sm);color:var(--ink-faint);letter-spacing:.02em}
+  .gt{display:grid;grid-template-columns:max-content 1fr;column-gap:14px;align-items:baseline}
+  .gt b{font-size:var(--fs-sm);font-weight:600;color:var(--wine);white-space:nowrap;
+        background:#F7EFF0;border-radius:999px;padding:3px 11px}
+  .gt p{font-size:var(--fs-md);color:var(--ink);line-height:1.5;white-space:pre-line}
+  @media(max-width:640px){ .gt{grid-template-columns:1fr;row-gap:4px} .gt b{justify-self:start} }
+
+  body.editando [data-e]{outline:1px dashed var(--line);outline-offset:3px;border-radius:3px;cursor:text;min-width:24px;display:inline-block}
+  body.editando [data-e]:hover{outline-color:var(--ink-soft);background:var(--tint)}
+  body.editando [data-e]:focus{outline:2px solid var(--wine);background:var(--paper)}
+  body.editando [data-vazio]{display:block!important;opacity:.55}
+  [data-vazio]{display:none}
+  [data-e].mudou{background:#FBF4E9;outline-color:var(--warn)}
+  .regra{margin-top:6px;font-size:var(--fs-sm);color:var(--warn);font-weight:500}
+
+  footer{padding:40px;font-size:var(--fs-sm);color:var(--ink-faint);max-width:1560px;margin:0 auto;
+         border-top:1px solid var(--hair);line-height:1.7;text-align:center}
+
+  @media (max-width:820px){
+    header,main{padding-left:18px;padding-right:18px}
+    footer{padding:32px 18px}
+    .hero{padding:44px 4px 36px}
+    .stats{grid-template-columns:1fr;gap:10px}
+    .cards{grid-template-columns:1fr}
+    .lg-note{margin-left:0;flex-basis:100%}
+    .navtitle{display:none}
+  }
+
+  /* ---------- primeira acao: um cartao so, informacao primeiro ---------- */
+  .acao{max-width:1120px;margin:0 auto;padding:0 4px 60px}
+  .acard{background:var(--tint);border-radius:24px;padding:28px 30px 10px}
+  .ahead{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .a-eyebrow{font-size:var(--fs-sm);font-weight:600;color:#0071E3;margin-bottom:2px}
+  .a-title{font-size:clamp(22px,3vw,30px);letter-spacing:-.025em;color:var(--ink)}
+  .a-when{font-size:var(--fs-md);font-weight:600;color:var(--ink);background:var(--paper);border-radius:999px;padding:6px 16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .aoffer{display:grid;grid-template-columns:1fr 1.25fr 1.25fr;gap:12px}
+  .aoffer.dois{grid-template-columns:1fr 1.6fr}
+  .a-sub{font-size:var(--fs-md);color:var(--ink-soft);margin:-12px 0 18px;max-width:70ch;line-height:1.5}
+  .group .acard{margin:6px 0 18px}
+  .aitem{background:var(--paper);border-radius:16px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .aitem.dark{background:#1D1D1F;color:#F5F5F7;justify-content:center;gap:8px}
+  .alab{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)}
+  .aitem.dark .alab{color:#86868B}
+  .afree{font-size:clamp(19px,2.1vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .afree span{display:block;background:linear-gradient(90deg,#2997FF,#5E5CE6);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ladder{display:flex;gap:8px;align-items:stretch}
+  .ladder>div{flex:1;background:var(--tint);border-radius:12px;padding:12px 4px 10px;text-align:center}
+  .lv{display:block;font-size:clamp(18px,2vw,24px);font-weight:700;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+  .lv.g2{background:linear-gradient(90deg,#0071E3,#2997FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lv.g3{background:linear-gradient(90deg,#5E5CE6,#BF5AF2);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ll{display:block;font-size:var(--fs-sm);color:var(--ink-faint);margin-top:3px;white-space:nowrap}
+  .achan2{margin:16px -30px 0;padding:12px 30px 16px;border-top:1px solid var(--hair);display:flex;flex-direction:column;gap:7px}
+  .chrow{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:baseline;font-size:var(--fs-md)}
+  .chrow b{font-weight:600;color:var(--ink)}
+  .chrow span{color:var(--ink-soft)}
+  @media(max-width:820px){
+    .aoffer{grid-template-columns:1fr}
+    .achan2{margin:16px -18px 0;padding:12px 18px 14px}
+    .acard{padding:22px 18px 6px}
+  }
+</style>
+</head>
+<body class="">
+
+<header>
+  <div class="nav">
+    <div class="navleft">
+      <span class="brand">Mira Vest</span>
+      <span class="navtitle">Plano de setembro</span>
+    </div>
+    <div class="hactions">
+      <div class="toggle">
+        <button id="btn-cal" class="on" type="button" aria-pressed="true">Calendário</button>
+        <button id="btn-brief" type="button" aria-pressed="false" class="">Briefing</button>
+      </div>
+      <button id="btn-arte" class="ghost" type="button" aria-pressed="false" title="Mostra só as ações que precisam de arte">O que precisa de arte</button>
+      <button id="btn-edit" class="ghost" type="button" aria-pressed="false">Editar</button>
+      <button id="btn-save" class="ghost primary" type="button" hidden="">Salvar</button>
+    </div>
+  </div>
+  <div id="editbar" hidden="">
+    <b>Modo edição.</b> Clique em qualquer texto para mudar. Ao terminar, clique em
+    <b>Salvar</b>. Na primeira vez o navegador pergunta qual arquivo: escolha o <b>setembro.html</b> da pasta do plano. Depois é só salvar. Campo vazio aparece em cinza: clique e escreva.
+    <span id="editcount"> · 22 campos alterados</span>
+    <div id="fsinfo"></div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <p class="eyebrow reveal in" style="transition-delay: 0ms;">Setembro 2026</p>
+  <h1 class="hero-t reveal in" style="transition-delay: 60ms;">O mês de colher<span class="grad"> e voltar a plantar.</span></h1>
+  <p class="hero-s reveal in" style="transition-delay: 120ms;">Aniversário do site, Dia do Cliente e a virada da vitrine pra Primavera/Verão.</p>
+  <div class="stats">
+    <div class="stat reveal in" style="transition-delay: 180ms;"><div class="sv">R$ 82 mil</div><div class="sl">meta de faturamento</div></div>
+    <div class="stat reveal in" style="transition-delay: 240ms;"><div class="sv">86</div><div class="sl">clientes novas</div></div>
+    <div class="stat reveal in" style="transition-delay: 240ms;"><div class="sv">23</div><div class="sl">ações no calendário<span>em 5 campanhas</span></div></div>
+  </div>
+</section>
+
+  
+
+<section id="view-cal" class="view on">
+<section class="acao" id="agora"></section>
+    <div class="pre" id="pre" style="display: none;"></div>
+    <div class="camps" id="camps"></div>
+    <div class="calwrap">
+      <div class="cal">
+        <div class="wdays"><div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div></div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </div>
+  </section>
+  <section id="view-brief" class="view"><div id="groups"></div></section>
+</main>
+
+<footer>
+Clique em qualquer ação do calendário para abrir o briefing dela, já marcado.
+  <br>Mira Vest · Setembro de 2026. A Primavera/Verão é preço cheio o mês inteiro. Percentual aparece no grupo VIP, no e-mail segmentado e nas praças definidas pra mídia. Nunca na home.
+</footer>
+
+<script>
+const FUN = {
+  topo:  {label:'Topo · descoberta',    short:'Topo',     c:'#FF9F0A', bg:'#FFF3E0'},
+  meio:  {label:'Meio · consideração',  short:'Meio',     c:'#30D158', bg:'#E7F8EC'},
+  fundo: {label:'Fundo · conversão',    short:'Fundo',    c:'#0A84FF', bg:'#E6F1FF'},
+  ret:   {label:'Retenção · base',      short:'Retenção', c:'#BF5AF2', bg:'#F6EBFD'}
+};
+
+/*DADOS_INICIO*/
+const CAMPS = {
+  aniv: {ini:'2026-09-03', fim:'2026-09-07', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Aniversário do site', per:'03 a 07/09 · 5 dias', meta:'Frete + progressivo + crédito', desc:'Cinco dias de oferta forte pra base'},
+  cliente: {ini:'2026-09-12', fim:'2026-09-15', c:'#FF375F', bg:'#FFE7EC', ct:'#C81E48', name:'Dia do Cliente', per:'aviso dia 11 · oferta de 12 a 15/09', meta:'Dois preços no outlet', desc:'Preço fechado por peça, que substitui o preço em vez de somar percentual. Junto vai o Sedex pela metade. O brinde entra em qualquer compra, sem valor mínimo, e qual será fica decidido até 10/09.'},
+  prima: {ini:'2026-09-16', fim:'2026-09-22', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'Primavera/Verão', per:'16 a 22/09 · lançamento dia 22', meta:'Preço cheio, sem desconto', desc:'A única campanha do mês sem desconto. A coleção sustenta o preço enquanto o resto do mês trabalha em oferta.'},
+  inverno: {ini:'2026-09-23', fim:'2026-09-30', c:'#0A84FF', bg:'#E3F0FF', ct:'#0057C2', name:'Saída do inverno', per:'23 a 30/09', meta:'Canal fechado', desc:'Última janela pra escoar o frio. O que não sair fica parado até o ano que vem.'},
+  aquis: {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Aquisição · o que muda o ano', per:'08 a 15/09', meta:'Trazer cliente nova', desc:'A frente que muda o ano, não o mês. Cliente nova não chega sozinha, precisa ser buscada.'}
+};
+
+const A = [
+{id:1, d:'2026-09-03', t:'9h', title:'Banner no site', camp:'aniv', fun:'topo', arte:'nova', star:true, of:'Frete grátis ou Sedex pela metade do preço', pub:'Todo tráfego do site, mulheres +40', ch:'Home do site', fmt:'Banner do topo desktop: 1920x600px\nBanner do topo mobile: 1080x1350px\nBanner categoria de produtos: 900x600px\nEstático ou vídeo', reg:'Sem percentual no banner', gat:{risc:'Frete grátis sem valor mínimo tira a barreira de sempre, e a troca é sem custo se não servir.'}},
+{id:2, d:'2026-09-03', t:'19h', title:'Abrir no VIP', camp:'aniv', fun:'ret', arte:'nova', star:true, of:'Frete grátis\nProgressivo: 1 peça 15%, 2 peças 25%, 3 peças 35%\nCrédito de aniversário: R$ 50 acima de R$ 300, R$ 100 acima de R$ 500, R$ 180 acima de R$ 800\nO crédito vale até 30/09', pub:'Grupos VIP do WhatsApp', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'Com os percentuais escritos\nO progressivo vale em peças selecionadas', gat:{fomo:'A grade não repõe... Peças com seus últimos tamanhos'}},
+{id:22, d:'2026-09-05', t:'10h30', title:'Seleção do sábado', camp:'aniv', fun:'fundo', arte:'adapta', of:'Mesma condição da abertura: frete grátis, progressivo e crédito', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Fotos do catálogo com o preço na imagem, 1080x1080px', gat:{cat:'peças que resolvem algum problema da cliente, uma mala pronta pra viagem, ou compra inteligente para proxima estação..'}},
+{id:3, d:'2026-09-04', title:'E-mail pra base', camp:'aniv', fun:'meio', arte:'nova', of:'Mesma oferta do VIP', pub:'Clientes +40', ch:'E-mail', fmt:'E-mail de 600px de largura\nTopo em 600x400px', reg:'Mesma condição do grupo, com os percentuais escritos', gat:{int:'Quebrar em blocos por intenção, não por categoria: pra quem trabalha fora, pra quem tem compromisso à noite, pra quem quer repor o básico.'}},
+{id:4, d:'2026-09-03', title:'Anúncio no Meta Ads', camp:'aniv', fun:'topo', arte:'nova', of:'Frete grátis\nMesma oferta do VIP\nÁreas verdes', pub:'Quem ainda não comprou na marca, e quem se parece com as clientes que mais compram', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, dia 02\nPublicar onde não tem lojistas (área verde)', gat:{risc:'Frete grátis sem valor mínimo Troca sem custos.'}},
+{id:5, d:'2026-09-07', t:'19h', title:'Último dia no VIP', camp:'aniv', fun:'fundo', arte:'adapta', of:'A mesma condição, até as 23h59', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte do dia 03 com tarja de último dia', reg:'Fecha a janela hoje às 23h59\nAvisa que o crédito já ganho vale até 30/09', gat:{fomo:'Urgência com hora: encerra às 23h59.'}},
+{id:15, d:'2026-09-11', t:'20h', title:'Véspera, aviso no VIP', camp:'cliente', fun:'ret', of:'Nenhuma. Só comunicação pro grupo VIP', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a hora de amanhã\nUm disparo, na noite anterior', gat:{fomo:'amanhã, 10h, aqui. Quem não abrir na hora entra depois de todo mundo.',anc:'Somente para o grupo vip ação exclusiva.'}, copy:'Exemplo:\nOi! Passando para te contar uma novidade em primeira mão 💛\nAmanhã, às 10h, tem algo especial por aqui. E como você é nossa cliente VIP, vai poder conhecer e escolher primeiro.'},
+{id:7, d:'2026-09-12', t:'10h', title:'Abrir no VIP', camp:'cliente', fun:'ret', arte:'nova', star:true, of:'Dois preços no outlet: R$ 149 e R$ 89\nSedex pela metade\nBrinde em qualquer compra, sem valor mínimo (ainda a definir)', pub:'Clientes VIP, mulheres +40', ch:'WhatsApp VIP', fmt:'Imagem quadrada: 1080x1080px', reg:'Peça até R$ 250 vai a R$ 89 no site\nPeça acima de R$ 250 vai a R$ 149 no site\nSomente peças de outlet\nDuas versões: uma arte com brinde incluído e outra sem. Focar na sem o brinde', gat:{fomo:'Escassez do estoque e de brinde... Escassez de antecipação de oferta antes de abrir para o publico aberto.'}, copy:'Exemplo:\nSabe aquela peça que você bate o olho e já imagina usando? Então aproveita: o Outlet abriu primeiro pra você.\n\nExemplo de arte:\nOUTLET VIP\nVocê escolhe primeiro. Peças Mira Vest por R$ 89 e R$ 149\n_Acesso antecipado para clientes VIP_\nAcesse o link'},
+{id:8, d:'2026-09-13', t:'9h', title:'Banner no site', camp:'cliente', fun:'fundo', arte:'nova', star:true, of:'Frete Sedex pela metade do preço\nBrinde, a definir até dia 10', pub:'Mulheres +40', ch:'Site', fmt:'Banner desktop: 1920x600px\nBanner mobile: 1080x1350px\nBanner categoria mobile: 900x600px', reg:'O banner leva só o 50% do Sedex e o brinde', gat:{}},
+{id:9, d:'2026-09-13', t:'11h', title:'E-mail pra base', camp:'cliente', fun:'meio', arte:'adapta', of:'Dois preços no outlet: R$ 149 e R$ 89\nSedex pela metade\nBrinde, a definir', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura\nArte do site adaptada', reg:'Mesma condição do grupo, tudo escrito: os dois preços, o 50% do Sedex e o brinde\nVai pra base inteira', gat:{int:'Três blocos por intenção de compra: resolver o trabalho, resolver o compromisso da noite, repor o que já acabou no armário.'}},
+{id:16, d:'2026-09-14', t:'19h', title:'Aviso de último dia', camp:'cliente', fun:'fundo', arte:'adapta', of:'A mesma condição, com data de fim anunciada', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de encerramento', reg:'A mensagem diz que termina amanhã, 15/09, às 23h59', gat:{fomo:'Aviso único, com data e hora. A força vem de a marca cumprir o prazo que anuncia.'}},
+{id:17, d:'2026-09-15', t:'10h', title:'Último dia no VIP', camp:'cliente', fun:'fundo', star:true, of:'A condição até as 23h59 de hoje', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a contagem até as 23h59 de hoje', gat:{fomo:'Hoje é a data e é o fechamento. Contagem por hora, com o que ainda tem tamanho.'}},
+{id:18, d:'2026-09-15', t:'11h', title:'Último dia por e-mail', camp:'cliente', fun:'meio', arte:'adapta', of:'A condição até as 23h59 de hoje', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura\nArte do site com tarja de último dia', reg:'Mesma condição do grupo, com o fim hoje às 23h59\nVai pra base inteira', gat:{fomo:'O prazo é o mecanismo: encerra às 23h59. Junto, as peças da prateleira que perderam tamanho desde sábado.'}},
+{id:6, d:'2026-09-09', title:'E-mail de resgate', camp:'aquis', fun:'ret', arte:'nova', of:'Cupom de retorno\nConvite pro grupo VIP', pub:'Quem comprou uma vez nos últimos 9 meses e não voltou', ch:'E-mail', fmt:'E-mail de 600px de largura', reg:'A condição vai em cupom, digitado no carrinho\nVale nas coleções até INV26\nNa mesma mensagem entra o convite pro grupo VIP', gat:{int:'A seleção parte do que ela já levou: peça que combina com a compra dela, não vitrine genérica.'}},
+{id:19, d:'2026-09-08', title:'Captação pro grupo VIP', camp:'aquis', fun:'topo', arte:'nova', of:'Nenhuma. A promessa é ver antes', pub:'Quem ainda não conhece a marca, nas praças definidas', ch:'Meta', fmt:'Estático 1080x1350px', reg:'Sobe na véspera, dia 07, e roda até sexta 11\nO criativo promete ver a condição antes do site\nO destino é o convite do grupo', gat:{fomo:'A condição do Dia do Cliente abre dentro do grupo, um dia antes do site. Quem entra depois de sábado já perdeu a vantagem.'}},
+{id:20, d:'2026-09-13', per:'13 a 15/09', title:'Prospecção no pico', camp:'aquis', fun:'topo', arte:'nova', of:'Dois preços no outlet: R$ 149 e R$ 89\nSedex pela metade\nBrinde, a definir', pub:'Quem ainda não comprou e quem está procurando peça de trabalho, nas praças definidas', ch:'Meta e Google, apontando pro site', fmt:'Estático 1080x1350px\nNo Google entra o catálogo, sem arte nova', reg:'Sobe na véspera, sábado 12, e roda até terça 15\nO preço em reais aparece no criativo\nPercentual não: o Sedex se escreve pela metade, sem o número', gat:{risc:'Primeira compra pede prova: frete claro e troca sem custo se não servir.'}},
+{id:10, d:'2026-09-18', title:'Vídeo na vitrine', camp:'prima', fun:'topo', arte:'nova', of:'Nenhuma. Preço cheio', pub:'Todo mundo que chega no site', ch:'Vitrine da home', fmt:'Vídeo 1080x1350px\nPoster do mesmo tamanho', reg:'A vitrine mostra a coleção a preço cheio\nO lançamento completo é anunciado só no dia 22', gat:{ant:'Vende preparo, não impulso: o tecido leve entra agora pra quando o calor chegar.'}},
+{id:11, d:'2026-09-20', title:'Styling de transição', camp:'prima', fun:'meio', arte:'nova', of:'Nenhuma. Preço cheio', pub:'Seguidores e público morno', ch:'Meta e Instagram', fmt:'Carrossel 1080x1350px, de 4 a 6 cartões', reg:'Carrossel de looks a preço cheio\nO lançamento completo é anunciado só no dia 22', gat:{int:'Resolve a dúvida de quem não sabe montar produção: a mesma peça em duas ocasiões.'}},
+{id:21, d:'2026-09-22', t:'10h', title:'Lançamento da coleção', camp:'prima', fun:'fundo', arte:'nova', star:true, of:'Nenhum desconto. Frete e condição de sempre', pub:'Base de e-mail, grupos VIP e quem ainda não comprou na marca', ch:'Site, WhatsApp VIP, e-mail, Meta e Google', fmt:'Site: banner de vídeo 1920x600px e 1080x1350px\nGrupo VIP: card 1080x1080px\nE-mail: 600px de largura\nMeta: dois vídeos 1080x1350px\nGoogle: catálogo, sem arte', reg:'A mídia paga sobe na véspera, dia 21\nA coleção entra completa e a preço cheio, em todos os canais no mesmo dia', gat:{ant:'A estação vira no mesmo dia em que a coleção entra. Quem escolhe agora veste o calor que está chegando, não o que já passou.'}},
+{id:23, d:'2026-09-25', title:'Troca o banner do lançamento', camp:'prima', fun:'meio', arte:'nova', of:'Nenhuma. Preço cheio', pub:'Todo mundo que chega no site', ch:'Banner do topo, desktop e mobile', fmt:'Banner desktop: 1920x600px\nBanner mobile: 1080x1350px\nEstático, sem vídeo', reg:'Entra no lugar do fashion film, que sai depois de quatro dias no ar\nMostra peça e preço, não a coleção inteira', gat:{cat:'O fashion film vendeu a estação. Este vende a peça: o que ela usa na segunda-feira.'}},
+{id:12, d:'2026-09-24', t:'19h', title:'Abrir no VIP', camp:'inverno', fun:'fundo', arte:'nova', of:'Condição de saída no inverno, só no grupo', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'Abre com os percentuais escritos, só no grupo\nVale nas peças de inverno', gat:{fomo:'Sai de linha e não volta: em outubro a vitrine é toda de verão.'}},
+{id:13, d:'2026-09-26', title:'E-mail segmentado', camp:'inverno', fun:'ret', arte:'nova', of:'A mesma condição de saída', pub:'Quem comprou peça de inverno em 2026\nNão vai pra base inteira', ch:'E-mail segmentado', fmt:'E-mail de 600px de largura', gat:{ant:'Ela já comprou frio uma vez: a mensagem é completar o guarda-roupa antes do próximo inverno.'}},
+{id:14, d:'2026-09-30', title:'Dia da Secretária', camp:'inverno', fun:'topo', arte:'nova', of:'Nenhuma', pub:'Seguidores', ch:'Instagram, post único', fmt:'Post único 1080x1350px', gat:{cat:'Fala da mulher que trabalha fora, que é o recorte de quem compra alfaiataria na loja.'}}
+];
+
+const B = [
+
+];
+
+const M = [
+
+];
+/*DADOS_FIM*/
+
+const SPECIAL = {
+ '2026-09-07':{tag:'Feriado · fecha o aniversário', note:'Último dia da ação. Só o disparo de fechamento à noite.'},
+ '2026-09-15':{tag:'Dia do Cliente', note:'A data mais forte de setembro na moda.'},
+ '2026-09-22':{tag:'Começa a primavera', note:'A estação vira e a coleção entra completa no mesmo dia.'}
+};
+
+const WD = ['dom','seg','ter','qua','qui','sex','sáb'];
+const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtDate = d => { const p=d.split('-').map(Number); return WD[new Date(p[0],p[1]-1,p[2]).getDay()]+' '+String(p[2]).padStart(2,'0')+'/'+String(p[1]).padStart(2,'0'); };
+
+/* card compacto do calendário */
+/* ação vem primeiro, o que trava o go-live desce pro pé do dia com divisória */
+function diaHtml(itens){
+  const acoes=itens.filter(i=>!i.bast), travas=itens.filter(i=>i.bast);
+  return acoes.map(miniCard).join('')+travas.map(miniCard).join('');
+}
+
+function miniCard(it){
+  /* padrao Apple Calendar: a pilula leva SO o nome. Hora, canal e selos moram no
+     briefing, um clique adiante. A cor e a da campanha, como agenda colorida. */
+  const isB = !!it.bast, k = isB ? 'bast' : it.fun;
+  const target = isB ? 'b-'+it.id : 'a-'+it.id;
+  const cp = !isB && it.camp && CAMPS[it.camp] ? CAMPS[it.camp] : null;
+  const st = cp ? ' style="--evc:'+(cp.ct||cp.c)+'"' : '';
+  const am=it.arte&&ARTE[it.arte]?'<em class="am '+it.arte+'">'+(it.arte==='nova'?'arte':'adaptar')+'</em>':'';
+  return '<button class="ev'+(isB?' bast':'')+(it.arte?' tem-arte':'')+'" data-fun="'+k+'" data-go="'+target+'"'+st+
+         ' type="button" title="'+esc(it.title)+'"><i></i><span>'+esc(it.title)+'</span>'+am+'</button>';
+}
+
+/* itens anteriores a 01/09 saem da grade e viram faixa compacta, sem semana vazia */
+function preStrip(){
+  const items = A.filter(a=>a.d<'2026-09-01').concat(B.filter(b=>b.d<'2026-09-01').map(b=>Object.assign({bast:true},b)))
+                 .sort((x,y)=>x.d.localeCompare(y.d));
+  if(!items.length){ document.getElementById('pre').style.display='none'; return; }
+  document.getElementById('pre').innerHTML =
+    '<div class="pt">Antes do mês</div><div class="pitems">'+
+    items.map(it=>'<div style="min-width:250px;flex:1">'+
+      '<div class="pd">'+fmtDate(it.d)+'</div>'+miniCard(it)+'</div>').join('')+'</div>';
+}
+
+/* Semana de domingo a sábado, como calendário de verdade. Os dias de agosto e
+   de outubro que fecham a primeira e a última linha aparecem apagados. */
+
+/* de quando a quando cada ação roda: a janela pinta o topo do dia com a cor dela.
+   As janelas não se cruzam, então cada dia pertence a uma campanha só. */
+function campDoDia(key){
+  for(const k in CAMPS){ const c=CAMPS[k]; if(c.ini && key>=c.ini && key<=c.fim) return k; }
+  return null;
+}
+
+function campsStrip(){
+  document.getElementById('camps').innerHTML =
+    ['aniv','cliente','prima','inverno','aquis'].map(k=>{
+      const c=CAMPS[k];
+      return '<span class="cpill"><i style="background:'+c.c+'"></i><b>'+
+             esc(c.name.split(' · ')[0])+'</b> '+esc(c.per)+'</span>';
+    }).join('');
+}
+function calendar(){
+  const IN=d=>d>='2026-09-01'&&d<='2026-09-30', byDate={};
+  A.filter(a=>IN(a.d)).forEach(a=>{(byDate[a.d]=byDate[a.d]||[]).push(a)});
+  B.filter(b=>IN(b.d)).forEach(b=>{(byDate[b.d]=byDate[b.d]||[]).push(Object.assign({bast:true},b))});
+
+  const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const um=new Date(2026,8,1), trinta=new Date(2026,8,30);
+  const ini=new Date(2026,8,1-um.getDay());          /* domingo que abre a primeira semana */
+  const fim=new Date(2026,8,30+(6-trinta.getDay())); /* sabado que fecha a ultima */
+
+  let h='';
+  for(const d=new Date(ini); d<=fim; d.setDate(d.getDate()+1)){
+    const key=iso(d), da=d.getDate();
+    if(!IN(key)){ h+='<div class="day out"><div class="dhead"><span class="dnum">'+da+'</span></div></div>'; continue; }
+    const sp=SPECIAL[key], ck=campDoDia(key), cp=ck?CAMPS[ck]:null;
+    /* o nome da campanha reaparece no domingo, senao a linha nova nasce sem titulo */
+    const nomeia=cp&&(key===cp.ini||d.getDay()===0);
+    h+='<div class="day'+(sp?' special':'')+'" id="dia-'+key+'">'+
+       '<div class="dhead"><span class="dnum">'+da+'</span></div>'+
+       (cp?'<div class="cbar'+(key===cp.ini?' ini':'')+(key===cp.fim?' fim':'')+
+           '" data-grp="'+ck+'" role="button" tabindex="0" title="'+esc(cp.name)+'"'+
+           ' style="background:'+cp.bg+';color:'+(cp.ct||cp.c)+'">'+
+           (nomeia?'<span>'+esc(cp.name.split(' · ')[0])+'</span>':'')+'</div>':'')+
+       (sp?'<div class="holi">'+esc(sp.tag)+'</div>':'')+
+       diaHtml(byDate[key]||[])+'</div>';
+  }
+  document.getElementById('grid').innerHTML=h;
+}
+
+/* ed() carimba o endereco do campo no elemento, pra edicao saber o que gravar */
+const ed=(end,campo)=> end?' data-e="'+end+'|'+campo+'"':'';
+/* no modo edicao o campo vazio tambem aparece, senao nao da pra preencher
+   o que falta. Fora do modo edicao ele continua invisivel. */
+const row=(l,v,end,campo)=> (v||end)
+  ? '<div class="pl"'+(v?'':' data-vazio="1"')+'>'+l+'</div>'
+   +'<div class="pv"'+ed(end,campo)+(v?'':' data-vazio="1"')+'>'+(v||'').replace(/R\$ /g,'R$ ')+'</div>'
+  : '';
+const fpill=k=>'<span class="fpill"><i style="background:'+FUN[k].c+'"></i>'+FUN[k].short+'</span>';
+
+/* gatilho por acao: o angulo que faz ela converter. A copy vem depois,
+   por canal, e parte daqui. */
+const GATL={fomo:'Escassez',int:'Intenção de compra',cat:'Categoria que resolve',
+            anc:'Ancoragem de valor',risc:'Redução de risco',ant:'Antecipação'};
+const GATO=['fomo','int','cat','anc','risc','ant'];
+function gatBox(g,end){
+  g=g||{};
+  const linhas=GATO.filter(k=>g[k]||end).map(k=>
+    '<div class="gt"'+(g[k]?'':' data-vazio="1"')+'><b>'+GATL[k]+'</b>'+
+    '<p'+ed(end,'gat.'+k)+'>'+esc(g[k]||'')+'</p></div>').join('');
+  return linhas?'<div class="gats"'+(GATO.some(k=>g[k])?'':' data-vazio="1"')+
+         '><div class="gl">Gatilho pra copy</div>'+linhas+'</div>':'';
+}
+
+/* A copy nasce vazia de proposito: ela e escrita depois, canal a canal,
+   a partir do gatilho logo acima. Fica no card pra nao viver em outro lugar. */
+function copyBox(txt,end){
+  const tem=txt&&String(txt).trim();
+  return '<div class="cpbox"'+(tem?'':' data-vazio="1"')+'>'+
+         '<div class="cpl">Copy</div>'+
+         '<p class="cpt"'+ed(end,'copy')+'>'+esc(tem?txt:'')+'</p></div>';
+}
+
+const ARTE={nova:'Arte nova',adapta:'Adaptar'};
+function arteTag(v,end){
+  if(!end) return '';
+  if(v&&ARTE[v]) return '<span class="arte so-edicao '+v+'" data-arte-end="'+end+'" title="clique pra trocar">'+ARTE[v]+'</span>';
+  return '<span class="arte so-edicao vazio" data-arte-end="'+end+'" title="clique pra marcar">arte?</span>';
+}
+
+function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte){
+  return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
+    (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
+    '<div class="bhead"><span class="bdate">'+dateLine+'</span>'+fpill(fun)+arteTag(arte,end)+'</div>'+
+    '<h3'+ed(end,'title')+'>'+esc(title)+'</h3>'+
+    '<div class="props">'+rowsHtml+'</div>'+
+    gatBox(gat,end)+copyBox(copy,end)+'</article>';
+}
+
+
+/* Painel de oferta por campanha, no mesmo desenho do 'Primeira acao'.
+   E o resumo que quem produz le antes dos cards. */
+const PAINEIS = {
+  aniv: {rotulo:'Primeira ação', quando:'03 a 07/09 · 5 dias',
+    blocos:[
+      {tipo:'dark', lab:'Pra todo mundo', big:'Frete grátis.', sub:'Sem valor mínimo.'},
+      {tipo:'ladder', lab:'Progressivo · INV26 e INV25', itens:[['15%','1 peça'],['25%','2 peças'],['35%','3 peças']]},
+      {tipo:'ladder', lab:'Crédito · pra usar até 30/09', itens:[['R$ 50','R$ 300+'],['R$ 100','R$ 500+'],['R$ 180','R$ 800+']]}],
+    canais:[['Grupo VIP','frete + progressivo + crédito, percentual aberto'],
+            ['Site','banner com frete grátis e crédito, sem percentual'],
+            ['Meta Ads','condição inteira: frete, progressivo e crédito'],
+            ['E-mail','igual ao VIP: frete, progressivo e crédito']]},
+
+  cliente: {rotulo:'A data do mês', quando:'12 a 15/09 · 4 dias',
+    blocos:[
+      {tipo:'dark', lab:'Só nas peças do outlet', big:'Dois preços.', sub:'R$ 149 e R$ 89.'},
+      {tipo:'ladder', lab:'Como o corte é feito', itens:[['R$ 89','peças até R$ 250'],['R$ 149','peças acima de R$ 250']]},
+      {tipo:'ladder', lab:'Junto, em qualquer compra', itens:[['Sedex 50%','sem valor mínimo'],['Brinde','em definição até 10/09']]}],
+    canais:[['Grupo VIP','dois preços, Sedex pela metade e brinde, tudo escrito'],
+            ['Site','Sedex pela metade e brinde no banner'],
+            ['Meta Ads','dois preços, Sedex e brinde'],
+            ['E-mail','igual ao VIP: dois preços, Sedex e brinde']]},
+
+  prima: {rotulo:'O lançamento', quando:'16 a 22/09 · lança dia 22',
+    blocos:[
+      {tipo:'dark', lab:'A regra do mês', big:'Preço cheio.', sub:'Nenhum desconto.'},
+      {tipo:'ladder', lab:'A semana até o lançamento', itens:[['Sex 18','vídeo na vitrine'],['Dom 20','styling de transição'],['Ter 22','coleção completa']]}],
+    dois:true,
+    canais:[['Site','vitrine com vídeo dia 18, coleção inteira dia 22'],
+            ['Meta e Instagram','styling dia 20, mídia do lançamento sobe dia 21'],
+            ['Grupo VIP e e-mail','lançamento dia 22, sem desconto']]},
+
+  inverno: {rotulo:'Fecha o inverno', quando:'23 a 30/09',
+    blocos:[
+      {tipo:'dark', lab:'Só em canal fechado', big:'Condição de saída.', sub:'Nunca na home.'},
+      {tipo:'ladder', lab:'Quando', itens:[['Qui 24','abre no VIP'],['Sáb 26','e-mail segmentado'],['Qua 30','último dia']]}],
+    dois:true,
+    canais:[['Grupo VIP','abre quinta com o percentual escrito'],
+            ['E-mail segmentado','só pra quem comprou inverno em 2026'],
+            ['Site e mídia','nada. O inverno não aparece em canal aberto']]},
+
+  aquis: {rotulo:'Cliente nova', quando:'08 a 15/09',
+    blocos:[
+      {tipo:'dark', lab:'O que muda o ano', big:'Trazer quem nunca comprou.', sub:'Três frentes.'},
+      {tipo:'ladder', lab:'Uma frente por dia', itens:[['Ter 08','captação pro VIP'],['Qua 09','e-mail de resgate'],['Dom 13','prospecção no pico']]}],
+    dois:true,
+    canais:[['Meta','captação sobe dia 07 e roda até sexta 11'],
+            ['E-mail','resgate de quem comprou uma vez e sumiu, com cupom'],
+            ['Meta e Google','prospecção de domingo 13 a terça 15, sobe sábado']]}
+};
+
+function painel(ck,rotulo){
+  const p=PAINEIS[ck], g=CAMPS[ck]; if(!p||!g) return '';
+  const grad=['','g2','g3',''];
+  const blocos=p.blocos.map(b=>{
+    if(b.tipo==='dark')
+      return '<div class="aitem dark"><span class="alab">'+esc(b.lab)+'</span>'+
+             '<div class="afree">'+esc(b.big)+'<span>'+esc(b.sub)+'</span></div></div>';
+    return '<div class="aitem"><span class="alab">'+esc(b.lab)+'</span><div class="ladder">'+
+           b.itens.map((it,i)=>'<div><span class="lv '+(grad[i]||'')+'">'+esc(it[0])+'</span><span class="ll">'+esc(it[1])+'</span></div>').join('')+
+           '</div></div>';
+  }).join('');
+  const canais=p.canais.map(c=>'<div class="chrow"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div>').join('');
+  return '<div class="acard">'+
+    '<div class="ahead"><div><p class="a-eyebrow">'+esc(rotulo||p.rotulo)+'</p><h2 class="a-title">'+esc(g.name.split(' · ')[0])+'</h2></div>'+
+    '<span class="a-when">'+esc(p.quando)+'</span></div>'+
+    '<p class="a-sub"'+ed('C:'+ck,'desc')+(g.desc?'':' data-vazio="1"')+'>'+esc(g.desc||'')+'</p>'+
+    '<div class="aoffer'+(p.dois?' dois':'')+'">'+blocos+'</div>'+
+    '<div class="achan2">'+canais+'</div></div>';
+}
+
+/* O destaque do calendario e a campanha do dia. Se nenhuma estiver no ar,
+   mostra a proxima. Depois do fim do mes, fica na ultima. */
+function agora(){
+  const el=document.getElementById('agora'); if(!el) return;
+  const hoje=(function(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})();
+  const com=Object.keys(CAMPS).filter(k=>CAMPS[k].ini&&CAMPS[k].fim).sort((a,b)=>CAMPS[a].ini.localeCompare(CAMPS[b].ini));
+  let ck=com.find(k=>hoje>=CAMPS[k].ini&&hoje<=CAMPS[k].fim), rot='Valendo agora';
+  if(!ck){ ck=com.find(k=>CAMPS[k].ini>hoje); rot='Próxima ação'; }
+  if(!ck){ ck=com[com.length-1]; rot='Última ação do mês'; }
+  el.innerHTML=painel(ck,rot);
+}
+
+function brief(){
+  const order=['aniv','cliente','prima','inverno','aquis'];
+  let h='';
+  order.forEach(ck=>{
+    const g=CAMPS[ck]; if(!g) return;   /* campanha que nao existe nao derruba o resto */
+    const list=A.filter(a=>a.camp===ck)
+                .sort((x,y)=>x.d.localeCompare(y.d)||((parseInt(x.t)||99)-(parseInt(y.t)||99)));
+    const items=list.map(a=>{const e='A:'+a.id; return briefCard('a-'+a.id,a.fun,
+      '<b>'+(a.per?esc(a.per):fmtDate(a.d))+'</b>'+(a.t?' · '+esc(a.t):'')+(a.star?' · <span class="star">✦</span>':''),
+      a.title,
+      row('Oferta',esc(a.of),e,'of')+row('Público',esc(a.pub),e,'pub')+
+      row('Canais',esc(a.ch),e,'ch')+row('Formato',esc(a.fmt),e,'fmt')+row('Regras',esc(a.reg),e,'reg'),
+      a.gat, a.copy, e, a.d, a.arte)}).join('');
+    h+='<section class="group" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
+       '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
+       painel(ck)+'<div class="cards">'+items+'</div></section>';
+  });
+  document.getElementById('groups').innerHTML=h;
+}
+
+function showView(v){
+  const cal=v==='cal', bc=document.getElementById('btn-cal'), bb=document.getElementById('btn-brief');
+  document.getElementById('view-cal').classList.toggle('on',cal);
+  document.getElementById('view-brief').classList.toggle('on',!cal);
+  bc.classList.toggle('on',cal); bb.classList.toggle('on',!cal);
+  bc.setAttribute('aria-pressed',String(cal)); bb.setAttribute('aria-pressed',String(!cal));
+  if(cal) document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
+}
+/* volta pro calendário e pisca o dia de onde o card veio */
+function voltarCal(dia){
+  showView('cal');
+  const el=document.getElementById('dia-'+dia);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+  setTimeout(()=>el.classList.remove('flash'),1400);
+}
+function goGroup(ck){
+  showView('brief');
+  const el=document.getElementById('grp-'+ck);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function goBrief(id){
+  showView('brief');
+  const el=document.getElementById('bc-'+id);
+  if(!el) return;
+  document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
+  el.classList.add('target');
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.setAttribute('tabindex','-1'); el.focus({preventScroll:true});
+}
+
+preStrip(); campsStrip(); calendar(); brief(); agora();
+
+document.getElementById('btn-cal').addEventListener('click',()=>showView('cal'));
+document.getElementById('btn-brief').addEventListener('click',()=>showView('brief'));
+document.addEventListener('click',e=>{
+  const at=e.target.closest('.arte[data-arte-end]');
+  if(at&&document.body.classList.contains('editando')){
+    const [arr,id]=at.dataset.arteEnd.split(':');
+    const alvo=(ARRAYS[arr]||[]).find(x=>String(x.id)===id); if(!alvo) return;
+    const ordem=['','nova','adapta'], prox=ordem[(ordem.indexOf(alvo.arte||'')+1)%3];
+    if(prox) alvo.arte=prox; else delete alvo.arte;
+    mudancas++; document.getElementById('editcount').textContent=' · '+mudancas+(mudancas>1?' campos alterados':' campo alterado');
+    brief(); calendar(); modoEdicao(true); return;
+  }
+  const volta=e.target.closest('.fromcal');
+  if(volta){ voltarCal(volta.dataset.back); return; }
+  const g=e.target.closest('.cbar[data-grp]');
+  if(g){ goGroup(g.dataset.grp); return; }
+  const c=e.target.closest('[data-go]'); if(c) goBrief(c.dataset.go);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'&&e.key!==' ') return;
+  if(document.body.classList.contains('editando')&&e.target.hasAttribute('data-e')) return;
+  const g=e.target.closest('.cbar[data-grp]');
+  if(g){ e.preventDefault(); goGroup(g.dataset.grp); return; }
+  const c=e.target.closest('[data-go]'); if(c){ e.preventDefault(); goBrief(c.dataset.go); }
+});
+
+/* ================= modo edição ================= */
+/* Os dados vivem nos arrays A, B e M. Cada texto na tela carrega data-e="A:12|title",
+   entao editar na tela grava direto no objeto. O download reescreve o bloco de dados
+   entre os marcadores e devolve o arquivo inteiro, pronto pra publicar. */
+
+const ARRAYS={A:A,B:B,M:M};
+let mudancas=0;
+
+/* avisa sem travar: as regras da casa que mais doem se passarem batido. */
+/* teto por canal: VIP e 1:1 podem escrever %, o resto e canal publico e nao pode */
+const CANAL_FECHADO=/whatsapp vip|whatsapp 1:1/i;
+function checarRegra(campo,txt,ch){
+  const t=(txt||'').toLowerCase(), avisos=[];
+  const arte=/^gat\./.test(campo);
+  const fechado=CANAL_FECHADO.test(ch||'');
+  if(arte&&!fechado&&/\d+\s*%|\boff\b/.test(t)) avisos.push('porcentagem não entra em arte de canal público');
+  if(/liquida|feirão|feirao|\bqueima\b|última chance|ultima chance|\bsale\b/.test(t))
+    avisos.push('palavra proibida em canal público');
+  if(/aproveite|\bcorra\b|\bgaranta\b|imperdível|imperdivel|não fique de fora|antes que acabe/.test(t))
+    avisos.push('palavra de urgência proibida');
+  if(arte&&/mais procurad|clientes amaram|tá saindo|ta saindo|já garantiram|ja garantiram/.test(t))
+    avisos.push('prova social: a regra da casa proíbe afirmar o que outras clientes fizeram');
+  if(/alonga a silhueta|afina|disfarça|disfarca a barriga/.test(t))
+    avisos.push('promessa de efeito no corpo');
+  if(/grade quebrada|\bsku\b|curva a/.test(t)) avisos.push('jargão de loja, a cliente não fala assim');
+  if(/atemporal|transcende|sofistica|exclusividade|requinte|curadoria|essência|essencia|impecáve|impecave|versátil|versatil/.test(t))
+    avisos.push('vocabulário de catálogo genérico, é o texto que a marca combate');
+  if(txt&&txt.indexOf(String.fromCharCode(8212))>=0) avisos.push('travessão');
+  return avisos;
+}
+
+/* Enter na edicao vira quebra de linha de verdade: cada linha e um item.
+   innerText enxerga os <div> que o navegador cria a cada Enter. */
+function texto(el){
+  return (el.innerText||el.textContent||'').replace(/\r\n?/g,'\n').replace(/\u00a0/g,' ')
+    .split('\n').map(s=>s.trim()).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+
+function gravar(el){
+  const [end,campo]=el.dataset.e.split('|');
+  const [arr,id]=end.split(':');
+  /* C: e a campanha, que mora num objeto e nao numa lista */
+  const alvo = arr==='C' ? CAMPS[id] : (ARRAYS[arr]||[]).find(x=>String(x.id)===id);
+  if(!alvo) return;
+  const txt=texto(el);
+  const p=campo.split('.');
+  if(p.length===1) alvo[p[0]]=txt;
+  else { alvo[p[0]]=alvo[p[0]]||{}; alvo[p[0]][p[1]]=txt; }
+
+  if(!el.classList.contains('mudou')){ el.classList.add('mudou'); mudancas++; }
+  const c=document.getElementById('editcount');
+  c.textContent=mudancas?' · '+mudancas+(mudancas>1?' campos alterados':' campo alterado'):'';
+
+  const ir=el.nextElementSibling;
+  if(ir&&ir.classList.contains('regra')) ir.remove();
+  const av=checarRegra(campo,txt,alvo.ch);
+  if(av.length){
+    const d=document.createElement('div');
+    d.className='regra'; d.textContent='⚠ '+av.join(' · ');
+    el.insertAdjacentElement('afterend',d);
+  }
+}
+
+function modoEdicao(on){
+  document.body.classList.toggle('editando',on);
+  document.getElementById('editbar').hidden=!on;
+  document.getElementById('btn-save').hidden=!on;
+  document.getElementById('btn-edit').setAttribute('aria-pressed',String(on));
+  document.getElementById('btn-edit').textContent=on?'Sair da edição':'Editar';
+  document.querySelectorAll('[data-e]').forEach(el=>{
+    if(on){ el.contentEditable='true'; el.spellcheck=false; }
+    else el.removeAttribute('contenteditable');
+  });
+}
+
+/* remonta o bloco de dados em JS valido, a partir dos arrays ja editados */
+function serializar(){
+  const q=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r\n?/g,'\n').replace(/\n/g,'\\n')+"'";
+  const val=v=>{
+    if(typeof v==='boolean') return String(v);
+    if(typeof v==='number') return String(v);
+    if(v&&typeof v==='object') return '{'+Object.keys(v).filter(k=>k!=='__e'&&v[k])
+      .map(k=>k+':'+q(v[k])).join(',')+'}';
+    return q(v);
+  };
+  const obj=o=>'{'+Object.keys(o).filter(k=>k!=='__e'&&o[k]!==undefined&&o[k]!=='')
+    .map(k=>k+':'+val(o[k])).join(', ')+'}';
+  const arr=(nome,a)=>'const '+nome+' = [\n'+a.map(obj).join(',\n')+'\n];';
+  const mapa=(nome,o)=>'const '+nome+' = {\n'+
+    Object.keys(o).map(k=>'  '+k+': '+obj(o[k])).join(',\n')+'\n};';
+  return '/*DADOS_INICIO*/\n'+mapa('CAMPS',CAMPS)+'\n\n'+arr('A',A)+'\n\n'+arr('B',B)+'\n\n'+arr('M',M)+'\n/*DADOS_FIM*/';
+}
+
+/* O arquivo montado: a pagina inteira, com o bloco de dados reescrito
+   a partir do que esta na memoria. Serve tanto pra gravar quanto pra baixar. */
+function montarHtml(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelector('body').classList.remove('editando');
+  ['grid','groups','pre','camps','agora'].forEach(id=>{
+    const n=clone.querySelector('#'+id); if(n) n.innerHTML='';
+  });
+  clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));
+  /* extensao de navegador carimba atributo no HTML. Nao e nosso, nao vai junto. */
+  /* o proprio <html> tambem, e nele que a extensao carimba */
+  [clone,...clone.querySelectorAll('*')].forEach(n=>[...n.attributes].forEach(at=>{
+    if(/^data-(lt|gr|gramm)/.test(at.name)) n.removeAttribute(at.name);
+  }));
+  const eb=clone.querySelector('#editbar'); if(eb) eb.hidden=true;
+  const bs=clone.querySelector('#btn-save'); if(bs) bs.hidden=true;
+  const be=clone.querySelector('#btn-edit');
+  if(be){ be.setAttribute('aria-pressed','false'); be.textContent='Editar'; }
+  /* a aba aberta na hora de salvar nao pode virar a aba padrao da pagina */
+  const vc=clone.querySelector('#view-cal'), vb=clone.querySelector('#view-brief');
+  if(vc) vc.classList.add('on'); if(vb) vb.classList.remove('on');
+  const bc=clone.querySelector('#btn-cal'), bb=clone.querySelector('#btn-brief');
+  if(bc){ bc.className='on'; bc.setAttribute('aria-pressed','true'); }
+  if(bb){ bb.className=''; bb.setAttribute('aria-pressed','false'); }
+  const sc=[...clone.querySelectorAll('script')].pop();
+  sc.textContent=sc.textContent.replace(/\/\*DADOS_INICIO\*\/[\s\S]*?\/\*DADOS_FIM\*\//,()=>serializar());
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+
+/* O navegador guarda a permissao pro arquivo escolhido. Guardamos o atalho
+   pra ele aqui, senao ele perguntaria de novo a cada visita. */
+const FSDB='mv_plano_arquivo';
+function bancoHandle(){
+  return new Promise((ok,err)=>{
+    const r=indexedDB.open(FSDB,1);
+    r.onupgradeneeded=()=>r.result.createObjectStore('h');
+    r.onsuccess=()=>ok(r.result); r.onerror=()=>err(r.error);
+  });
+}
+async function guardarHandle(x){
+  const d=await bancoHandle();
+  return new Promise((ok,err)=>{
+    const t=d.transaction('h','readwrite');
+    t.objectStore('h').put(x,location.pathname);
+    t.oncomplete=()=>ok(); t.onerror=()=>err(t.error);
+  });
+}
+async function lerHandle(){
+  try{
+    const d=await bancoHandle();
+    return await new Promise(ok=>{
+      const q=d.transaction('h','readonly').objectStore('h').get(location.pathname);
+      q.onsuccess=()=>ok(q.result||null); q.onerror=()=>ok(null);
+    });
+  }catch(e){ return null; }
+}
+/* Qual arquivo este plano pode gravar. Escolher outro apagaria a pagina
+   errada por inteiro, entao o nome e o conteudo sao conferidos antes. */
+const ALVO='setembro.html';
+/* Hora em que esta aba carregou. Se o arquivo no disco for mais novo que isso,
+   e porque a pagina mudou depois e esta aba esta velha: gravar apagaria o que
+   veio depois. Aconteceu em 02/09. */
+let sincronizadoEm=Date.now();
+const MARCA='Setembro 2026 · Mira Vest';
+async function conferirArquivo(x){
+  if(x.name!==ALVO)
+    return 'Você escolheu <b>'+x.name+'</b>, e esta página só grava no <b>'+ALVO+'</b>. Não gravei nada.';
+  try{
+    const t=await (await x.getFile()).text();
+    if(t.length>0 && t.indexOf(MARCA)<0)
+      return 'O arquivo que você escolheu não é a página do plano de setembro. Não gravei nada.';
+  }catch(e){ /* arquivo novo ou sem leitura: o nome ja foi conferido */ }
+  return null;
+}
+async function esquecerHandle(){
+  try{
+    const d=await bancoHandle();
+    d.transaction('h','readwrite').objectStore('h').delete(location.pathname);
+  }catch(e){}
+}
+function fsInfo(html){
+  const el=document.getElementById('fsinfo');
+  if(el) el.innerHTML=html||'';
+}
+
+async function podeEscrever(x){
+  const o={mode:'readwrite'};
+  if(await x.queryPermission(o)==='granted') return true;
+  return await x.requestPermission(o)==='granted';
+}
+
+function avisoSalvar(txt,ms){
+  const b=document.getElementById('btn-save');
+  b.textContent=txt; setTimeout(()=>b.textContent='Salvar', ms||2600);
+}
+
+/* baixar continua existindo como plano B, pra navegador que nao grava direto */
+function baixar(html){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
+  a.download='setembro.html'; a.click(); URL.revokeObjectURL(a.href);
+  avisoSalvar('Baixado');
+}
+
+async function salvar(){
+  const html=montarHtml();
+  if(!window.showSaveFilePicker){ baixar(html); return; }
+  try{
+    let x=await lerHandle();
+    if(x && !(await podeEscrever(x))) x=null;
+    if(!x){
+      x=await window.showSaveFilePicker({
+        suggestedName:ALVO,
+        types:[{description:'Página do plano',accept:{'text/html':['.html']}}]
+      });
+      const problema=await conferirArquivo(x);
+      if(problema){ fsInfo('⚠ '+problema+' <button type="button" class="trocar">escolher de novo</button>'); avisoSalvar('Arquivo errado',3000); return; }
+      await guardarHandle(x);
+    }
+    const arq=await x.getFile();
+    if(arq.lastModified > sincronizadoEm+2000){
+      const q=new Date(arq.lastModified).toLocaleString('pt-BR');
+      fsInfo('⚠ O arquivo mudou em '+q+', depois que esta aba foi aberta. '+
+             'Se eu gravar agora, apago o que veio depois. Atualize a página (Ctrl+F5) e refaça a edição. '+
+             '<button type="button" class="forcar">gravar assim mesmo</button>');
+      avisoSalvar('Não gravei',3500);
+      return;
+    }
+    const w=await x.createWritable();
+    await w.write(html); await w.close();
+    try{ sincronizadoEm=(await x.getFile()).lastModified; }catch(e){ sincronizadoEm=Date.now(); }
+    mudancas=0;
+    document.getElementById('editcount').textContent='';
+    document.querySelectorAll('.mudou').forEach(el=>el.classList.remove('mudou'));
+    fsInfo('Gravando em <b>'+x.name+'</b>. <button type="button" class="trocar">trocar de arquivo</button>');
+    avisoSalvar('Salvo em '+x.name);
+  }catch(e){
+    if(e && e.name==='AbortError') return;      /* fechou a janela de escolha */
+    avisoSalvar('Não deu, vou baixar',1200);
+    setTimeout(()=>baixar(html),1200);
+  }
+}
+
+document.getElementById('btn-edit').addEventListener('click',()=>
+  modoEdicao(!document.body.classList.contains('editando')));
+document.getElementById('btn-save').addEventListener('click',salvar);
+document.getElementById('btn-arte').addEventListener('click',()=>{
+  const on=!document.body.classList.contains('so-arte');
+  document.body.classList.toggle('so-arte',on);
+  document.getElementById('btn-arte').setAttribute('aria-pressed',String(on));
+});
+document.addEventListener('click',async e=>{
+  if(e.target.classList.contains('trocar')){
+    await esquecerHandle();
+    fsInfo('Esqueci o arquivo. No próximo Salvar eu pergunto de novo.');
+    return;
+  }
+  if(e.target.classList.contains('forcar')){
+    sincronizadoEm=Date.now();
+    fsInfo('Ok. Clique em Salvar de novo pra gravar por cima.');
+  }
+});
+document.addEventListener('focusout',e=>{
+  if(document.body.classList.contains('editando')&&e.target.hasAttribute&&e.target.hasAttribute('data-e'))
+    gravar(e.target);
+});
+window.addEventListener('beforeunload',e=>{ if(mudancas){ e.preventDefault(); e.returnValue=''; }});
+
+/* ================= revelacao no scroll ================= */
+/* So decoracao: cada bloco entra suave quando aparece. Com prefers-reduced-motion
+   o CSS ja deixa tudo visivel, entao aqui nao precisa checar. */
+(function(){
+  const alvos=[...document.querySelectorAll('.hero .eyebrow,.hero-t,.hero-s,.stat,.acard,.group')];
+  if(!('IntersectionObserver' in window)){ return; }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }),{threshold:.12});
+  alvos.forEach((el,i)=>{ el.classList.add('reveal'); el.style.transitionDelay=(Math.min(i,4)*60)+'ms'; io.observe(el); });
+})();
+</script>
+
+
+</body></html>

@@ -241,6 +241,7 @@
   .a-when{font-size:var(--fs-md);font-weight:600;color:var(--ink);background:var(--paper);border-radius:999px;padding:6px 16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
   .aoffer{display:grid;grid-template-columns:1fr 1.25fr 1.25fr;gap:12px}
   .aoffer.dois{grid-template-columns:1fr 1.6fr}
+  .aoffer.um{grid-template-columns:1fr}
   .a-sub{font-size:var(--fs-md);color:var(--ink-soft);margin:-12px 0 18px;max-width:70ch;line-height:1.5}
   .group .acard{margin:6px 0 18px}
   .aitem{background:var(--paper);border-radius:16px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
@@ -335,11 +336,11 @@ const FUN = {
 
 /*DADOS_INICIO*/
 const CAMPS = {
-  aniv: {ini:'2026-09-03', fim:'2026-09-07', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Aniversário do site', per:'03 a 07/09 · 5 dias', meta:'Frete + progressivo + crédito', desc:'Cinco dias de oferta forte pra base'},
-  cliente: {ini:'2026-09-12', fim:'2026-09-15', c:'#FF375F', bg:'#FFE7EC', ct:'#C81E48', name:'Dia do Cliente', per:'aviso dia 11 · oferta de 12 a 15/09', meta:'Dois preços no outlet', desc:'Preço fechado por peça, que substitui o preço em vez de somar percentual. Junto vai o Sedex pela metade. O brinde entra em qualquer compra, sem valor mínimo, e qual será fica decidido até 10/09.'},
-  prima: {ini:'2026-09-16', fim:'2026-09-22', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'Primavera/Verão', per:'16 a 22/09 · lançamento dia 22', meta:'Preço cheio, sem desconto'},
+  aniv: {ini:'2026-09-03', fim:'2026-09-07', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Aniversário do site', per:'03 a 07/09 · 5 dias', meta:'Frete + progressivo + crédito', desc:''},
+  cliente: {ini:'2026-09-12', fim:'2026-09-15', c:'#FF375F', bg:'#FFE7EC', ct:'#C81E48', name:'Dia do Cliente', per:'aviso dia 11 · oferta de 12 a 15/09', meta:'Dois preços no outlet', desc:'O preço fechado substitui o preço da peça. Não soma com percentual nem com outra promoção.'},
+  prima: {ini:'2026-09-16', fim:'2026-09-22', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'Primavera/Verão', per:'16 a 22/09 · lançamento dia 22', meta:'A única sem desconto'},
   inverno: {ini:'2026-09-23', fim:'2026-09-30', c:'#0A84FF', bg:'#E3F0FF', ct:'#0057C2', name:'Saída do inverno', per:'23 a 30/09', meta:'Canal fechado'},
-  aquis: {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Aquisição · o que muda o ano', per:'08/09 em diante', meta:'Trazer cliente nova', desc:'A frente que muda o ano, não o mês. Cliente nova não chega sozinha, precisa ser buscada.'}
+  aquis: {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Aquisição', per:'08/09 em diante', meta:'Trazer cliente nova', desc:'Dois grupos diferentes, que não recebem a mesma mensagem: o VIP já conhece a marca, o de Black Friday não.'}
 };
 
 const A = [
@@ -523,49 +524,46 @@ const PAINEIS = {
       {tipo:'dark', lab:'Pra todo mundo', big:'Frete grátis.', sub:'Sem valor mínimo.'},
       {tipo:'ladder', lab:'Progressivo · INV26 e INV25', itens:[['15%','1 peça'],['25%','2 peças'],['35%','3 peças']]},
       {tipo:'ladder', lab:'Crédito · pra usar até 30/09', itens:[['R$ 50','R$ 300+'],['R$ 100','R$ 500+'],['R$ 180','R$ 800+']]}],
-    canais:[['Grupo VIP','frete + progressivo + crédito, percentual aberto'],
-            ['Site','banner com frete grátis e crédito, sem percentual'],
-            ['Meta Ads','condição inteira: frete, progressivo e crédito'],
-            ['E-mail','igual ao VIP: frete, progressivo e crédito']]},
+    canais:[['Grupo VIP','os percentuais escritos'],
+            ['E-mail','igual ao VIP'],
+            ['Site','frete e crédito no banner. O progressivo não entra'],
+            ['Meta Ads','a condição inteira']]},
 
   cliente: {rotulo:'A data do mês', quando:'12 a 15/09 · 4 dias',
     blocos:[
       {tipo:'dark', lab:'Só nas peças do outlet', big:'Dois preços.', sub:'R$ 149 e R$ 89.'},
       {tipo:'ladder', lab:'Como o corte é feito', itens:[['R$ 89','peças até R$ 250'],['R$ 149','peças acima de R$ 250']]},
       {tipo:'ladder', lab:'Junto, em qualquer compra', itens:[['Sedex 50%','sem valor mínimo'],['Brinde','em definição até 10/09']]}],
-    canais:[['Grupo VIP','dois preços, Sedex pela metade e brinde, tudo escrito'],
-            ['Site','Sedex pela metade e brinde no banner'],
-            ['Meta Ads','dois preços, Sedex e brinde'],
-            ['E-mail','igual ao VIP: dois preços, Sedex e brinde']]},
+    canais:[['Grupo VIP','os dois preços escritos'],
+            ['E-mail','igual ao VIP'],
+            ['Site','Sedex e brinde no banner. Preço não'],
+            ['Meta Ads','preço em reais pode. Percentual não']]},
 
   prima: {rotulo:'O lançamento', quando:'16 a 22/09 · lança dia 22',
     blocos:[
-      {tipo:'dark', lab:'A regra do mês', big:'Preço cheio.', sub:'Nenhum desconto.'},
-      {tipo:'ladder', lab:'A semana até o lançamento', itens:[['Sex 18','vídeo na vitrine'],['Dom 20','styling de transição'],['Ter 22','coleção completa']]}],
-    dois:true,
-    canais:[['Site','vitrine com vídeo dia 18, coleção inteira dia 22'],
-            ['Meta e Instagram','styling dia 20, mídia do lançamento sobe dia 21'],
-            ['Grupo VIP e e-mail','lançamento dia 22, sem desconto']]},
+      {tipo:'dark', lab:'Vale o mês inteiro', big:'Preço cheio.', sub:'Nem no VIP.'}],
+    um:true,
+    canais:[['Site','vitrine antes, coleção inteira no dia 22'],
+            ['Meta e Instagram','a mídia sobe na véspera, dia 21'],
+            ['Grupo VIP e e-mail','no mesmo dia do site. Sem acesso antecipado']]},
 
   inverno: {rotulo:'Fecha o inverno', quando:'23 a 30/09',
     blocos:[
-      {tipo:'dark', lab:'Só em canal fechado', big:'Condição de saída.', sub:'Nunca na home.'},
-      {tipo:'ladder', lab:'Quando', itens:[['Qui 24','abre no VIP'],['Sáb 26','e-mail segmentado'],['Qua 30','último dia']]}],
-    dois:true,
-    canais:[['Grupo VIP','abre quinta com o percentual escrito'],
-            ['Grupo de Black Friday','mesma condição, com texto de primeiro contato'],
-            ['E-mail segmentado','só pra quem comprou inverno em 2026'],
-            ['Site e mídia','nada. O inverno não aparece em canal aberto']]},
+      {tipo:'dark', lab:'Falta definir', big:'Os percentuais.', sub:'Até quarta 23.'}],
+    um:true,
+    canais:[['Grupo VIP','os percentuais escritos'],
+            ['Grupo Black Friday','mesma condição, texto de primeiro contato'],
+            ['E-mail segmentado','só quem comprou inverno em 2026'],
+            ['Site e mídia','nada. Nunca na home']]},
 
   aquis: {rotulo:'Cliente nova', quando:'08/09 em diante',
     blocos:[
-      {tipo:'dark', lab:'O que muda o ano', big:'Trazer quem nunca comprou.', sub:'Quatro frentes.'},
-      {tipo:'ladder', lab:'As quatro frentes', itens:[['Ter 08','captação pro VIP'],['Qua 09','e-mail de resgate'],['Dom 13','prospecção no pico'],['Dom 20','grupo de Black Friday']]}],
-    dois:true,
-    canais:[['Meta · grupo VIP','sobe dia 07 e fica no ar, sem data de fim'],
-            ['Meta · grupo de Black Friday','sobe dia 19 e atravessa outubro'],
-            ['E-mail','resgate de quem comprou uma vez e sumiu, com cupom'],
-            ['Meta e Google','prospecção de domingo 13 a terça 15, sobe sábado']]}
+      {tipo:'dark', lab:'O que não pode misturar', big:'Dois grupos.', sub:'VIP e Black Friday.'}],
+    um:true,
+    canais:[['Meta · VIP','sobe dia 07 e não sai mais do ar'],
+            ['Meta · Black Friday','sobe dia 19 e atravessa outubro'],
+            ['E-mail','resgate com cupom, de quem comprou uma vez e sumiu'],
+            ['Meta e Google','prospecção, só na janela do Dia do Cliente']]}
 };
 
 function painel(ck,rotulo){
@@ -580,11 +578,15 @@ function painel(ck,rotulo){
            '</div></div>';
   }).join('');
   const canais=p.canais.map(c=>'<div class="chrow"><b>'+esc(c[0])+'</b><span>'+esc(c[1])+'</span></div>').join('');
-  return '<div class="acard">'+
-    '<div class="ahead"><div><p class="a-eyebrow">'+esc(rotulo||p.rotulo)+'</p><h2 class="a-title">'+esc(g.name.split(' · ')[0])+'</h2></div>'+
-    '<span class="a-when">'+esc(p.quando)+'</span></div>'+
+  /* No briefing o cabecalho do grupo ja diz nome e periodo logo acima, entao
+     o painel entra sem cabecalho. No calendario ele aparece sozinho e precisa. */
+  const cabeca = rotulo
+    ? '<div class="ahead"><div><p class="a-eyebrow">'+esc(rotulo)+'</p><h2 class="a-title">'+esc(g.name.split(' · ')[0])+'</h2></div>'+
+      '<span class="a-when">'+esc(p.quando)+'</span></div>'
+    : '';
+  return '<div class="acard">'+cabeca+
     '<p class="a-sub"'+ed('C:'+ck,'desc')+(g.desc?'':' data-vazio="1"')+'>'+esc(g.desc||'')+'</p>'+
-    '<div class="aoffer'+(p.dois?' dois':'')+'">'+blocos+'</div>'+
+    '<div class="aoffer'+(p.um?' um':(p.dois?' dois':''))+'">'+blocos+'</div>'+
     '<div class="achan2">'+canais+'</div></div>';
 }
 

@@ -1,9 +1,33 @@
 <script>
-/* Barra de carregamento no topo.
-   Um clique interno leva de 3,8 a 5,9 segundos ate a URL mudar, e nesse tempo nada muda na tela.
-   O Nuxt tem barra nativa e ela nao esta no ar; a cliente acha que nao clicou e clica de novo.
-   A demora e do servidor da Convertr e continua; esta tag so avisa que esta vindo.
-   REGRA DO INJETOR: nenhum sinal de menor-que e comentario so neste formato.
+/* CUSTOM JS DA MIRA VEST. BLOCO UNICO.
+   REGRA QUE NAO SE QUEBRA: a Convertr executa UM bloco script so nesta tag.
+   Um segundo bloco vira texto, quebra a sintaxe e derruba TUDO, inclusive o
+   que ja estava funcionando. Codigo novo entra DENTRO deste bloco, no fim,
+   nunca como script separado e nunca como tag nova.
+   Outras regras do injetor: nenhum sinal de menor-que no codigo, comentario
+   so neste formato, e ele achata tudo numa linha ao salvar. */
+
+/* 1. F5 volta pro topo.
+   O servidor manda a home quase vazia e banners e prateleiras chegam uns 2 segundos depois.
+   O navegador tentava devolver a rolagem antiga nessa pagina curta, caia no rodape e ficava preso la.
+   O tema liga essa devolucao na saida da pagina; isto desliga logo depois dele. */
+(function(){
+  if (window.__mvRolagemTopo) return;
+  window.__mvRolagemTopo = true;
+  if (!('scrollRestoration' in history)) return;
+  function manual(){ try { history.scrollRestoration = 'manual'; } catch (e) {} }
+  function ligar(){
+    window.addEventListener('beforeunload', manual);
+    window.addEventListener('pagehide', manual);
+  }
+  if (document.readyState === 'complete') ligar();
+  else window.addEventListener('load', ligar);
+})();
+
+/* 2. Barra de carregamento no topo.
+   Um clique interno leva de 3,8 a 5,9 segundos ate a URL mudar e nada muda na tela.
+   O Nuxt tem barra nativa e ela nao esta no ar; a cliente acha que nao clicou.
+   A demora e do servidor da Convertr e continua; isto so avisa que esta vindo.
    O CSS desta barra vive na tag de CSS, procure por mv-carregando. */
 (function(){
   if (window.__mvBarra) return;

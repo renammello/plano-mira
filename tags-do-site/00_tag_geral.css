@@ -51,7 +51,10 @@ header .menu>ul>li:first-child>a span{flex-direction:row !important}
 .cupom-bar .copiar:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(158,138,110,.5)}
 /* brilho em loop removido em 22/09/2026: e recurso de liquidacao, nao de colecao */
 .cupom-bar .copiar::before{display:none !important}
-.cms .navigation.appeals.menu__id-1344{background:transparent !important;padding:0 !important;border:0 !important}
+/* faixa do cupom vai de ponta a ponta, como todo o resto da pagina (22/09/2026).
+   Antes era uma caixa de 680px boiando com 600px de branco de cada lado, a unica
+   coisa estreita numa pagina inteira de 1891px. Agora o fundo e a banda. */
+.cms .navigation.appeals.menu__id-1344{background:#FAF8F3 !important;padding:0 !important;border-top:1px solid rgba(35,32,29,.10) !important;border-bottom:1px solid rgba(35,32,29,.10) !important;border-left:0 !important;border-right:0 !important;margin:10px 0 26px !important}
 .cms .appeals.menu__id-1344 .container,.cms .appeals.menu__id-1344 .col,.cms .appeals.menu__id-1344 .splide__track,.cms .appeals.menu__id-1344 .splide__list,.cms .appeals.menu__id-1344 .splide__slide,.cms .appeals.menu__id-1344 .splide__slide>div{width:100% !important;max-width:100% !important;padding:0 !important;margin:0 !important}
 .cms .navigation.appeals.menu__id-1344,.cms .appeals.menu__id-1344 .col,.cms .appeals.menu__id-1344 .splide,.cms .appeals.menu__id-1344 .splide__track,.cms .appeals.menu__id-1344 .splide__list,.cms .appeals.menu__id-1344 .splide__slide{height:auto !important;min-height:0 !important}
 .cms .appeals.menu__id-1344 .splide__track{overflow:visible !important}
@@ -565,17 +568,16 @@ header .menu>ul>li:first-child>a span{flex-direction:row !important}
 }
 
 /* ===== FAIXA DO CUPOM DA HOME (menu 1344) ===== */
-.cms .appeals.menu__id-1344,
-.cms .appeals.menu__id-1344 .splide__slide{background:none !important}
-.cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar{box-sizing:border-box !important;max-width:680px !important;margin:6px auto 22px !important;padding:14px 16px 14px 24px !important;gap:16px !important;justify-content:flex-start !important;align-items:center !important;background:#FAF8F3 !important;border:1px solid rgba(35,32,29,.12) !important;border-radius:4px !important}
+.cms .appeals.menu__id-1344 .splide__slide{background:transparent !important}
+.cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar{box-sizing:border-box !important;max-width:none !important;width:100% !important;margin:0 !important;padding:16px 24px !important;gap:18px !important;justify-content:center !important;align-items:center !important;background:transparent !important;border:none !important;border-radius:0 !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.texto{font-size:14px !important;font-weight:400 !important;color:#6b655c !important;letter-spacing:.01em !important;white-space:nowrap !important}
-.cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.codigo{margin-left:auto !important;font-size:15px !important;font-weight:500 !important;letter-spacing:.2em !important;padding:8px 13px 8px 16px !important;background:#fff !important;border:1px solid rgba(35,32,29,.18) !important;border-radius:2px !important;color:#23201D !important;cursor:pointer !important}
+.cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.codigo{margin-left:0 !important;font-size:15px !important;font-weight:500 !important;letter-spacing:.2em !important;padding:8px 13px 8px 16px !important;background:#fff !important;border:1px solid rgba(35,32,29,.18) !important;border-radius:2px !important;color:#23201D !important;cursor:pointer !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.exclusivo{display:none !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar{background:#23201D !important;background-image:none !important;color:#fff !important;border-radius:2px !important;padding:11px 24px !important;font-size:12px !important;font-weight:500 !important;letter-spacing:.14em !important;cursor:pointer !important;white-space:nowrap !important;box-shadow:none !important;transition:background-color .2s ease !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar:hover,
 .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar.ok{background:#9E8A6E !important}
 @media (max-width:768px){
-  .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar{flex-direction:row !important;flex-wrap:wrap !important;justify-content:center !important;gap:10px 12px !important;margin:4px 16px 18px !important;padding:14px 16px !important;border-radius:12px !important}
+  .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar{flex-direction:row !important;flex-wrap:wrap !important;justify-content:center !important;gap:10px 12px !important;margin:0 !important;padding:14px 16px !important;border-radius:0 !important}
   .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.texto{flex-basis:100% !important;text-align:center !important;font-size:12px !important;white-space:normal !important}
   .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.codigo{margin-left:0 !important;font-size:13px !important}
   .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar{font-size:10px !important;padding:9px 18px !important}

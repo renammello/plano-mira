@@ -83,3 +83,33 @@ header .menu>ul>li:first-child>a span{flex-direction:row !important}
 @media (max-width:768px){.cms .appeals.menu__id-1344 .splide__list .splide__slide span{font-size:12px !important;gap:10px !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide span.click__copy{font-size:17px !important;gap:10px !important}
 .cms .appeals.menu__id-1344 .splide__list .splide__slide span.click__copy::before{padding:8px 14px !important;font-size:10px !important}}
+
+/* ============================================================
+   CUPOM E VITRINE NO MESMO REGISTRO   22/09/2026
+   O bloco do cupom falava alto (peso 700/800, caixa tracejada,
+   botao com degrade e animacao de brilho em loop) e a vitrine
+   falava baixo (peso 300/400, cinza, letras espacadas). Duas
+   linguagens na mesma tela. Aqui o cupom desce pro tom da vitrine.
+   O prefixo 'body' existe de proposito: outra tag do painel tem
+   regras com span.codigo/span.texto e ganharia sem ele.
+   ============================================================ */
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar{background:#FAF8F3 !important;border-bottom:1px solid rgba(35,32,29,.10) !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.texto{font-size:13px !important;font-weight:400 !important;color:#6b655c !important;letter-spacing:.01em !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.texto b{font-weight:600 !important;color:#23201D !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.codigo{font-size:14px !important;font-weight:500 !important;letter-spacing:.2em !important;color:#23201D !important;background:#fff !important;border:1px solid rgba(35,32,29,.18) !important;border-radius:2px !important;padding:7px 12px 7px 15px !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.exclusivo{font-size:10px !important;font-weight:500 !important;color:#8c8579 !important;letter-spacing:.16em !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar{background:#23201D !important;background-image:none !important;font-size:10.5px !important;font-weight:500 !important;letter-spacing:.14em !important;padding:9px 20px !important;border-radius:2px !important;box-shadow:none !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar:hover{transform:none !important;box-shadow:none !important;background:#3a3631 !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar::before{display:none !important;animation:none !important}
+@media (max-width:768px){
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.texto{font-size:12px !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.codigo{font-size:13px !important}
+body .cms .appeals.menu__id-1344 .splide__list .splide__slide .cupom-bar span.copiar{font-size:10px !important}
+}
+
+/* vitrine no celular: o rotulo estava em 9px e a frase em 11px, letra de contrato */
+@media (max-width:767px){
+.multi-sliders__1::before{font-size:10.5px !important;letter-spacing:.22em !important;top:22px !important}
+.multi-sliders__1::after{top:44px !important}
+.multi-sliders__1 .container::after{font-size:12.5px !important}
+}

@@ -610,4 +610,16 @@ header .menu>ul>li:first-child>a span{flex-direction:row !important}
 .products-grid .imgs .hover{display:none !important}
 }
 
+/* OUTLET em vermelho no menu, como em toda loja (22/09/2026).
+   A cor e o #8B0204, que e a cor de verdade da marca. Ela nao e usada
+   no resto do site por leitura politica, mas em OUTLET vermelho le como
+   promocao e nao como cor de marca. Pega o texto e a setinha, nos dois
+   links de outlet do cabecalho (menu principal e "ver tudo" do submenu). */
+header a[href="/outlet/c"],
+header a[href="/outlet/c"] span,
+header a[href="/outlet/c"] span::after,
+header a[href="/outlet/c"] span::before{color:#8B0204 !important}
+header a[href="/outlet/c"]:hover,
+header a[href="/outlet/c"]:hover span{color:#6E0103 !important}
+
 </style>

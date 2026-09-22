@@ -1,11 +1,10 @@
 <script>
-/* CUSTOM JS DA MIRA VEST. BLOCO UNICO.
-   REGRA QUE NAO SE QUEBRA: a Convertr executa UM bloco script so nesta tag.
-   Um segundo bloco vira texto, quebra a sintaxe e derruba TUDO, inclusive o
-   que ja estava funcionando. Codigo novo entra DENTRO deste bloco, no fim,
-   nunca como script separado e nunca como tag nova.
-   Outras regras do injetor: nenhum sinal de menor-que no codigo, comentario
-   so neste formato, e ele achata tudo numa linha ao salvar. */
+/* TAG 2869 DA CONVERTR. CONTEUDO INTEIRO DESTA TAG.
+   Esta e a tag de JS que comprovadamente publica. Codigo novo entra AQUI
+   DENTRO, no fim, dentro do mesmo bloco script. Nunca como segundo bloco
+   script na mesma tag: o segundo vira texto e derruba tudo.
+   Regras do injetor: nenhum sinal de menor-que no codigo, comentario so
+   neste formato, sem acento, e ele achata tudo numa linha ao salvar. */
 
 /* 1. F5 volta pro topo.
    O servidor manda a home quase vazia e banners e prateleiras chegam uns 2 segundos depois.

@@ -30,7 +30,7 @@ mexer em qualquer coisa.
 | `00_tag_geral.css` | a tag grande de CSS do site | tudo: fontes, header, vitrines, barra do topo, barra do cupom |
 | `02_cabecalho_vitrines.css` | tag de CSS com `/* CABECALHO */` | o bloco "JÁ DISPONÍVEL / Primavera / Verão" e a grade das vitrines |
 | `03_tag_nova_colecao.css` | campo CSS da tag "Pré-lançamento V27" | fundo escuro e letra clara do selo nos produtos |
-| `04_barra_carregando.js` | **tag de JS**, fim do body | a barrinha de carregamento no topo (o CSS dela está no 00) |
+| `tag_2869.js` | **tag 2869**, a de JS que publica | conteúdo inteiro dela: F5 volta pro topo + barra de carregamento |
 
 A barra de apelos (três avisos parados) vive **dentro** do `00_tag_geral.css`,
 não é tag separada. Procure o comentário `BARRA DE APELOS` lá dentro.

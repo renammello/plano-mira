@@ -1,0 +1,18 @@
+/* SELO NOS PRODUTOS
+   Campo CSS personalizado da tag chamada "Pre-lancamento V27" no catalogo.
+   ATENCAO: o seletor procura a tag pelo NOME dela. Se renomear a tag no
+   painel, tem que trocar o nome aqui dentro das aspas na mesma hora,
+   senao o selo perde a formatacao nos 120 produtos.
+   Hoje: nome = Pre-lancamento V27  |  label que aparece = NOVA COLECAO */
+
+p[aria-label="Pré-lançamento V27"] {
+    background-color: #23201D !important;
+    color: #F5F1EA !important;
+    font-size: 9px !important;
+    font-weight: 600 !important;
+    padding: 3px 8px !important;
+    border-radius: 0 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase;
+}

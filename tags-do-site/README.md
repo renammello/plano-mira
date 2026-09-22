@@ -27,9 +27,17 @@ mexer em qualquer coisa.
 
 | Arquivo | Onde fica no painel | O que faz |
 |---|---|---|
-| `01_barra_de_apelos.css` | tag de CSS da barra do topo | três avisos parados no lugar do carrossel de seis |
+| `00_tag_geral.css` | a tag grande de CSS do site | tudo: fontes, header, vitrines, barra do topo, barra do cupom |
 | `02_cabecalho_vitrines.css` | tag de CSS com `/* CABECALHO */` | o bloco "JÁ DISPONÍVEL / Primavera / Verão" e a grade das vitrines |
 | `03_tag_nova_colecao.css` | campo CSS da tag "Pré-lançamento V27" | fundo escuro e letra clara do selo nos produtos |
+
+A barra de apelos (três avisos parados) vive **dentro** do `00_tag_geral.css`,
+não é tag separada. Procure o comentário `BARRA DE APELOS` lá dentro.
+
+> **Conflito conhecido:** `00_tag_geral.css` e `02_cabecalho_vitrines.css` mexem
+> os dois em `.multi-sliders__1`. Um manda em flex com três colunas, o outro em
+> grade. Hoje vence o que a Convertr carrega por último. Vale unificar quando
+> sobrar tempo.
 
 ## Cuidados com o injetor da Convertr
 

@@ -624,4 +624,20 @@ header a[href="/outlet/c"] span::before{color:#8B0204 !important}
 header a[href="/outlet/c"]:hover,
 header a[href="/outlet/c"]:hover span{color:#6E0103 !important}
 
+/* FAIXA DE CATEGORIAS: dizer que rola pro lado (22/09/2026).
+   Ela e um carrossel arrastavel (menu 1624) que vinha SEM seta e SEM pista
+   nenhuma. Numa tela de 375px a janela e de 347 para 720 de conteudo: as
+   pilulas Vestidos, Calcas e Blusas aparecem e Conjuntos, Saias e Blazers
+   ficam fora. Pior, Blusas terminava no pixel 367 com 8 de folga, entao
+   parecia que a lista tinha acabado.
+   Agora sobra 38px na direita: a ultima pilula fica cortada esmaecendo e a
+   seta ocupa esse espaco. Seta SEM circulo de proposito, pra ela ler como
+   pista e nao como botao, ja que quem rola a faixa e o arrasto do dedo.
+   So no celular e tablet: no computador as seis pilulas cabem. */
+@media (max-width:900px){
+.cms .appeals.menu__id-1624 .splide{position:relative !important;padding-right:38px !important}
+.cms .appeals.menu__id-1624 .splide::after{content:"" !important;position:absolute !important;top:0 !important;right:38px !important;bottom:0 !important;width:44px !important;pointer-events:none !important;z-index:4 !important;background:linear-gradient(to right, rgba(255,255,255,0) 0%, #fff 100%) !important}
+.cms .appeals.menu__id-1624 .splide::before{content:"\203A" !important;position:absolute !important;right:10px !important;top:50% !important;transform:translateY(-50%) !important;z-index:5 !important;pointer-events:none !important;font-family:var(--font-ui) !important;font-size:26px !important;font-weight:300 !important;line-height:1 !important;color:#a09889 !important}
+}
+
 </style>

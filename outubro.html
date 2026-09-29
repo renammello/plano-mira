@@ -399,7 +399,7 @@ function miniCard(it){
   const target = isB ? 'b-'+it.id : 'a-'+it.id;
   const cp = !isB && it.camp && CAMPS[it.camp] ? CAMPS[it.camp] : null;
   const st = cp ? ' style="--evc:'+(cp.ct||cp.c)+'"' : '';
-  const am=it.arte&&ARTE[it.arte]?'<em class="am '+it.arte+'">'+(it.arte==='nova'?'arte':'adaptar')+'</em>':'';
+  const am=it.arte&&ARTE[it.arte]?'<em class="am '+it.arte+'">'+(it.arte==='nova'?'arte':'adaptar arte')+'</em>':'';
   return '<button class="ev'+(isB?' bast':'')+(it.arte?' tem-arte':'')+'" data-fun="'+k+'" data-go="'+target+'"'+st+
          ' type="button" title="'+esc(it.title)+'"><i></i><span>'+esc(it.title)+'</span>'+am+'</button>';
 }
@@ -495,7 +495,7 @@ function copyBox(txt,end){
          '<p class="cpt"'+ed(end,'copy')+'>'+esc(tem?txt:'')+'</p></div>';
 }
 
-const ARTE={nova:'Arte nova',adapta:'Adaptar'};
+const ARTE={nova:'Arte nova',adapta:'Adaptar arte'};
 function arteTag(v,end){
   if(!end) return '';
   if(v&&ARTE[v]) return '<span class="arte so-edicao '+v+'" data-arte-end="'+end+'" title="clique pra trocar">'+ARTE[v]+'</span>';

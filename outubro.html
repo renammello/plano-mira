@@ -337,11 +337,11 @@ const FUN = {
 /*DADOS_INICIO*/
 const CAMPS = {
   frete: {ini:'2026-10-02', fim:'2026-10-03', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Frete grátis no VIP', per:'02 e 03/10 · 2 dias', meta:'Cupom FRETEOFF'},
-  mais: {ini:'2026-10-08', fim:'2026-10-12', c:'#FF375F', bg:'#FFE7EC', ct:'#C81E48', name:'Mais peças, mais descontos', per:'aviso dia 07 · 08 a 12/10', meta:'Progressivo na categoria'},
+  mais: {ini:'2026-10-08', fim:'2026-10-12', c:'#FF3B30', bg:'#FFE8E6', ct:'#C4221B', name:'Mais peças, mais descontos', per:'aviso dia 07 · 08 a 12/10', meta:'Progressivo na categoria'},
   verao: {ini:'2026-10-20', fim:'2026-10-21', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'15% OFF Verão 27', per:'20 e 21/10 · 48 horas', meta:'Só no grupo VIP'},
   pre: {ini:'2026-10-29', fim:'2026-11-01', c:'#1D1D1F', bg:'#E9E9EB', ct:'#1D1D1F', name:'Pré-Black', per:'29/10 a 01/11', meta:'Só VIPs e grupo da Black'},
   black: {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Lista VIP da Black', per:'05/10 até a Black', meta:'Grupo BLACK MIRA 2026'},
-  rosa: {c:'#FF2D8A', bg:'#FFE6F2', ct:'#B0105E', name:'Outubro Rosa', per:'05 a 25/10', meta:'Banner no site'},
+  rosa: {c:'#FF9CC8', bg:'#FFEEF6', ct:'#E0569A', name:'Outubro Rosa', per:'05 a 25/10', meta:'Banner no site'},
   rotina: {c:'#0A84FF', bg:'#E3F0FF', ct:'#0057C2', name:'Rotina do mês', per:'outubro inteiro', meta:'Grupo VIP e e-mail'}
 };
 
@@ -427,7 +427,7 @@ function campDoDia(key){
 
 function campsStrip(){
   document.getElementById('camps').innerHTML =
-    ['frete','mais','verao','pre','black','rosa','rotina'].map(k=>{
+    ['frete','mais','verao','pre','black','rosa'].map(k=>{
       const c=CAMPS[k];
       return '<span class="cpill"><i style="background:'+c.c+'"></i><b>'+
              esc(c.name.split(' · ')[0])+'</b> '+esc(c.per)+'</span>';

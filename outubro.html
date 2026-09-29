@@ -337,33 +337,33 @@ const FUN = {
 /*DADOS_INICIO*/
 const CAMPS = {
   frete: {ini:'2026-10-02', fim:'2026-10-03', c:'#FF9500', bg:'#FFEFD9', ct:'#B25000', name:'Frete grátis no VIP', per:'02 e 03/10 · 2 dias', meta:'Cupom FRETEOFF'},
-  mais: {ini:'2026-10-08', fim:'2026-10-12', c:'#FF3B30', bg:'#FFE8E6', ct:'#C4221B', name:'Mais peças, mais descontos', per:'aviso dia 07 · 08 a 12/10', meta:'Progressivo na categoria', desc:'As peças da ação ficam numa categoria do site, a "Mais peças, mais descontos", no ar segunda 05/10. O desconto vale só nela e aparece sozinho no carrinho. Na página de cupons entra uma seção do progressivo: no lugar do cupom, os percentuais e um botão que leva pra categoria. As peças da arte serão passadas pra designer.'},
+  mais: {ini:'2026-10-08', fim:'2026-10-12', c:'#FF3B30', bg:'#FFE8E6', ct:'#C4221B', name:'Mais peças, mais descontos', per:'aviso dia 07 · 08 a 12/10', meta:'Progressivo na categoria', desc:'As peças da ação ficam numa categoria do site, a "Mais peças, mais descontos", no ar segunda 05/10. O desconto vale só nela e aparece sozinho no carrinho. Na página de promoções entra uma seção do progressivo: no lugar do cupom, os percentuais e um botão que leva pra categoria. As peças da arte serão passadas pra designer.'},
   verao: {ini:'2026-10-20', fim:'2026-10-21', c:'#30D158', bg:'#E3F7E9', ct:'#177A3B', name:'15% OFF Verão 27', per:'20 e 21/10 · 48 horas', meta:'Só no grupo VIP'},
-  pre: {ini:'2026-10-29', fim:'2026-11-01', c:'#1D1D1F', bg:'#E9E9EB', ct:'#1D1D1F', name:'Pré-Black', per:'29/10 a 01/11', meta:'Só VIPs e grupo da Black', desc:'As peças ficam em 2 categorias do site, cada uma com o seu cupom na página de cupons. A Milena escolhe as peças até segunda 26/10 e passa pra Duda gravar o UGC e pra designer fazer a arte.'},
+  pre: {ini:'2026-10-29', fim:'2026-11-01', c:'#1D1D1F', bg:'#E9E9EB', ct:'#1D1D1F', name:'Pré-Black', per:'29/10 a 01/11', meta:'Só VIPs e grupo da Black', desc:'As peças ficam em 2 categorias do site, cada uma com o seu cupom na página de promoções. A Milena escolhe as peças até segunda 26/10 e passa pra Duda gravar o UGC e pra designer fazer a arte.'},
   black: {c:'#BF5AF2', bg:'#F3E8FB', ct:'#7E3FA6', name:'Lista VIP da Black', per:'05/10 até a Black', meta:'Grupo BLACK MIRA 2026'},
   rosa: {c:'#FF9CC8', bg:'#FFEEF6', ct:'#E0569A', name:'Outubro Rosa', per:'05 a 25/10', meta:'Banner no site'},
   rotina: {c:'#0A84FF', bg:'#E3F0FF', ct:'#0057C2', name:'Rotina do mês', per:'outubro inteiro', meta:'Grupo VIP e e-mail'}
 };
 
 const A = [
-{id:1, d:'2026-10-02', t:'10h', title:'Abrir no VIP', camp:'frete', fun:'ret', arte:'nova', star:true, of:'Frete grátis sem valor mínimo\nCupom FRETEOFF', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de cupons\nO link da mensagem vai pra página de cupons', gat:{risc:'Sem valor mínimo: a peça sozinha já vai sem frete.'}},
+{id:1, d:'2026-10-02', t:'10h', title:'Abrir no VIP', camp:'frete', fun:'ret', arte:'nova', star:true, of:'Frete grátis sem valor mínimo\nCupom FRETEOFF', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de promoções\nO link da mensagem vai pra página de promoções', gat:{risc:'Sem valor mínimo: a peça sozinha já vai sem frete.'}},
 {id:2, d:'2026-10-03', t:'10h', title:'Último dia no VIP', camp:'frete', fun:'fundo', of:'O frete grátis até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Termina hoje às 23h59.'}},
 {id:3, d:'2026-10-05', title:'Captação pro grupo da Black', camp:'black', fun:'topo', arte:'nova', star:true, of:'Nenhuma. A promessa é ver a Black antes', pub:'Quem ainda não conhece a marca, nas localizações liberadas\nQuem já comprou e não está em nenhum grupo', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, domingo 04, e roda até a Black\nO anúncio não fala de desconto\nO destino é o convite do grupo BLACK MIRA 2026', gat:{ant:'Quem está no BLACK MIRA 2026 vê a Black antes do site e escolhe antes de a peça sumir.'}},
 {id:4, d:'2026-10-05', title:'Banner Outubro Rosa', camp:'rosa', fun:'topo', arte:'nova', of:'Nenhuma. Banner pra lembrar', pub:'Todo tráfego do site', ch:'Site', fmt:'Banner desktop: 1920x600px\nBanner mobile: 1080x1350px', reg:'No ar de 05 a 25/10\nSem venda ligada ao banner', gat:{}},
-{id:5, d:'2026-10-07', t:'18h', title:'E-mail de véspera', camp:'mais', fun:'meio', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura', reg:'Sai quarta às 18h\nAvisa que abre quinta 08/10\nA arte mostra os percentuais\nO botão leva pra página de cupons', gat:{}},
+{id:5, d:'2026-10-07', t:'18h', title:'E-mail de véspera', camp:'mais', fun:'meio', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura', reg:'Sai quarta às 18h\nAvisa que abre quinta 08/10\nA arte mostra os percentuais\nO botão leva pra página de promoções', gat:{}},
 {id:6, d:'2026-10-07', t:'20h', title:'Véspera, aviso no VIP', camp:'mais', fun:'ret', of:'Nenhuma. Só o aviso de amanhã', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a hora de amanhã', gat:{}},
-{id:7, d:'2026-10-08', t:'10h', title:'Abrir no VIP', camp:'mais', fun:'ret', arte:'nova', star:true, of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O desconto aparece sozinho no carrinho: a cliente só coloca as peças\nA arte mostra os percentuais\nAs peças da arte serão passadas pra designer\nO link da mensagem leva pra página de cupons', gat:{anc:'A terceira peça entra com 35%: o look inteiro sai com o maior desconto.'}},
-{id:8, d:'2026-10-08', title:'Anúncio no Meta Ads', camp:'mais', fun:'topo', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Quem ainda não comprou, nas localizações liberadas', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, quarta 07, e roda até segunda 12\nAs peças da arte serão passadas pra designer\nO destino é a página de cupons', gat:{}},
+{id:7, d:'2026-10-08', t:'10h', title:'Abrir no VIP', camp:'mais', fun:'ret', arte:'nova', star:true, of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O desconto aparece sozinho no carrinho: a cliente só coloca as peças\nA arte mostra os percentuais\nAs peças da arte serão passadas pra designer\nO link da mensagem leva pra página de promoções', gat:{anc:'A terceira peça entra com 35%: o look inteiro sai com o maior desconto.'}},
+{id:8, d:'2026-10-08', title:'Anúncio no Meta Ads', camp:'mais', fun:'topo', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Quem ainda não comprou, nas localizações liberadas', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, quarta 07, e roda até segunda 12\nAs peças da arte serão passadas pra designer\nO destino é a página de promoções', gat:{}},
 {id:9, d:'2026-10-10', t:'10h', title:'Curadoria no VIP', camp:'mais', fun:'fundo', arte:'nova', of:'A mesma condição da abertura', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'4 cards 1080x1080px, 1 por peça\nFoto do catálogo, nome da peça e preço', reg:'As 4 peças saem da categoria da ação\nQuem escolhe as 4: e-commerce, até quarta 07/10', gat:{}},
 {id:10, d:'2026-10-12', t:'10h', title:'Último dia no VIP', camp:'mais', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Feriado e último dia: fecha hoje às 23h59.'}},
 {id:11, d:'2026-10-14', t:'10h', title:'Vídeo UGC do Verão 27', camp:'rotina', fun:'meio', of:'Nenhuma. Verão 27 a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Vídeo UGC vertical', gat:{}},
 {id:12, d:'2026-10-14', t:'18h', title:'E-mail do Verão 27', camp:'rotina', fun:'meio', arte:'adapta', of:'Nenhuma. Verão 27 a preço cheio', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura\nFrame do vídeo UGC no topo', reg:'Sai quarta às 18h', gat:{}},
 {id:13, d:'2026-10-05', per:'seg, qua e sex, nos dias sem campanha', t:'10h', title:'Curadoria no VIP', camp:'rotina', fun:'fundo', of:'Peças a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Fotos do catálogo com o preço na imagem, 1080x1080px', reg:'Só peças com grade cheia\nNão sai em dia de campanha', gat:{}},
-{id:14, d:'2026-10-20', t:'10h', title:'Abrir no VIP', camp:'verao', fun:'ret', arte:'nova', star:true, of:'15% no Verão 27\nCupom VERAOVIP15', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de cupons\nVale só nas peças do Verão 27\nNo site o Verão 27 segue a preço cheio', gat:{ant:'Só quem está no grupo leva a coleção nova com desconto, e só por 48 horas.'}},
+{id:14, d:'2026-10-20', t:'10h', title:'Abrir no VIP', camp:'verao', fun:'ret', arte:'nova', star:true, of:'15% no Verão 27\nCupom VERAOVIP15', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de promoções\nVale só nas peças do Verão 27\nNo site o Verão 27 segue a preço cheio', gat:{ant:'Só quem está no grupo leva a coleção nova com desconto, e só por 48 horas.'}},
 {id:15, d:'2026-10-21', t:'10h', title:'Último dia no VIP', camp:'verao', fun:'fundo', of:'O 15% até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'A coleção nova volta a preço cheio amanhã.'}},
 {id:16, d:'2026-10-21', t:'18h', title:'E-mail de último dia', camp:'verao', fun:'fundo', arte:'adapta', of:'O 15% no Verão 27 até as 23h59 de hoje\nCupom VERAOVIP15', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura\nA arte da abertura com tarja de último dia', reg:'Sai quarta às 18h', gat:{}},
 {id:17, d:'2026-10-28', t:'18h', title:'E-mail de véspera', camp:'pre', fun:'meio', arte:'nova', of:'Nenhuma. A promessa é entrar na pré-Black pelo grupo', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura', reg:'Sai quarta às 18h\nAvisa que a pré-Black abre quinta 29/10, só nos grupos\nO botão leva pro convite do grupo da Black', gat:{ant:'A pré-Black abre primeiro pra quem está nos grupos.'}},
-{id:18, d:'2026-10-29', t:'10h', title:'Abrir no VIP e no grupo da Black', camp:'pre', fun:'ret', arte:'nova', star:true, of:'Cupom por categoria\nPercentuais a definir', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nVídeo UGC das peças da pré-Black', reg:'Somente para VIPs e grupo da Black\nAs peças da arte serão passadas pra designer\nO link vai pra página de cupons', gat:{ant:'Quem está no grupo prova a Black antes de todo mundo.'}},
+{id:18, d:'2026-10-29', t:'10h', title:'Abrir no VIP e no grupo da Black', camp:'pre', fun:'ret', arte:'nova', star:true, of:'Cupom por categoria\nPercentuais a definir', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nVídeo UGC das peças da pré-Black', reg:'Somente para VIPs e grupo da Black\nAs peças da arte serão passadas pra designer\nO link vai pra página de promoções', gat:{ant:'Quem está no grupo prova a Black antes de todo mundo.'}},
 {id:19, d:'2026-10-31', t:'10h', title:'Curadoria', camp:'pre', fun:'fundo', arte:'nova', of:'A mesma condição da abertura', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'4 cards 1080x1080px, 1 por peça\nFoto do catálogo, nome da peça e preço', reg:'As 4 peças saem das 2 categorias da pré-Black\nQuem escolhe as 4: Milena, até segunda 26/10', gat:{}},
 {id:20, d:'2026-11-01', t:'10h', title:'Último dia', camp:'pre', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', arte:'adapta', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Fecha hoje às 23h59. A próxima condição é a da Black.'}}
 ];
@@ -519,13 +519,13 @@ const PAINEIS = {
     blocos:[
       {tipo:'dark', lab:'Só no grupo VIP', big:'Frete grátis.', sub:'Sem valor mínimo.'}],
     um:true,
-    canais:[['Grupo VIP','cupom FRETEOFF, na página de cupons']]},
+    canais:[['Grupo VIP','cupom FRETEOFF, na página de promoções']]},
 
   mais: {rotulo:'A ação do mês', quando:'08 a 12/10 · 5 dias',
     blocos:[
       {tipo:'dark', lab:'Direto no carrinho', big:'Sem código.', sub:'A cliente só coloca as peças.'},
       {tipo:'ladder', lab:'Progressivo · só na categoria da ação', itens:[['15%','1 peça'],['25%','2 peças'],['35%','3 ou mais']]}],
-    canais:[['Site','a seção do progressivo na página de cupons'],
+    canais:[['Site','a seção do progressivo na página de promoções'],
             ['Grupo VIP','os percentuais escritos'],
             ['E-mail','véspera, quarta 07 às 18h'],
             ['Meta Ads','só nas localizações liberadas']]},
@@ -534,7 +534,7 @@ const PAINEIS = {
     blocos:[
       {tipo:'dark', lab:'Só no grupo VIP', big:'15% no Verão 27.', sub:'Cupom VERAOVIP15.'}],
     um:true,
-    canais:[['Grupo VIP','o cupom na página de cupons'],
+    canais:[['Grupo VIP','o cupom na página de promoções'],
             ['E-mail','último dia, quarta 21 às 18h'],
             ['Site','Verão 27 a preço cheio']]},
 
@@ -542,7 +542,7 @@ const PAINEIS = {
     blocos:[
       {tipo:'dark', lab:'Falta definir', big:'Os percentuais das 2 categorias.', sub:'Até sexta 23/10.'}],
     um:true,
-    canais:[['Grupo VIP e grupo da Black','a página de cupons'],
+    canais:[['Grupo VIP e grupo da Black','a página de promoções'],
             ['E-mail','véspera, quarta 28 às 18h']]},
 
   black: {rotulo:'Cliente nova', quando:'05/10 até a Black',

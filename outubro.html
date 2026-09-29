@@ -353,7 +353,7 @@ const A = [
 {id:5, d:'2026-10-07', t:'18h', title:'E-mail de véspera', camp:'mais', fun:'meio', arte:'nova', of:'Amanhã abre o "Mais peças, mais descontos"\n1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'E-mail de 600px de largura', reg:'Sai quarta às 18h\nCom os percentuais escritos\nO botão leva pra página', gat:{}},
 {id:6, d:'2026-10-07', t:'20h', title:'Véspera, aviso no VIP', camp:'mais', fun:'ret', of:'Nenhuma. Só o aviso de amanhã', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a hora de amanhã', gat:{}},
 {id:7, d:'2026-10-08', t:'10h', title:'Abrir no VIP', camp:'mais', fun:'ret', arte:'nova', star:true, of:'Desconto aplicado direto na categoria, sem código\n1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'Com os percentuais escritos\nVale nas peças que não vendem e no inverno, só com grade cheia\nSem outlet e sem Verão 27\nO link vai pra página', gat:{anc:'A terceira peça entra com 35%: o look inteiro sai com o maior desconto.'}},
-{id:8, d:'2026-10-08', title:'Anúncio no Meta Ads', camp:'mais', fun:'topo', arte:'nova', of:'Mais peças, mais descontos\nAté 30% no criativo', pub:'Quem ainda não comprou, nas localizações liberadas', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, quarta 07, e roda até segunda 12\nSó nas localizações liberadas\nPercentual até 30% no criativo\nO destino é a página', gat:{}},
+{id:8, d:'2026-10-08', title:'Anúncio no Meta Ads', camp:'mais', fun:'topo', arte:'nova', of:'Mesma oferta do VIP\n1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Quem ainda não comprou, nas localizações liberadas', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, quarta 07, e roda até segunda 12\nSó nas localizações liberadas\nCom os percentuais escritos, igual ao VIP\nO destino é a página', gat:{}},
 {id:9, d:'2026-10-10', t:'10h', title:'Meio da janela no VIP', camp:'mais', fun:'fundo', arte:'adapta', of:'A mesma condição da abertura', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Fotos do catálogo com o preço na imagem, 1080x1080px', reg:'Só peças com grade cheia', gat:{}},
 {id:10, d:'2026-10-12', t:'10h', title:'Último dia no VIP', camp:'mais', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Feriado e último dia: fecha hoje às 23h59.'}},
 {id:11, d:'2026-10-14', t:'10h', title:'Vídeo UGC do Verão 27', camp:'rotina', fun:'meio', of:'Nenhuma. Verão 27 a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Vídeo UGC vertical', gat:{}},
@@ -527,7 +527,7 @@ const PAINEIS = {
       {tipo:'ladder', lab:'Progressivo · peças que não vendem e inverno', itens:[['15%','1 peça'],['25%','2 peças'],['35%','3 ou mais']]}],
     canais:[['Grupo VIP','os percentuais escritos'],
             ['E-mail','véspera, quarta 07 às 18h'],
-            ['Meta Ads','só nas localizações liberadas, até 30% no criativo']]},
+            ['Meta Ads','igual ao VIP, só nas localizações liberadas']]},
 
   verao: {rotulo:'Coleção nova', quando:'20 e 21/10 · 48 horas',
     blocos:[

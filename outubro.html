@@ -277,8 +277,8 @@
     </div>
     <div class="hactions">
       <div class="toggle">
-        <button id="btn-cal" class="on" type="button" aria-pressed="true">Calendário</button>
-        <button id="btn-brief" type="button" aria-pressed="false" class="">Briefing</button>
+        <button id="btn-cal" type="button" aria-pressed="false">Calendário</button>
+        <button id="btn-brief" class="on" type="button" aria-pressed="true">Briefing</button>
       </div>
       <button id="btn-arte" class="ghost" type="button" aria-pressed="false" title="Mostra só as ações que precisam de arte">O que precisa de arte</button>
       <button id="btn-edit" class="ghost" type="button" aria-pressed="false">Editar</button>
@@ -307,7 +307,7 @@
 
   
 
-<section id="view-cal" class="view on">
+<section id="view-cal" class="view">
 <section class="acao" id="agora"></section>
     <div class="pre" id="pre" style="display: none;"></div>
     <div class="camps" id="camps"></div>
@@ -318,7 +318,7 @@
       </div>
     </div>
   </section>
-  <section id="view-brief" class="view"><div id="groups"></div></section>
+  <section id="view-brief" class="view on"><div id="groups"></div></section>
 </main>
 
 <footer>
@@ -427,7 +427,7 @@ function campDoDia(key){
 
 function campsStrip(){
   document.getElementById('camps').innerHTML =
-    ['frete','mais','verao','pre','black','rosa'].map(k=>{
+    ['black','rosa'].map(k=>{
       const c=CAMPS[k];
       return '<span class="cpill"><i style="background:'+c.c+'"></i><b>'+
              esc(c.name.split(' · ')[0])+'</b> '+esc(c.per)+'</span>';
@@ -655,6 +655,7 @@ function goBrief(id){
 }
 
 preStrip(); campsStrip(); calendar(); brief(); agora();
+showView('brief');   /* a equipe vai direto no briefing (pedido do Renam, 29/09) */
 
 document.getElementById('btn-cal').addEventListener('click',()=>showView('cal'));
 document.getElementById('btn-brief').addEventListener('click',()=>showView('brief'));

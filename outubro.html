@@ -170,6 +170,11 @@
   .day.flash{animation:diaflash 1.3s ease-in-out}
 
   .bhead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .prod{margin:4px 0 10px;padding:9px 12px;border-radius:10px;background:#FFF1DC;color:#7A4100;font-size:13px;font-weight:600;line-height:1.35}
+  .prod b{font-weight:800;color:#5A2F00}
+  .prod.hoje{background:#FFE3B8}
+  .prod.atrasada{background:#FDE2E1;color:#A1231B}
+  .prod.atrasada b{color:#7F1812}
   .bdate{font-size:var(--fs-sm);color:var(--ink-faint)}
   .bdate b{color:var(--ink);font-weight:600}
   .bc h3{font-size:19px;line-height:1.3;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px}
@@ -354,7 +359,7 @@ const A = [
 {id:6, d:'2026-10-07', t:'20h', title:'Véspera, aviso no VIP', camp:'mais', fun:'ret', of:'Nenhuma. Só o aviso de amanhã', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a hora de amanhã', gat:{}},
 {id:7, d:'2026-10-08', t:'10h', title:'Abrir no VIP', camp:'mais', fun:'ret', arte:'nova', star:true, of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O desconto aparece sozinho no carrinho: a cliente só coloca as peças\nA arte mostra os percentuais\nAs peças da arte serão passadas pra designer\nO link da mensagem leva pra página de promoções', gat:{anc:'A terceira peça entra com 35%: o look inteiro sai com o maior desconto.'}},
 {id:8, d:'2026-10-08', title:'Anúncio no Meta Ads', camp:'mais', fun:'topo', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Quem ainda não comprou, nas localizações liberadas', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, quarta 07, e roda até segunda 12\nAs peças da arte serão passadas pra designer\nO destino é a página de promoções', gat:{}},
-{id:9, d:'2026-10-10', t:'10h', title:'Curadoria no VIP', camp:'mais', fun:'fundo', arte:'nova', of:'A mesma condição da abertura', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'4 cards 1080x1080px, 1 por peça\nFoto do catálogo, Tipo de peça e preço', reg:'As 4 peças saem da categoria da ação\nQuem escolhe as 4: e-commerce, até quarta 07/10', gat:{}},
+{id:9, d:'2026-10-10', t:'10h', title:'Curadoria no VIP', camp:'mais', fun:'fundo', arte:'nova', of:'A mesma condição da abertura', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'4 cards 1080x1080px, 1 por peça\nFoto do catálogo, Tipo de peça e preço', reg:'As 4 peças saem da categoria da ação\nQuem escolhe as 4: e-commerce, até segunda 05/10', gat:{}},
 {id:10, d:'2026-10-12', t:'10h', title:'Último dia no VIP', camp:'mais', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Feriado e último dia: fecha hoje às 23h59.'}},
 {id:11, d:'2026-10-14', t:'10h', title:'Vídeo UGC do Verão 27', camp:'rotina', fun:'meio', of:'Nenhuma. Verão 27 a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Vídeo UGC vertical', gat:{}},
 {id:12, d:'2026-10-14', t:'18h', title:'E-mail do Verão 27', camp:'rotina', fun:'meio', arte:'adapta', of:'Nenhuma. Verão 27 a preço cheio', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado: frames do vídeo UGC', reg:'Sai quarta às 18h', gat:{}},
@@ -502,10 +507,24 @@ function arteTag(v,end){
   return '<span class="arte so-edicao vazio" data-arte-end="'+end+'" title="clique pra marcar">arte?</span>';
 }
 
-function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte){
+/* Producao da arte: 5 dias antes do dia em que a arte precisa estar pronta.
+   Anuncio do Meta sobe na vespera, entao conta a partir da vespera. */
+function prodHtml(a){
+  if(!a.arte) return '';
+  const p=a.d.split('-').map(Number), d=new Date(p[0],p[1]-1,p[2]);
+  if(/Meta/.test(a.ch||'')) d.setDate(d.getDate()-1);
+  d.setDate(d.getDate()-5);
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const txt=WD[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+  if(d<hoje) return '<div class="prod atrasada">Produção da arte atrasada: era pra começar <b>'+txt+'</b></div>';
+  if(+d===+hoje) return '<div class="prod hoje">Produção da arte começa hoje, <b>'+txt+'</b></div>';
+  return '<div class="prod">Produção da arte começa <b>'+txt+'</b></div>';
+}
+function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH){
   return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
     (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
     '<div class="bhead"><span class="bdate">'+dateLine+'</span>'+fpill(fun)+arteTag(arte,end)+'</div>'+
+    (prodH||'')+
     '<h3'+ed(end,'title')+'>'+esc(title)+'</h3>'+
     '<div class="props">'+rowsHtml+'</div>'+
     gatBox(gat,end)+copyBox(copy,end)+'</article>';
@@ -615,7 +634,7 @@ function brief(){
       a.title,
       row('Oferta',esc(a.of),e,'of')+row('Público',esc(a.pub),e,'pub')+
       row('Canais',esc(a.ch),e,'ch')+row('Formato',esc(a.fmt),e,'fmt')+row('Regras',esc(a.reg),e,'reg'),
-      a.gat, a.copy, e, a.d, a.arte)}).join('');
+      a.gat, a.copy, e, a.d, a.arte, prodHtml(a))}).join('');
     h+='<section class="group" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+num+'. '+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
        '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
        painel(ck)+'<div class="cards">'+items+'</div></section>';

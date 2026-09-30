@@ -371,7 +371,7 @@ const A = [
 {id:15, d:'2026-10-21', t:'10h', title:'Último dia no VIP', camp:'verao', fun:'fundo', of:'O 15% até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'A coleção nova volta a preço cheio amanhã.'}},
 {id:16, d:'2026-10-21', t:'18h', title:'E-mail de último dia', camp:'verao', fun:'fundo', arte:'adapta', of:'O 15% no Verão 27 até as 23h59 de hoje\nCupom VERAOVIP15', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado, com tarja de último dia', reg:'Sai quarta às 18h', gat:{}},
 {id:17, d:'2026-10-28', t:'18h', title:'E-mail de véspera', camp:'pre', fun:'meio', arte:'nova', of:'Nenhuma. A promessa é entrar na pré-Black pelo grupo', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado: corpo inteiro e close da mesma peça', reg:'Sai quarta às 18h\nAvisa que a pré-Black abre quinta 29/10, só nos grupos\nO botão leva pra página do grupo da Black', gat:{ant:'A pré-Black abre primeiro pra quem está nos grupos.'}},
-{id:18, d:'2026-10-29', t:'10h', title:'Abrir no VIP e no grupo da Black', camp:'pre', fun:'ret', arte:'nova', star:true, of:'Cupom por categoria\nPercentuais a definir', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nVídeo UGC das peças da pré-Black', reg:'Somente para VIPs e grupo da Black\nAs peças da arte serão passadas pra designer\nO link vai pra página de promoções', gat:{ant:'Quem está no grupo prova a Black antes de todo mundo.'}},
+{id:18, d:'2026-10-29', t:'10h', title:'Abrir no VIP e no grupo da Black', camp:'pre', ugc:true, fun:'ret', arte:'nova', star:true, of:'Cupom por categoria\nPercentuais a definir', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nVídeo UGC das peças da pré-Black', reg:'Somente para VIPs e grupo da Black\nAs peças da arte serão passadas pra designer\nO link vai pra página de promoções', gat:{ant:'Quem está no grupo prova a Black antes de todo mundo.'}},
 {id:19, d:'2026-10-31', t:'10h', title:'Curadoria', camp:'pre', fun:'fundo', arte:'nova', of:'A mesma condição da abertura', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', ch:'WhatsApp VIP e grupo da Black', fmt:'4 cards 1080x1080px, 1 por peça\nFoto do catálogo, nome da peça e preço', reg:'As 4 peças saem das 2 categorias da pré-Black\nQuem escolhe as 4: Milena, até segunda 26/10', gat:{}},
 {id:20, d:'2026-11-01', t:'10h', title:'Último dia', camp:'pre', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP\nGrupo BLACK MIRA 2026', arte:'adapta', ch:'WhatsApp VIP e grupo da Black', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Fecha hoje às 23h59. A próxima condição é a da Black.'}}
 ];
@@ -521,6 +521,28 @@ function prodHtml(a){
   /* sempre neutro: sem aviso de atrasada nem de hoje (pedido do Renam, 30/09) */
   return '<div class="prod">Início da produção da arte: <b>'+txt+'</b></div>';
 }
+/* UGC: a Milena seleciona as pecas em 1 dia e a Duda precisa de 1 mes ate o video ir ao ar.
+   Conta de tras pra frente a partir do dia da publicacao. Selecao no fim de semana volta pra sexta.
+   Toda acao com ugc:true ganha a linha no card e na caixa da equipe e-commerce. */
+function ugcDatas(dstr){
+  const p=dstr.split('-').map(Number), pub=new Date(p[0],p[1]-1,p[2]);
+  const ult=new Date(p[0],p[1]-1,0).getDate();
+  const ini=new Date(p[0],p[1]-2,Math.min(p[2],ult));            /* Duda comeca: 1 mes antes */
+  const fim=new Date(pub); fim.setDate(fim.getDate()-1);          /* Duda entrega: vespera */
+  const sel=new Date(ini); sel.setDate(sel.getDate()-1);          /* Milena seleciona: 1 dia */
+  while(sel.getDay()===0||sel.getDay()===6) sel.setDate(sel.getDate()-1);
+  const f=d=>WD[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+  return {sel:f(sel), ini:f(ini), fim:f(fim), pub:f(pub)};
+}
+function ugcTexto(nome,dstr){
+  const u=ugcDatas(dstr);
+  return 'UGC '+nome+' ('+u.pub+'): Milena seleciona as peças '+u.sel+' · Duda grava de '+u.ini+' a '+u.fim;
+}
+function ugcHtml(a){
+  if(!a.ugc) return '';
+  const u=ugcDatas(a.d);
+  return '<div class="prod">UGC: Milena seleciona as peças <b>'+u.sel+'</b> · Duda grava de <b>'+u.ini+'</b> a <b>'+u.fim+'</b></div>';
+}
 function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH){
   return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
     (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
@@ -638,15 +660,19 @@ const ECOM = {
   verao: ['Aprovar o 15% com a diretoria',
           'Criar o cupom VERAOVIP15: 15% só no Verão 27, 20 e 21/10',
           'Pôr o cupom na página de promoções'],
-  pre:   ['Milena seleciona as peças da pré-Black e passa pra Duda gravar o UGC',
-          'Definir os percentuais das 2 categorias até sexta 23/10',
-          'Montar as 2 categorias do site com as peças que não vendem, cada uma com o seu cupom na página de promoções',
-          'Peças da Black (27/11): a Milena passa pra Duda até terça 27/10. O UGC precisa de 1 mês'],
+  pre:   ['Definir os percentuais das 2 categorias até sexta 23/10',
+          'Montar as 2 categorias do site com as peças que não vendem, cada uma com o seu cupom na página de promoções'],
   rotina:['Montar os e-mails de quarta na Brevo: 07, 14, 21 e 28/10, às 18h',
           'Separar as peças das curadorias de segunda, quarta e sexta']
 };
+/* UGC que nao e acao deste mes mas tem prazo dentro dele */
+const UGC_EXTRA = [{camp:'pre', nome:'da Black', d:'2026-11-27'}];
 function ecomHtml(ck){
-  const l=ECOM[ck]; if(!l||!l.length) return '';
+  const g=CAMPS[ck]||{};
+  const l=A.filter(a=>a.camp===ck&&a.ugc).map(a=>ugcTexto('da '+g.name,a.d))
+          .concat(ECOM[ck]||[])
+          .concat(UGC_EXTRA.filter(x=>x.camp===ck).map(x=>ugcTexto(x.nome,x.d)));
+  if(!l.length) return '';
   return '<div class="ecom"><b>Equipe e-commerce</b><ul>'+l.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>';
 }
 
@@ -664,7 +690,7 @@ function brief(){
       a.title,
       row('Oferta',esc(a.of),e,'of')+row('Público',esc(a.pub),e,'pub')+
       row('Canais',esc(a.ch),e,'ch')+row('Formato',esc(a.fmt),e,'fmt')+row('Regras',esc(a.reg),e,'reg'),
-      a.gat, a.copy, e, a.d, a.arte, prodHtml(a))}).join('');
+      a.gat, a.copy, e, a.d, a.arte, prodHtml(a)+ugcHtml(a))}).join('');
     h+='<section class="group" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+num+'. '+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
        '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
        painel(ck)+'<div class="cards">'+items+'</div>'+ecomHtml(ck)+'</section>';

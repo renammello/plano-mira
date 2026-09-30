@@ -610,12 +610,12 @@ const PAINEIS = {
 
   prepblack: {rotulo:'Novembro inteiro', quando:'abre terça 03/11',
     blocos:[
-      {tipo:'dark', lab:'Abre terça 03/11', big:'Black Mira.', sub:'Novembro inteiro.'},
-      {tipo:'ladder', lab:'3 lotes, sem peça repetida', itens:[['40','peças na categoria Black Mira'],['179','peças no grupo, com cupom'],['516','encalhadas, por tamanho']]}],
+      {tipo:'dark', lab:'Abre terça 03/11', big:'Black Mira.', sub:'Novembro inteiro.'}],
+    um:true,
     canais:[['Meta Ads · venda','só nas localizações liberadas, pra categoria Black Mira'],
             ['Meta Ads · captação','Brasil todo, pro grupo BLACK MIRA 2026, sem número de desconto'],
             ['Grupo VIP e grupo da Black','página de promoções com o cupom extra, lote novo toda semana'],
-            ['E-mail','encalhadas no tamanho de cada cliente'],
+            ['E-mail','peças do outlet no tamanho de cada cliente'],
             ['Verão 27','fica de fora: preço cheio e sem anúncio de Black']]},
 
   rotina: {rotulo:'Toda semana', quando:'outubro inteiro',
@@ -687,8 +687,8 @@ const ECOM = {
           'Montar a categoria Black Mira fora do menu, com as 40 peças do outlet de grade cheia com mais estoque',
           'Montar as categorias do grupo na página de promoções: 130 peças do outlet de grade cheia e 49 de calor a preço cheio, fora as do progressivo de outubro',
           'Separar as peças em lotes por semana e guardar um lote pra semana de 23 a 27/11',
-          'Toda segunda: a peça que quebrou a grade sai da Black Mira e do grupo e vai pras encalhadas',
-          'Levantar o tamanho de cada cliente pra mandar as encalhadas por tamanho no e-mail'],
+          'Toda segunda: a peça que quebrou a grade sai da Black Mira e do grupo e vai pro e-mail por tamanho',
+          'Levantar o tamanho de cada cliente pra mandar o outlet por tamanho no e-mail'],
   rotina:['Montar os e-mails de quarta na Brevo: 07, 14, 21 e 28/10, às 18h',
           'Separar as peças das curadorias de segunda, quarta e sexta']
 };

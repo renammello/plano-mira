@@ -514,11 +514,9 @@ function prodHtml(a){
   const p=a.d.split('-').map(Number), d=new Date(p[0],p[1]-1,p[2]);
   if(/Meta/.test(a.ch||'')) d.setDate(d.getDate()-1);
   d.setDate(d.getDate()-5);
-  const hoje=new Date(); hoje.setHours(0,0,0,0);
   const txt=WD[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
-  if(d<hoje) return '<div class="prod atrasada">Produção da arte atrasada: era pra começar <b>'+txt+'</b></div>';
-  if(+d===+hoje) return '<div class="prod hoje">Produção da arte começa hoje, <b>'+txt+'</b></div>';
-  return '<div class="prod">Produção da arte começa <b>'+txt+'</b></div>';
+  /* sempre neutro: sem aviso de atrasada nem de hoje (pedido do Renam, 30/09) */
+  return '<div class="prod">Início da produção da arte: <b>'+txt+'</b></div>';
 }
 function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH){
   return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+

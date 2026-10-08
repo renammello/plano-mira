@@ -144,9 +144,9 @@
 
   /* ---------- briefing ---------- */
   .group{margin-bottom:72px;scroll-margin:80px}
-  /* o que ja passou da data final: escondido ate ligar o botao do topo do briefing */
-  body:not(.ver-passou) .bc.passou, body:not(.ver-passou) .group.passou{display:none}
-  .bc.passou{opacity:.55}
+  /* secao que ja passou inteira: escondida ate ligar o botao do topo do briefing */
+  body:not(.ver-passou) .group.passou{display:none}
+  .group.passou .cards, .group.passou .acard{opacity:.55}
   .passadas{display:flex;justify-content:flex-end;margin:0 0 22px}
   .passadas:empty{display:none}
   .sw{display:inline-flex;align-items:center;gap:10px;font-size:var(--fs-sm);color:var(--ink-soft);cursor:pointer;user-select:none}
@@ -569,8 +569,8 @@ function ugcHtml(a){
   const u=(typeof a.ugc==='object')?ugcFixo(a.ugc):ugcDatas(a.d);
   return '<div class="prod">UGC: Milena seleciona as peças <b>'+u.sel+'</b> · Duda grava de <b>'+u.ini+'</b> a <b>'+u.fim+'</b></div>';
 }
-function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH,passou){
-  return '<article class="bc'+(arte?' tem-arte':'')+(passou?' passou':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
+function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH){
+  return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
     (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
     '<div class="bhead"><span class="bdate">'+dateLine+'</span>'+fpill(fun)+arteTag(arte,end)+'</div>'+
     (prodH||'')+
@@ -723,8 +723,8 @@ function ecomHtml(ck){
 function brief(){
   const order=['frete','black','rosa','mais','verao','pre','prepblack','rotina'];   /* pela data em que comeca; a rotina fecha */
   let h='';
-  /* acao que ja passou da data final (fim, ou o dia dela) fica escondida ate ligar o botao do topo.
-     Campanha com todas as acoes passadas some inteira. O numero da secao NAO muda quando ela some:
+  /* some por SECAO, nunca por card: a secao fica escondida quando todas as acoes dela ja passaram
+     (fim, ou o dia da acao), ate ligar o botao do topo. O numero da secao NAO muda quando ela some:
      a equipe se comunica pelo numero ("ve a secao 4"). */
   const hoje=hojeISO(), passou=a=>(a.fim||a.d)<hoje;
   let npass=0, num=0;
@@ -734,13 +734,13 @@ function brief(){
     const list=A.filter(a=>a.camp===ck)
                 .sort((x,y)=>x.d.localeCompare(y.d)||((parseInt(x.t)||99)-(parseInt(y.t)||99)));
     const tudoPassou=list.length>0&&list.every(passou);
-    npass+=list.filter(passou).length;
+    if(tudoPassou) npass++;
     const items=list.map(a=>{const e='A:'+a.id; return briefCard('a-'+a.id,a.fun,
       '<b>'+(a.per?esc(a.per):fmtDate(a.d))+'</b>'+(a.t?' · '+esc(a.t):'')+(a.star?' · <span class="star">✦</span>':''),
       a.title,
       row('Oferta',esc(a.of),e,'of')+row('Público',esc(a.pub),e,'pub')+
       row('Canais',esc(a.ch),e,'ch')+row('Formato',esc(a.fmt),e,'fmt')+row('Regras',esc(a.reg),e,'reg'),
-      a.gat, a.copy, e, a.d, a.arte, prodHtml(a)+ugcHtml(a), passou(a))}).join('');
+      a.gat, a.copy, e, a.d, a.arte, prodHtml(a)+ugcHtml(a))}).join('');
     h+='<section class="group'+(tudoPassou?' passou':'')+'" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+num+'. '+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
        '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
        painel(ck)+'<div class="cards">'+items+'</div>'+ecomHtml(ck)+'</section>';
@@ -749,7 +749,7 @@ function brief(){
   const pb=document.getElementById('passadas');
   if(pb) pb.innerHTML=npass?'<label class="sw"><input type="checkbox" id="chk-passou"'+
     (document.body.classList.contains('ver-passou')?' checked':'')+'><span class="trilho"></span>'+
-    'Mostrar o que já passou ('+npass+')</label>':'';
+    'Mostrar as seções que já passaram ('+npass+')</label>':'';
 }
 function hojeISO(){
   const d=new Date();
@@ -790,7 +790,7 @@ function goBrief(id){
   showView('brief');
   const el=document.getElementById('bc-'+id);
   if(!el) return;
-  if(el.classList.contains('passou')) verPassou(true);   /* veio do calendario numa acao que ja passou */
+  if(el.closest('.group.passou')) verPassou(true);   /* veio do calendario numa secao que ja passou */
   document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
   el.classList.add('target');
   el.scrollIntoView({behavior:'smooth',block:'center'});

@@ -144,6 +144,19 @@
 
   /* ---------- briefing ---------- */
   .group{margin-bottom:72px;scroll-margin:80px}
+  /* o que ja passou da data final: escondido ate ligar o botao do topo do briefing */
+  body:not(.ver-passou) .bc.passou, body:not(.ver-passou) .group.passou{display:none}
+  .bc.passou{opacity:.55}
+  .passadas{display:flex;justify-content:flex-end;margin:0 0 22px}
+  .passadas:empty{display:none}
+  .sw{display:inline-flex;align-items:center;gap:10px;font-size:var(--fs-sm);color:var(--ink-soft);cursor:pointer;user-select:none}
+  .sw input{position:absolute;opacity:0;width:1px;height:1px}
+  .sw .trilho{position:relative;flex:none;width:40px;height:24px;border-radius:999px;background:#E3E3E8;transition:background .2s}
+  .sw .trilho::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+                     background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+  .sw input:checked+.trilho{background:#34C759}
+  .sw input:checked+.trilho::after{transform:translateX(16px)}
+  .sw input:focus-visible+.trilho{outline:2px solid var(--wine);outline-offset:2px}
   .ghead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
   .gdot{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
   .ghead h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.025em;color:var(--ink)}
@@ -326,7 +339,7 @@
       </div>
     </div>
   </section>
-  <section id="view-brief" class="view"><div id="groups"></div></section>
+  <section id="view-brief" class="view"><div class="passadas" id="passadas"></div><div id="groups"></div></section>
 </main>
 
 <footer>
@@ -358,7 +371,7 @@ const A = [
 {id:1, d:'2026-10-02', t:'10h', title:'Abrir no VIP', camp:'frete', fun:'ret', arte:'nova', star:true, of:'Frete grátis sem valor mínimo\nCupom FRETEOFF', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de promoções\nO link da mensagem vai pra página de promoções', gat:{risc:'Sem valor mínimo: a peça sozinha já vai sem frete.'}, copy:'A ideia: no grupo, o frete sai grátis em qualquer compra, até de uma peça só\nTem que estar na arte:\nFrete grátis\nSem valor mínimo\nCupom FRETEOFF\nSem botão: o link vai na mensagem do grupo'},
 {id:2, d:'2026-10-03', t:'10h', title:'Último dia no VIP', camp:'frete', fun:'fundo', of:'O frete grátis até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Termina hoje às 23h59.'}, copy:'A ideia: o frete grátis acaba hoje\nTem que estar na arte:\nÚltimo dia, até 23h59\nSem botão: o link vai na mensagem do grupo'},
 {id:3, d:'2026-10-05', title:'Captação pro grupo da Black', camp:'black', fun:'topo', arte:'nova', star:true, of:'Nenhuma. A promessa é ver a Black antes', pub:'Quem ainda não conhece a marca e Brasil todo.', ch:'Meta Ads', fmt:'Estático 1080x1350px\nEstático 1080x1920px', reg:'Sobe na véspera, domingo 04, e roda até a Black\nO anúncio não fala de desconto\nO destino é a página do grupo BLACK MIRA 2026', gat:{ant:'Quem está no BLACK MIRA 2026 vê a Black antes do site e escolhe antes de a peça sumir.'}, copy:'A ideia: quem entra no grupo BLACK MIRA 2026 vê a Black antes de todo mundo\nTem que estar na arte:\nO nome do grupo: BLACK MIRA 2026\nSem botão: o anúncio já tem o botão do Meta'},
-{id:4, d:'2026-10-05', title:'Banner Outubro Rosa', camp:'rosa', fun:'topo', arte:'nova', of:'Nenhuma. Banner pra lembrar', pub:'Todo tráfego do site', ch:'Site', fmt:'Banner desktop: 1920x600px\nBanner mobile: 1080x1350px', reg:'No ar de 05 a 25/10\nSem venda ligada ao banner', gat:{}, copy:'A ideia: a Mira Vest apoia o Outubro Rosa\nTem que estar na arte:\nFoto nova, de peça atual\nO texto do banner de hoje, sem mudar:\nEm outubro, nós vestimos rosa\nA moda é se cuidar\nOutubro Rosa\nA tendência é se amar!\nNós apoiamos essa causa\nSem botão'},
+{id:4, d:'2026-10-05', fim:'2026-10-25', title:'Banner Outubro Rosa', camp:'rosa', fun:'topo', arte:'nova', of:'Nenhuma. Banner pra lembrar', pub:'Todo tráfego do site', ch:'Site', fmt:'Banner desktop: 1920x600px\nBanner mobile: 1080x1350px', reg:'No ar de 05 a 25/10\nSem venda ligada ao banner', gat:{}, copy:'A ideia: a Mira Vest apoia o Outubro Rosa\nTem que estar na arte:\nFoto nova, de peça atual\nO texto do banner de hoje, sem mudar:\nEm outubro, nós vestimos rosa\nA moda é se cuidar\nOutubro Rosa\nA tendência é se amar!\nNós apoiamos essa causa\nSem botão'},
 {id:5, d:'2026-10-07', t:'18h', title:'E-mail de véspera', camp:'mais', fun:'meio', arte:'nova', of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado: corpo inteiro e close da mesma peça', reg:'Sai quarta às 18h\nAvisa que abre quinta 08/10\nO botão leva pra página de promoções', gat:{}, copy:'A ideia: amanhã começa a ação, e quanto mais peças, maior o desconto\nTem que estar na arte:\nMais peças, mais descontos\nAmanhã, 08/10\n1 peça 15% · 2 peças 25% · 3 ou mais 35%\nFrase (pode encurtar ou adaptar): Meninas, amanhã tem coisa boa\nSem botão: o botão fica no e-mail, fora da arte'},
 {id:6, d:'2026-10-07', t:'20h', title:'Véspera, aviso no VIP', camp:'mais', fun:'ret', of:'Nenhuma. Só o aviso de amanhã', pub:'Grupos VIP', ch:'WhatsApp VIP, mensagem de texto', fmt:'Sem arte. Mensagem de texto', reg:'Texto puro com a hora de amanhã', gat:{}},
 {id:7, d:'2026-10-08', t:'10h', title:'Abrir no VIP', camp:'mais', fun:'ret', arte:'nova', star:true, of:'1 peça 15%\n2 peças 25%\n3 ou mais 35%', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O desconto aparece sozinho no carrinho: a cliente só coloca as peças\nAs peças da arte serão passadas pra designer\nO link da mensagem leva pra página de promoções', gat:{anc:'A terceira peça entra com 35%: o look inteiro sai com o maior desconto.'}, copy:'A ideia: quanto mais peças no carrinho, maior o desconto, e na terceira o look inteiro sai com 35%\nTem que estar na arte:\nMais peças, mais descontos\n1 peça 15% · 2 peças 25% · 3 ou mais 35%\nFrase (pode encurtar ou adaptar): A terceira peça entra com 35%. Dá vontade de montar o look todo.\nSem botão: o link vai na mensagem do grupo'},
@@ -367,7 +380,7 @@ const A = [
 {id:10, d:'2026-10-12', t:'10h', title:'Último dia no VIP', camp:'mais', fun:'fundo', of:'A condição até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'Feriado e último dia: fecha hoje às 23h59.'}, copy:'A ideia: hoje é o último dia pra montar o look com desconto\nTem que estar na arte:\nÚltimo dia, até 23h59\nFrase (pode encurtar ou adaptar): Meninas, é só até hoje\nSem botão: o link vai na mensagem do grupo'},
 {id:11, d:'2026-10-14', t:'10h', title:'Vídeo UGC do Verão 27', camp:'rotina', fun:'meio', of:'Nenhuma. Verão 27 a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Vídeo UGC vertical 1080x1920px', gat:{}, copy:'A ideia: o Verão 27 vestido, mostrando como a peça fica no corpo'},
 {id:12, d:'2026-10-14', t:'18h', title:'E-mail do Verão 27', camp:'rotina', fun:'meio', arte:'adapta', of:'Nenhuma. Verão 27 a preço cheio', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado: frames do vídeo UGC', reg:'Sai quarta às 18h', gat:{}, copy:'A ideia: tem coleção nova no site, o Verão 27\nTem que estar na arte:\nVerão 27\nFrase (pode encurtar ou adaptar): Tem peça nova chegando com aquele jeito elegante que a gente ama.\nSem botão: o botão fica no e-mail, fora da arte'},
-{id:13, d:'2026-10-05', per:'seg, qua e sex, nos dias sem campanha', t:'10h', title:'Curadoria no VIP', camp:'rotina', fun:'fundo', of:'Peças a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Fotos do catálogo com o preço na imagem, 1080x1080px', reg:'Só peças com grade cheia\nNão sai em dia de campanha', gat:{}},
+{id:13, d:'2026-10-05', fim:'2026-10-31', per:'seg, qua e sex, nos dias sem campanha', t:'10h', title:'Curadoria no VIP', camp:'rotina', fun:'fundo', of:'Peças a preço cheio', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Fotos do catálogo com o preço na imagem, 1080x1080px', reg:'Só peças com grade cheia\nNão sai em dia de campanha', gat:{}},
 {id:14, d:'2026-10-20', t:'10h', title:'Abrir no VIP', camp:'verao', fun:'ret', arte:'nova', star:true, of:'15% no Verão 27\nCupom VERAOVIP15', pub:'Grupos VIP', ch:'WhatsApp VIP', fmt:'Card 1080x1080px', reg:'O cupom fica na página de promoções\nVale só nas peças do Verão 27\nNo site o Verão 27 segue a preço cheio', gat:{ant:'Só quem está no grupo leva a coleção nova com desconto, e só por 48 horas.'}, copy:'A ideia e o texto entram quando a oferta do Verão 27 fechar'},
 {id:15, d:'2026-10-21', t:'10h', title:'Último dia no VIP', camp:'verao', fun:'fundo', of:'O 15% até as 23h59 de hoje', pub:'Grupos VIP', arte:'adapta', ch:'WhatsApp VIP', fmt:'Card 1080x1080px\nA arte da abertura com tarja de último dia', reg:'A mensagem diz que fecha hoje às 23h59', gat:{fomo:'A coleção nova volta a preço cheio amanhã.'}, copy:'A ideia e o texto entram quando a oferta do Verão 27 fechar'},
 {id:16, d:'2026-10-21', t:'18h', title:'E-mail de último dia', camp:'verao', fun:'fundo', arte:'adapta', of:'O 15% no Verão 27 até as 23h59 de hoje\nCupom VERAOVIP15', pub:'Base inteira de e-mails', ch:'E-mail', fmt:'Topo: 1200x800px\n2 fotos lado a lado, com tarja de último dia', reg:'Sai quarta às 18h', gat:{}, copy:'A ideia e o texto entram quando a oferta do Verão 27 fechar'},
@@ -556,8 +569,8 @@ function ugcHtml(a){
   const u=(typeof a.ugc==='object')?ugcFixo(a.ugc):ugcDatas(a.d);
   return '<div class="prod">UGC: Milena seleciona as peças <b>'+u.sel+'</b> · Duda grava de <b>'+u.ini+'</b> a <b>'+u.fim+'</b></div>';
 }
-function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH){
-  return '<article class="bc'+(arte?' tem-arte':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
+function briefCard(id,fun,dateLine,title,rowsHtml,gat,copy,end,dia,arte,prodH,passou){
+  return '<article class="bc'+(arte?' tem-arte':'')+(passou?' passou':'')+'" id="bc-'+id+'" data-fun="'+fun+'">'+
     (dia?'<button class="fromcal" type="button" data-back="'+esc(dia)+'">← voltar para o calendário</button>':'')+
     '<div class="bhead"><span class="bdate">'+dateLine+'</span>'+fpill(fun)+arteTag(arte,end)+'</div>'+
     (prodH||'')+
@@ -710,24 +723,43 @@ function ecomHtml(ck){
 function brief(){
   const order=['frete','black','rosa','mais','verao','pre','prepblack','rotina'];   /* pela data em que comeca; a rotina fecha */
   let h='';
-  let num=0;
+  /* acao que ja passou da data final (fim, ou o dia dela) fica escondida ate ligar o botao do topo.
+     Campanha com todas as acoes passadas some inteira. O numero da secao NAO muda quando ela some:
+     a equipe se comunica pelo numero ("ve a secao 4"). */
+  const hoje=hojeISO(), passou=a=>(a.fim||a.d)<hoje;
+  let npass=0, num=0;
   order.forEach(ck=>{
     const g=CAMPS[ck]; if(!g) return;   /* campanha que nao existe nao derruba o resto */
     num++;
     const list=A.filter(a=>a.camp===ck)
                 .sort((x,y)=>x.d.localeCompare(y.d)||((parseInt(x.t)||99)-(parseInt(y.t)||99)));
+    const tudoPassou=list.length>0&&list.every(passou);
+    npass+=list.filter(passou).length;
     const items=list.map(a=>{const e='A:'+a.id; return briefCard('a-'+a.id,a.fun,
       '<b>'+(a.per?esc(a.per):fmtDate(a.d))+'</b>'+(a.t?' · '+esc(a.t):'')+(a.star?' · <span class="star">✦</span>':''),
       a.title,
       row('Oferta',esc(a.of),e,'of')+row('Público',esc(a.pub),e,'pub')+
       row('Canais',esc(a.ch),e,'ch')+row('Formato',esc(a.fmt),e,'fmt')+row('Regras',esc(a.reg),e,'reg'),
-      a.gat, a.copy, e, a.d, a.arte, prodHtml(a)+ugcHtml(a))}).join('');
-    h+='<section class="group" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+num+'. '+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
+      a.gat, a.copy, e, a.d, a.arte, prodHtml(a)+ugcHtml(a), passou(a))}).join('');
+    h+='<section class="group'+(tudoPassou?' passou':'')+'" id="grp-'+ck+'"><div class="ghead"><span class="gdot" style="background:'+(g.c||'#8E8E93')+'"></span><h2>'+num+'. '+g.name+'</h2><span class="gcount">'+list.length+(list.length==1?' ação':' ações')+'</span>'+
        '<span class="gper">'+g.per+'</span>'+(g.meta?'<span class="gmeta" style="background:'+(g.bg||'#F5F5F7')+';color:'+(g.ct||g.c||'#1D1D1F')+'">'+g.meta+'</span>':'')+'</div>'+
        painel(ck)+'<div class="cards">'+items+'</div>'+ecomHtml(ck)+'</section>';
   });
   document.getElementById('groups').innerHTML=h;
+  const pb=document.getElementById('passadas');
+  if(pb) pb.innerHTML=npass?'<label class="sw"><input type="checkbox" id="chk-passou"'+
+    (document.body.classList.contains('ver-passou')?' checked':'')+'><span class="trilho"></span>'+
+    'Mostrar o que já passou ('+npass+')</label>':'';
 }
+function hojeISO(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function verPassou(on){
+  document.body.classList.toggle('ver-passou',on);
+  const c=document.getElementById('chk-passou'); if(c) c.checked=on;
+}
+document.addEventListener('change',e=>{ if(e.target.id==='chk-passou') verPassou(e.target.checked); });
 
 function showView(v){
   const cal=v==='cal', bc=document.getElementById('btn-cal'), bb=document.getElementById('btn-brief');
@@ -751,12 +783,14 @@ function voltarCal(dia){
 function goGroup(ck){
   showView('brief');
   const el=document.getElementById('grp-'+ck);
+  if(el&&el.classList.contains('passou')) verPassou(true);
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function goBrief(id){
   showView('brief');
   const el=document.getElementById('bc-'+id);
   if(!el) return;
+  if(el.classList.contains('passou')) verPassou(true);   /* veio do calendario numa acao que ja passou */
   document.querySelectorAll('.bc.target').forEach(x=>x.classList.remove('target'));
   el.classList.add('target');
   el.scrollIntoView({behavior:'smooth',block:'center'});
@@ -889,8 +923,8 @@ function serializar(){
    a partir do que esta na memoria. Serve tanto pra gravar quanto pra baixar. */
 function montarHtml(){
   const clone=document.documentElement.cloneNode(true);
-  clone.querySelector('body').classList.remove('editando');
-  ['grid','groups','pre','camps','agora'].forEach(id=>{
+  clone.querySelector('body').classList.remove('editando','ver-passou');
+  ['grid','groups','pre','camps','agora','passadas'].forEach(id=>{
     const n=clone.querySelector('#'+id); if(n) n.innerHTML='';
   });
   clone.querySelectorAll('[contenteditable]').forEach(n=>n.removeAttribute('contenteditable'));

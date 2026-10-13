@@ -205,6 +205,12 @@
   .cpbox{margin-top:14px;background:var(--tint);border-radius:12px;padding:11px 13px}
   .cpl{font-size:var(--fs-sm);color:var(--ink-faint);letter-spacing:.02em;margin-bottom:3px}
   .cpt{font-size:var(--fs-md);color:var(--ink);line-height:1.5;min-height:1.4em;white-space:pre-wrap}
+  /* briefing da arte em linhas, no desenho de Oferta/Público (o bloco cinza só volta no modo edição) */
+  .cpbox.com-linhas{background:none;border-radius:0;padding:12px 0 0;border-top:1px solid var(--line)}
+  .cpbox.com-linhas .cpt{display:none}
+  .cp-linhas{margin-top:8px}
+  body.editando .cpbox.com-linhas .cpt{display:block}
+  body.editando .cp-linhas{display:none}
   /* marca de arte: a designer bate o olho e sabe o que e dela */
   .arte{display:inline-flex;align-items:center;flex:none;border-radius:999px;padding:3px 9px;
         font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px}
@@ -518,9 +524,31 @@ function gatBox(g,end){
    a partir do gatilho logo acima. Fica no card pra nao viver em outro lugar. */
 function copyBox(txt,end){
   const tem=txt&&String(txt).trim();
-  return '<div class="cpbox"'+(tem?'':' data-vazio="1"')+'>'+
+  const linhas=tem?copyLinhas(String(txt)):'';
+  return '<div class="cpbox'+(linhas?' com-linhas':'')+'"'+(tem?'':' data-vazio="1"')+'>'+
          '<div class="cpl">Briefing da arte</div>'+
+         (linhas?'<div class="props cp-linhas">'+linhas+'</div>':'')+
          '<p class="cpt"'+ed(end,'copy')+'>'+rotulosCopy(esc(tem?txt:''))+'</p></div>';
+}
+/* rótulo do texto -> rótulo curto da coluna da esquerda; linha sem rótulo continua o item de cima */
+const ROTULOS=[['A ideia:','Ideia'],['Objetivo:','Objetivo'],['A ação:','Ação'],['Mensagem principal:','Mensagem'],
+  ['Tem que estar na arte:','Na arte'],['Tem que estar no vídeo:','No vídeo'],['Frase (pode encurtar ou adaptar):','Frase'],
+  ['Peças:','Peças'],['Não pode:','Não pode'],['Sem botão:','Link'],['Sem botão','Link']];
+function copyLinhas(t){
+  const itens=[]; let atual=null;
+  t.split('\n').forEach(l=>{
+    const r=ROTULOS.find(([k])=>l.startsWith(k));
+    if(r){
+      let v=l.slice(r[0].length).trim();
+      if(r[1]==='Link') v=(v?v.charAt(0).toUpperCase()+v.slice(1)+', ':'')+'sem botão na arte';
+      atual={l:r[1],v:v?[v.charAt(0).toUpperCase()+v.slice(1)]:[]}; itens.push(atual);
+    } else if(l.trim()){
+      if(!atual){ atual={l:'',v:[]}; itens.push(atual); }
+      const x=l.trim(); atual.v.push(x.charAt(0).toUpperCase()+x.slice(1));
+    }
+  });
+  if(!itens.some(i=>i.l)) return '';
+  return itens.map(i=>'<div class="pl">'+esc(i.l)+'</div><div class="pv">'+esc(i.v.join('\n')).replace(/R\$ /g,'R$ ')+'</div>').join('');
 }
 /* rotulos do briefing da designer em negrito (o Salvar le innerText, entao o negrito nao vai pro dado) */
 function rotulosCopy(h){

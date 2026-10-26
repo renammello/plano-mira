@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Briefings · Mira Vest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<!--
+  Briefings dos criativos (26/10/2026). A página só mostra: os dados vêm da planilha "Briefings de novembro"
+  (Google, conta marketing.miravest) pelo app do Apps Script. Mudou a planilha, a página e o PDF já saem mudados.
+  Esta página não precisa ser publicada de novo quando um briefing muda.
+-->
+<style>
+  :root { --tinta: #1C1A17; --fundo: #F4F3F1; --cartao: #ffffff; --linha: #ECEAE6; --apoio: #555; --ouro: #DCC7A5; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--tinta); font-family: Montserrat, Arial, sans-serif; }
+  .w { max-width: 720px; margin: 0 auto; padding: 22px 16px 48px; }
+  .top img { height: 20px; display: block; }
+  h1 { font-size: 30px; font-weight: 800; margin: 18px 0 6px; }
+  .sub { font-size: 15px; line-height: 1.45; color: #444; margin: 0 0 22px; }
+  h2 { font-size: 14px; font-weight: 600; color: var(--apoio); margin: 26px 0 10px; }
+  .cx { background: var(--cartao); border-radius: 14px; overflow: hidden; }
+  .it { display: flex; align-items: center; gap: 14px; padding: 14px; border-top: 1px solid var(--linha); }
+  .it:first-child { border-top: 0; }
+  .d { width: 50px; text-align: center; flex: none; }
+  .d span { display: block; font-size: 11px; font-weight: 600; color: #777; }
+  .d b { font-size: 17px; font-weight: 800; }
+  .m { flex: 1; min-width: 0; }
+  .t { font-size: 16px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+  .f { font-size: 13px; color: var(--apoio); margin-top: 3px; }
+  .p { font-size: 13px; margin-top: 2px; font-weight: 600; }
+  .aviso { font-size: 13px; margin-top: 4px; }
+  .aviso a { color: var(--tinta); }
+  .tag { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--ouro); font-size: 11px; font-weight: 600; vertical-align: 2px; }
+  .bt { flex: none; background: var(--tinta); color: #fff; border: 0; font: 600 13px Montserrat, Arial, sans-serif; padding: 11px 13px; border-radius: 10px; cursor: pointer; }
+  .bt[disabled] { opacity: .6; cursor: default; }
+  .estado { background: var(--cartao); border-radius: 14px; padding: 18px; font-size: 15px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="top"><img src="img/bm/logo_preta.png" alt="Mira Vest"></div>
+  <h1>Briefings</h1>
+  <p class="sub">Toque em <b>Baixar PDF</b> no criativo que você vai fazer. Se aparecer <b>Atualizado</b>, baixe de novo: o briefing mudou.</p>
+  <div id="lista"><div class="estado">Carregando os briefings...</div></div>
+</div>
+<script>
+  var API = "https://script.google.com/macros/s/AKfycbxz_Ku6QRLv2OUGqoVlDS47ZMg4wqyCplmxqyszrHhttgVT9_xcDeO08aCw7YU63L7cHw/exec";
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function montar(dados) {
+    var semanas = dados.semanas || [];
+    if (!semanas.length) {
+      document.getElementById("lista").innerHTML = '<div class="estado">Nenhum criativo daqui pra frente.</div>';
+      return;
+    }
+    var h = "";
+    semanas.forEach(function (s) {
+      h += "<h2>" + esc(s.titulo) + '</h2><div class="cx">';
+      s.itens.forEach(function (c) {
+        var selo = c.atualizado ? '<span class="tag">Atualizado ' + esc(c.atualizado) + "</span>" : "";
+        h += '<div class="it"><div class="d"><span>' + esc(c.dia) + "</span><b>" + esc(c.data) + "</b></div>" +
+          '<div class="m"><div class="t">' + esc(c.nome) + selo + '</div><div class="f">' + esc(c.detalhe) + "</div>" +
+          '<div class="p">' + esc(c.prazo) + '</div><div class="aviso" id="a' + c.num + '"></div></div>' +
+          '<button class="bt" data-n="' + c.num + '">Baixar PDF</button></div>';
+      });
+      h += "</div>";
+    });
+    document.getElementById("lista").innerHTML = h;
+  }
+
+  function carregar() {
+    fetch(API + "?api=lista", { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(montar)
+      .catch(function () {
+        document.getElementById("lista").innerHTML =
+          '<div class="estado">Não consegui carregar os briefings. Atualize a página daqui a pouco.</div>';
+      });
+  }
+
+  function baixar(n, bt) {
+    bt.disabled = true;
+    bt.textContent = "Gerando...";
+    fetch(API + "?api=pdf&n=" + encodeURIComponent(n), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r.erro) throw new Error(r.erro);
+        var bin = atob(r.b64), arr = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+        var url = URL.createObjectURL(new Blob([arr], { type: "application/pdf" }));
+        var a = document.createElement("a");
+        a.href = url; a.download = r.nome; document.body.appendChild(a); a.click(); a.remove();
+        document.getElementById("a" + n).innerHTML = '<a href="' + url + '" target="_blank" rel="noopener">Se não baixou, toque aqui pra abrir</a>';
+        bt.disabled = false;
+        bt.textContent = "Baixar PDF";
+      })
+      .catch(function () {
+        bt.disabled = false;
+        bt.textContent = "Tentar de novo";
+      });
+  }
+
+  document.addEventListener("click", function (e) {
+    var bt = e.target.closest(".bt");
+    if (bt && !bt.disabled) baixar(bt.getAttribute("data-n"), bt);
+  });
+
+  carregar();
+</script>
+</body>
+</html>

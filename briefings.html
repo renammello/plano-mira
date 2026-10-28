@@ -31,6 +31,14 @@
   .t { font-size: 16px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
   .f { font-size: 13px; color: var(--apoio); margin-top: 3px; }
   .p { font-size: 13px; margin-top: 2px; font-weight: 600; }
+  /* 28/10: canal e responsável em etiqueta colorida (as cores vêm da planilha) */
+  .cn { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 7px; }
+  .chip { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 99px; }
+  .tm { font-size: 12px; color: var(--apoio); }
+  .pz { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 8px; font-size: 13px; }
+  .pz b { font-weight: 800; }
+  .rp { display: inline-flex; align-items: center; gap: 6px; }
+  .pess { font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 6px; }
   .aviso { font-size: 13px; margin-top: 4px; }
   .aviso a { color: var(--tinta); }
   .tag { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--ouro); font-size: 11px; font-weight: 600; vertical-align: 2px; }
@@ -53,6 +61,11 @@
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  function cor(k) {                      // só aceita cor no formato #abc ou #aabbcc
+    var ok = function (x) { return /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(x || "") ? x : ""; };
+    return "background:" + (ok(k.fundo) || "#EDEDED") + ";color:" + (ok(k.letra) || "#1C1A17");
+  }
+
   function montar(dados) {
     var semanas = dados.semanas || [];
     if (!semanas.length) {
@@ -64,9 +77,19 @@
       h += "<h2>" + esc(s.titulo) + '</h2><div class="cx">';
       s.itens.forEach(function (c) {
         var selo = c.atualizado ? '<span class="tag">Atualizado ' + esc(c.atualizado) + "</span>" : "";
+        // canais em etiqueta (Grupo VIP, Meta, E-mail...) e "Prazo final" + responsável; se a planilha ainda mandar
+        // o formato antigo, mostra o texto como antes
+        var canais = c.canais ? '<div class="cn">' + c.canais.map(function (k) {
+          return '<span class="chip" style="' + cor(k) + '">' + esc(k.nome) + "</span>";
+        }).join("") + (c.tamanhos ? '<span class="tm">' + esc(c.tamanhos) + "</span>" : "") + "</div>"
+          : '<div class="f">' + esc(c.detalhe) + "</div>";
+        var prazo = c.prazoFinal !== undefined ? '<div class="pz"><span>Prazo final: <b>' + esc(c.prazoFinal) + "</b></span>" +
+          (c.resp ? '<span class="rp">Responsável: <span class="pess" style="' + cor(c.resp) + '">' + esc(c.resp.nome) +
+            "</span></span>" : "") + "</div>"
+          : '<div class="p">' + esc(c.prazo) + "</div>";
         h += '<div class="it"><div class="d"><span>' + esc(c.dia) + "</span><b>" + esc(c.data) + "</b></div>" +
-          '<div class="m"><div class="t">' + esc(c.nome) + selo + '</div><div class="f">' + esc(c.detalhe) + "</div>" +
-          '<div class="p">' + esc(c.prazo) + '</div><div class="aviso" id="a' + c.num + '"></div></div>' +
+          '<div class="m"><div class="t">' + esc(c.nome) + selo + "</div>" + canais + prazo +
+          '<div class="aviso" id="a' + c.num + '"></div></div>' +
           '<button class="bt" data-n="' + c.num + '">Baixar PDF</button></div>';
       });
       h += "</div>";

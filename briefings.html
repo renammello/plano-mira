@@ -41,6 +41,8 @@
   .pess { font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 6px; }
   .aviso { font-size: 13px; margin-top: 4px; }
   .aviso a { color: var(--tinta); }
+  /* 29/10: o número do briefing na frente do nome (o mesmo do PDF e da coluna Nº da planilha) */
+  .nn { color: #8a7a64; font-weight: 800; margin-right: 6px; }
   .tag { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--ouro); font-size: 11px; font-weight: 600; vertical-align: 2px; }
   .bt { flex: none; background: var(--tinta); color: #fff; border: 0; font: 600 13px Montserrat, Arial, sans-serif; padding: 11px 13px; border-radius: 10px; cursor: pointer; }
   .bt[disabled] { opacity: .6; cursor: default; }
@@ -88,7 +90,7 @@
             "</span></span>" : "") + "</div>"
           : '<div class="p">' + esc(c.prazo) + "</div>";
         h += '<div class="it"><div class="d"><span>' + esc(c.dia) + "</span><b>" + esc(c.data) + "</b></div>" +
-          '<div class="m"><div class="t">' + esc(c.nome) + selo + "</div>" + canais + prazo +
+          '<div class="m"><div class="t"><span class="nn">Nº ' + esc(c.num) + "</span>" + esc(c.nome) + selo + "</div>" + canais + prazo +
           '<div class="aviso" id="a' + c.num + '"></div></div>' +
           '<button class="bt" data-n="' + c.num + '">Baixar PDF</button></div>';
       });
